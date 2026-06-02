@@ -2,50 +2,63 @@
 import Layout from '../layouts/Layout.astro';
 ---
 
-<Layout title="首页">
+<Layout title="首页" description="程凡的退休生活博客">
   <section class="hero">
+    <span class="hero-badge">🎉 网站上线啦！</span>
     <div class="hero-icon">🏹</div>
     <h1>凡人的技术生活</h1>
     <p>
-      退休语文老师 · 信息中心主任 · AI学习者<br>
-      记录教学工具、数码体验、AI科普与退休日常
+      一个退休语文老师的 AI 学习笔记<br>
+      记录教学工具、数码体验、AI 踩坑与退休日常
     </p>
   </section>
+  
+  <div class="intro-box">
+    <h2>👋 欢迎来访</h2>
+    <p>
+      我叫程凡，在宁波诺丁汉大学附属中学信息中心干了十几年，
+      即将退休。AI 时代来了，我不想被落下，所以开始学。
+      这里是我的学习笔记，也欢迎你常来坐坐。
+    </p>
+  </div>
   
   <section class="card-grid">
     <a href="/teaching" class="card">
-      <div class="card-icon">📚</div>
+      <span class="card-icon">🛠️</span>
       <h3>教学工具推介</h3>
-      <p>发挥余热，老有所用。分享语文教学中的实用工具与方法。</p>
-      <span class="card-count">每周更新</span>
+      <p>把好用的教学工具推荐给同行，让备课本再薄一点。</p>
+      <span class="card-tag">每周更新</span>
     </a>
     
     <a href="/tech" class="card">
-      <div class="card-icon">📱</div>
-      <h3>数码体验</h3>
-      <p>数码爱好者，记录科技产品使用心得与评测。</p>
-      <span class="card-count">个人爱好</span>
+      <span class="card-icon">📱</span>
+      <h3>数码控的桌面</h3>
+      <p>新玩意到手先玩三天，不好玩写测评，好用写教程。</p>
+      <span class="card-tag green">个人爱好</span>
     </a>
     
     <a href="/ai" class="card">
-      <div class="card-icon">🤖</div>
-      <h3>AI工具科普</h3>
-      <p>边学边用，提升潜能。"语文老师学AI踩坑记"系列。</p>
-      <span class="card-count">学习记录</span>
+      <span class="card-icon">🤖</span>
+      <h3>AI笔记</h3>
+      <p>踩坑实录 + 经验分享，语文老师学 AI 的酸甜苦辣。</p>
+      <span class="card-tag">边学边写</span>
     </a>
     
     <a href="/life" class="card">
-      <div class="card-icon">🌿</div>
-      <h3>退休日记</h3>
-      <p>记录退休生活日常，孙儿松果的成长瞬间。</p>
-      <span class="card-count">真实记录</span>
+      <span class="card-icon">🌿</span>
+      <h3>生活散</h3>
+      <p>退休后的慢生活，做饭遛弯逗孙子，偶尔碎碎念。</p>
+      <span class="card-tag pink">记录日常</span>
     </a>
   </section>
   
-  <section style="margin-top: 80px; text-align: center;">
-    <h2 style="font-size: 24px; margin-bottom: 24px;">🗓️ 最近更新</h2>
-    <p style="color: var(--text-light);">
-      网站正在搭建中，内容即将上线...
-    </p>
-  </section>
+  <div class="tips">
+    <h3>📌 最近想写的内容</h3>
+    <ul>
+      <li>如何用 ChatGPT 批改作文</li>
+      <li>我给学校搭的管理系统</li>
+      <li>松果（我孙子）又说啥了</li>
+      <li>最近在玩的几款 APP</li>
+    </ul>
+  </div>
 </Layout>
