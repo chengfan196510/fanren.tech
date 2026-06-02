@@ -1,5 +1,5 @@
 ---
-const { title, description = '程凡的退休生活博客 - 教学工具、数码体验、AI科普、退休日记' } = Astro.props;
+const { title, description = '程凡的退休闲书博客 - 杏坛拾器、数码体验、新知科普、退休日记' } = Astro.props;
 
 const currentPath = Astro.url.pathname;
 const isActive = (path: string) => currentPath === path || currentPath === path + '/';
@@ -479,19 +479,19 @@ const isActive = (path: string) => currentPath === path || currentPath === path 
         </a>
         <a href="/teaching" class:list={["nav-item", { active: isActive('/teaching') }]}>
           <span class="icon">🛠️</span>
-          <span>教学工具</span>
+          <span>杏坛拾器</span>
         </a>
         <a href="/tech" class:list={["nav-item", { active: isActive('/tech') }]}>
           <span class="icon">📱</span>
-          <span>数码控</span>
+          <span>数码闲赏</span>
         </a>
         <a href="/ai" class:list={["nav-item", { active: isActive('/ai') }]}>
           <span class="icon">🤖</span>
-          <span>AI笔记</span>
+          <span>新知漫解</span>
         </a>
         <a href="/life" class:list={["nav-item", { active: isActive('/life') }]}>
           <span class="icon">🌿</span>
-          <span>生活散</span>
+          <span>岁晚闲书</span>
         </a>
       </nav>
       <div class="footer">
@@ -521,7 +521,7 @@ const isActive = (path: string) => currentPath === path || currentPath === path 
     </a>
     <a href="/teaching" class:list={["nav-item", { active: isActive('/teaching') }]}>
       <span class="icon">🛠️</span>
-      <span>教学</span>
+      <span>杏坛</span>
     </a>
     <a href="/tech" class:list={["nav-item", { active: isActive('/tech') }]}>
       <span class="icon">📱</span>
@@ -529,11 +529,11 @@ const isActive = (path: string) => currentPath === path || currentPath === path 
     </a>
     <a href="/ai" class:list={["nav-item", { active: isActive('/ai') }]}>
       <span class="icon">🤖</span>
-      <span>AI</span>
+      <span>新知</span>
     </a>
     <a href="/life" class:list={["nav-item", { active: isActive('/life') }]}>
       <span class="icon">🌿</span>
-      <span>生活</span>
+      <span>闲书</span>
     </a>
   </nav>
 </body>
