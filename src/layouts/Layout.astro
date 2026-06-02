@@ -76,13 +76,9 @@ const isActive = (path: string) => currentPath === path || currentPath === path 
       }
 
       .sidebar .avatar {
-        width: 56px;
-        height: 56px;
-        font-size: 26px;
+        width: 64px;
+        height: 64px;
         margin-bottom: 14px;
-        background: #fff;
-        border: 1px solid var(--paper);
-        color: var(--accent);
         box-shadow: 1px 1px 0 var(--paper);
       }
 
@@ -184,12 +180,13 @@ const isActive = (path: string) => currentPath === path || currentPath === path 
 
     /* ========== 通用元素 ========== */
     .avatar {
+      width: 64px;
+      height: 64px;
+      object-fit: cover;
       background: #fff;
       border: 1px solid var(--paper);
       border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      display: block;
       margin: 0 auto 14px;
     }
 
@@ -309,7 +306,7 @@ const isActive = (path: string) => currentPath === path || currentPath === path 
 <body>
   <div class="wrapper">
     <aside class="sidebar">
-      <div class="avatar">🧑‍🏫</div>
+      <img src="/avatar.jpg" alt="程凡" class="avatar" />
       <h1 class="site-title">凡耘手记</h1>
       <p class="site-desc">一介凡人，闲耘方寸技田</p>
       <div class="divider"></div>
@@ -347,7 +344,7 @@ const isActive = (path: string) => currentPath === path || currentPath === path 
     <main>
       <div class="container">
         <header>
-          <div class="avatar">🧑‍🏫</div>
+          <img src="/avatar.jpg" alt="程凡" class="avatar" />
           <h1 class="site-title">凡耘手记</h1>
           <p class="site-desc">一介凡人，闲耘方寸技田</p>
         </header>
