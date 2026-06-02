@@ -161,7 +161,62 @@ const isActive = (path: string) => currentPath === path || currentPath === path 
       h1 .emoji { font-size: 22px; }
       .card { padding: 16px 18px; margin-bottom: 12px; }
       .card-title { font-size: 15px; }
-      .about-section { padding: 18px 20px; }
+  
+    /* 文章样式：散文（岁晚闲书） */
+    .post {
+      background: var(--card-bg);
+      border: 1px solid var(--paper);
+      border-radius: var(--radius);
+      box-shadow: 1px 1px 0 var(--paper);
+      padding: 22px 26px;
+      margin-bottom: 24px;
+    }
+    @media (max-width: 767px) {
+      .post { padding: 18px 18px; }
+    }
+
+    .post-title {
+      font-size: 19px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    @media (min-width: 768px) { .post-title { font-size: 21px; } }
+
+    .post-meta {
+      font-size: 12px;
+      color: var(--text-fade);
+      margin-bottom: 18px;
+      padding-bottom: 14px;
+      border-bottom: 1px dashed var(--paper);
+    }
+
+    .post-cover {
+      width: 100%;
+      height: auto;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--paper);
+      margin-bottom: 18px;
+      display: block;
+    }
+
+    .post p {
+      font-size: 14px;
+      line-height: 1.9;
+      color: var(--text);
+      margin-bottom: 14px;
+      text-indent: 2em;
+    }
+    @media (min-width: 768px) {
+      .post p { font-size: 15px; }
+    }
+
+    .post p strong { color: var(--accent); font-weight: 500; }
+
+    .about-section { padding: 18px 20px; }
       .section-title { font-size: 13px; margin: 24px 0 12px; }
       .work-in-progress { padding: 36px 20px; }
       .work-in-progress .emoji { font-size: 40px; }
@@ -253,6 +308,61 @@ const isActive = (path: string) => currentPath === path || currentPath === path 
     .work-in-progress .emoji { margin-bottom: 14px; display: block; }
     .work-in-progress h2 { font-size: 16px; color: var(--text); margin-bottom: 6px; }
     .work-in-progress p { font-size: 13px; }
+
+
+    /* 文章样式：散文（岁晚闲书） */
+    .post {
+      background: var(--card-bg);
+      border: 1px solid var(--paper);
+      border-radius: var(--radius);
+      box-shadow: 1px 1px 0 var(--paper);
+      padding: 22px 26px;
+      margin-bottom: 24px;
+    }
+    @media (max-width: 767px) {
+      .post { padding: 18px 18px; }
+    }
+
+    .post-title {
+      font-size: 19px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    @media (min-width: 768px) { .post-title { font-size: 21px; } }
+
+    .post-meta {
+      font-size: 12px;
+      color: var(--text-fade);
+      margin-bottom: 18px;
+      padding-bottom: 14px;
+      border-bottom: 1px dashed var(--paper);
+    }
+
+    .post-cover {
+      width: 100%;
+      height: auto;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--paper);
+      margin-bottom: 18px;
+      display: block;
+    }
+
+    .post p {
+      font-size: 14px;
+      line-height: 1.9;
+      color: var(--text);
+      margin-bottom: 14px;
+      text-indent: 2em;
+    }
+    @media (min-width: 768px) {
+      .post p { font-size: 15px; }
+    }
+
+    .post p strong { color: var(--accent); font-weight: 500; }
 
     .about-section {
       background: var(--card-bg);
