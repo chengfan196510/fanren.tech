@@ -9,7 +9,7 @@ const isActive = (path: string) => currentPath === path || currentPath === path 
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5">
   <title>{title}</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -24,91 +24,299 @@ const isActive = (path: string) => currentPath === path || currentPath === path 
       --accent-light: #E8E6F8;
       --border: #E8E4DC;
       --radius: 12px;
+      --max-width: 680px;
+      --nav-height: 70px;
     }
     
     * { margin: 0; padding: 0; box-sizing: border-box; }
     
+    html {
+      font-size: 16px;
+      -webkit-text-size-adjust: 100%;
+    }
+    
     body {
-      font-family: 'LXGW WenKai', -apple-system, BlinkMacSystemFont, sans-serif;
+      font-family: 'LXGW WenKai', -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Microsoft YaHei', sans-serif;
       background: var(--bg);
       color: var(--text);
       line-height: 1.8;
-      padding-bottom: 80px;
+      min-height: 100vh;
     }
     
-    .container {
-      max-width: 680px;
-      margin: 0 auto;
-      padding: 0 20px;
+    /* Desktop layout - side navigation */
+    @media (min-width: 768px) {
+      body {
+        padding-bottom: 0;
+      }
+      
+      .wrapper {
+        display: flex;
+        max-width: 1100px;
+        margin: 0 auto;
+        min-height: 100vh;
+      }
+      
+      .sidebar {
+        width: 200px;
+        flex-shrink: 0;
+        padding: 48px 24px;
+        position: sticky;
+        top: 0;
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
+      
+      .sidebar .avatar {
+        width: 64px;
+        height: 64px;
+        font-size: 28px;
+        margin-bottom: 12px;
+      }
+      
+      .sidebar .site-title {
+        font-size: 20px;
+      }
+      
+      .sidebar .site-desc {
+        font-size: 12px;
+      }
+      
+      .sidebar .divider {
+        display: none;
+      }
+      
+      .sidebar nav {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        margin-top: 32px;
+      }
+      
+      .sidebar nav a {
+        padding: 12px 16px;
+        border-radius: 10px;
+        color: var(--text-light);
+        text-decoration: none;
+        font-size: 14px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        transition: all 0.2s;
+      }
+      
+      .sidebar nav a:hover {
+        background: var(--accent-light);
+        color: var(--accent);
+      }
+      
+      .sidebar nav a.active {
+        background: var(--accent);
+        color: white;
+      }
+      
+      .sidebar nav a .icon {
+        font-size: 18px;
+      }
+      
+      .sidebar .footer {
+        margin-top: auto;
+        font-size: 11px;
+        color: var(--text-light);
+        padding-top: 24px;
+      }
+      
+      main {
+        flex: 1;
+        padding: 48px 40px;
+        border-left: 1px solid var(--border);
+      }
+      
+      .container {
+        max-width: var(--max-width);
+        margin: 0;
+        padding: 0;
+      }
+      
+      .bottom-nav {
+        display: none !important;
+      }
     }
     
-    header {
-      padding: 48px 0 32px;
-      text-align: center;
+    /* Mobile layout - bottom navigation */
+    @media (max-width: 767px) {
+      body {
+        padding-bottom: var(--nav-height);
+      }
+      
+      .wrapper {
+        display: block;
+      }
+      
+      .sidebar {
+        display: none;
+      }
+      
+      .container {
+        max-width: 100%;
+        padding: 0 16px;
+      }
+      
+      header {
+        padding: 32px 0 24px;
+        text-align: center;
+      }
+      
+      .avatar {
+        width: 64px;
+        height: 64px;
+        font-size: 28px;
+      }
+      
+      .site-title {
+        font-size: 22px;
+      }
+      
+      .divider {
+        height: 1px;
+        background: var(--border);
+        margin: 0 -16px 24px;
+      }
+      
+      main {
+        padding: 0 0 24px;
+      }
+      
+      h1 {
+        font-size: 18px;
+      }
+      
+      h1 .emoji {
+        font-size: 22px;
+      }
+      
+      .card {
+        padding: 16px 18px;
+        margin-bottom: 12px;
+      }
+      
+      .card-title {
+        font-size: 15px;
+      }
+      
+      .about-section {
+        padding: 18px 20px;
+      }
+      
+      .section-title {
+        font-size: 13px;
+        margin: 24px 0 12px;
+      }
+      
+      .work-in-progress {
+        padding: 36px 20px;
+      }
+      
+      .work-in-progress .emoji {
+        font-size: 40px;
+      }
     }
     
+    /* Tablet */
+    @media (min-width: 480px) and (max-width: 767px) {
+      .container {
+        padding: 0 20px;
+      }
+      
+      header {
+        padding: 40px 0 28px;
+      }
+      
+      .avatar {
+        width: 68px;
+        height: 68px;
+        font-size: 30px;
+      }
+      
+      .site-title {
+        font-size: 24px;
+      }
+      
+      h1 {
+        font-size: 20px;
+      }
+      
+      h1 .emoji {
+        font-size: 26px;
+      }
+      
+      .card {
+        padding: 18px 20px;
+        margin-bottom: 14px;
+      }
+      
+      .card-title {
+        font-size: 16px;
+      }
+    }
+    
+    /* Common styles */
     .avatar {
-      width: 72px;
-      height: 72px;
       background: linear-gradient(135deg, var(--accent), #9B93F7);
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
       margin: 0 auto 16px;
-      font-size: 32px;
     }
     
     .site-title {
-      font-size: 28px;
       font-weight: 700;
-      margin-bottom: 8px;
+      margin-bottom: 6px;
     }
     
     .site-desc {
-      font-size: 14px;
       color: var(--text-light);
     }
     
-    .divider {
-      height: 1px;
-      background: var(--border);
-      margin: 0 -20px 32px;
+    header {
+      text-align: center;
     }
     
     h1 {
-      font-size: 22px;
       font-weight: 700;
-      margin-bottom: 8px;
+      margin-bottom: 6px;
       display: flex;
       align-items: center;
       gap: 10px;
     }
     
     h1 .emoji {
-      font-size: 28px;
+      flex-shrink: 0;
     }
     
     .page-desc {
       font-size: 14px;
       color: var(--text-light);
-      margin-bottom: 28px;
+      margin-bottom: 24px;
+    }
+    
+    @media (min-width: 768px) {
+      .page-desc {
+        margin-bottom: 32px;
+      }
     }
     
     .card {
       background: var(--card-bg);
       border-radius: var(--radius);
-      padding: 20px 24px;
-      margin-bottom: 16px;
       box-shadow: 0 1px 3px rgba(0,0,0,0.04);
       border: 1px solid var(--border);
     }
     
     .card-title {
-      font-size: 16px;
       font-weight: 500;
-      color: var(--text);
-      margin-bottom: 8px;
+      margin-bottom: 6px;
     }
     
     .card-desc {
@@ -128,9 +336,8 @@ const isActive = (path: string) => currentPath === path || currentPath === path 
     }
     
     .section-title {
-      font-size: 15px;
       color: var(--text-light);
-      margin: 32px 0 16px;
+      font-weight: 500;
       padding-left: 4px;
     }
     
@@ -141,24 +348,68 @@ const isActive = (path: string) => currentPath === path || currentPath === path 
     
     .work-in-progress {
       text-align: center;
-      padding: 48px 24px;
       color: var(--text-light);
     }
     
     .work-in-progress .emoji {
-      font-size: 48px;
-      margin-bottom: 16px;
+      margin-bottom: 14px;
       display: block;
     }
     
     .work-in-progress h2 {
-      font-size: 18px;
+      font-size: 16px;
       color: var(--text);
-      margin-bottom: 8px;
+      margin-bottom: 6px;
     }
     
     .work-in-progress p {
       font-size: 13px;
+    }
+    
+    .about-section {
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+    }
+    
+    @media (max-width: 767px) {
+      .about-section {
+        margin-top: 20px;
+      }
+    }
+    
+    @media (min-width: 768px) {
+      .about-section {
+        margin-top: 28px;
+        padding: 24px 28px;
+      }
+    }
+    
+    .about-section h2 {
+      font-size: 15px;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    @media (min-width: 768px) {
+      .about-section h2 {
+        font-size: 16px;
+        margin-bottom: 12px;
+      }
+    }
+    
+    .about-section p {
+      font-size: 13px;
+      color: var(--text-light);
+      line-height: 1.7;
+    }
+    
+    @media (min-width: 768px) {
+      .about-section p {
+        font-size: 14px;
+      }
     }
     
     .bottom-nav {
@@ -170,84 +421,96 @@ const isActive = (path: string) => currentPath === path || currentPath === path 
       border-top: 1px solid var(--border);
       display: flex;
       justify-content: space-around;
-      padding: 12px 0;
+      padding: 8px 0;
       z-index: 100;
+      box-shadow: 0 -2px 10px rgba(0,0,0,0.04);
     }
     
     .nav-item {
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 4px;
+      gap: 3px;
       text-decoration: none;
       color: var(--text-light);
-      font-size: 11px;
-      padding: 4px 12px;
+      font-size: 10px;
+      padding: 6px 8px;
       border-radius: 8px;
       transition: all 0.2s;
+      min-width: 50px;
     }
     
     .nav-item .icon {
-      font-size: 22px;
+      font-size: 20px;
     }
     
     .nav-item.active {
       color: var(--accent);
     }
     
-    .nav-item:hover {
-      background: var(--accent-light);
+    .nav-item:active {
+      transform: scale(0.95);
     }
     
-    .about-section {
-      background: var(--card-bg);
-      border-radius: var(--radius);
-      padding: 24px;
-      margin-top: 24px;
-      border: 1px solid var(--border);
-    }
-    
-    .about-section h2 {
-      font-size: 16px;
-      margin-bottom: 12px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    
-    .about-section p {
-      font-size: 14px;
-      color: var(--text-light);
-      line-height: 1.7;
-    }
-    
-    @media (max-width: 480px) {
-      .site-title {
-        font-size: 24px;
+    @media (max-width: 360px) {
+      .nav-item {
+        padding: 4px 4px;
+        min-width: 44px;
+        font-size: 9px;
       }
       
-      h1 {
-        font-size: 20px;
-      }
-      
-      .card {
-        padding: 16px 20px;
+      .nav-item .icon {
+        font-size: 18px;
       }
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <header>
+  <div class="wrapper">
+    <aside class="sidebar">
       <div class="avatar">🧑‍🏫</div>
       <h1 class="site-title">凡人的技术生活</h1>
       <p class="site-desc">退休语文老师的 AI 学习笔记</p>
-    </header>
-    
-    <div class="divider"></div>
+      <div class="divider"></div>
+      <nav>
+        <a href="/" class:list={["nav-item", { active: isActive('/') || isActive('/index') }]}>
+          <span class="icon">🏠</span>
+          <span>首页</span>
+        </a>
+        <a href="/teaching" class:list={["nav-item", { active: isActive('/teaching') }]}>
+          <span class="icon">🛠️</span>
+          <span>教学工具</span>
+        </a>
+        <a href="/tech" class:list={["nav-item", { active: isActive('/tech') }]}>
+          <span class="icon">📱</span>
+          <span>数码控</span>
+        </a>
+        <a href="/ai" class:list={["nav-item", { active: isActive('/ai') }]}>
+          <span class="icon">🤖</span>
+          <span>AI笔记</span>
+        </a>
+        <a href="/life" class:list={["nav-item", { active: isActive('/life') }]}>
+          <span class="icon">🌿</span>
+          <span>生活散</span>
+        </a>
+      </nav>
+      <div class="footer">
+        📅 建于 2026 · 宁波
+      </div>
+    </aside>
     
     <main>
-      <slot />
+      <div class="container">
+        <header>
+          <div class="avatar">🧑‍🏫</div>
+          <h1 class="site-title">凡人的技术生活</h1>
+          <p class="site-desc">退休语文老师的 AI 学习笔记</p>
+        </header>
+        
+        <div class="divider"></div>
+        
+        <slot />
+      </div>
     </main>
   </div>
   
