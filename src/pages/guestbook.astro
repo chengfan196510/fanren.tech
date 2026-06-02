@@ -1,0 +1,366 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="💬 留言板">
+  <h1><span class="emoji">💬</span> 留言板</h1>
+  <p class="page-desc">写下你的想法，我会认真回复</p>
+
+  <div id="guestbook-form" class="about-section">
+    <h2>📝 留言</h2>
+    <form id="message-form">
+      <div class="form-group">
+        <label for="name">昵称（选填）</label>
+        <input type="text" id="name" name="name" placeholder="叫什么好呢" maxlength="50">
+      </div>
+      <div class="form-group">
+        <label for="email">邮箱（选填，不公开）</label>
+        <input type="email" id="email" name="email" placeholder="方便我回复你">
+      </div>
+      <div class="form-group">
+        <label for="content">留言内容 *</label>
+        <textarea id="content" name="content" placeholder="想说点什么..." required minlength="5" maxlength="1000"></textarea>
+      </div>
+      <div class="form-group">
+        <label for="category">留言板块</label>
+        <select id="category" name="category">
+          <option value="general">💬 随便聊聊</option>
+          <option value="teaching">🛠️ 杏坛拾器</option>
+          <option value="tech">📱 数码闲赏</option>
+          <option value="ai">🤖 新知漫解</option>
+          <option value="life">🌿 岁晚闲书</option>
+        </select>
+      </div>
+      <button type="submit" class="submit-btn">提交留言</button>
+    </form>
+    <p class="form-note">* 回复功能正在开发中...</p>
+  </div>
+
+  <p class="section-title">近期留言</p>
+  
+  <div id="comments-container">
+    <div id="loading" class="card" style="text-align: center; padding: 24px;">
+      <span style="font-size: 24px;">⏳</span>
+      <p style="color: var(--text-light); margin-top: 8px;">加载中...</p>
+    </div>
+    <div id="comments-list"></div>
+  </div>
+
+  <div id="no-comments" class="card" style="text-align: center; padding: 32px; display: none;">
+    <span style="font-size: 40px;">🌱</span>
+    <h3 style="margin-top: 12px;">还没有留言</h3>
+    <p style="color: var(--text-light); margin-top: 8px;">来做第一个留言的人吧！</p>
+  </div>
+</Layout>
+
+<script>
+  const REPO_OWNER = 'chengfan196510';
+  const REPO_NAME = 'fanren.tech';
+
+  // 格式化日期
+  function formatDate(dateStr) {
+    const date = new Date(dateStr);
+    const now = new Date();
+    const diffMs = now - date;
+    const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+    
+    if (diffDays === 0) return '今天';
+    if (diffDays === 1) return '昨天';
+    if (diffDays < 7) return `${diffDays}天前`;
+    
+    return date.toLocaleDateString('zh-CN', { 
+      year: 'numeric', 
+      month: 'long', 
+      day: 'numeric' 
+    });
+  }
+
+  // 隐藏邮箱
+  function maskEmail(email) {
+    if (!email) return '';
+    const [name, domain] = email.split('@');
+    if (!name || !domain) return '';
+    return name[0] + '***@' + domain;
+  }
+
+  // 隐藏电话
+  function maskPhone(phone) {
+    if (!phone) return '';
+    const digits = phone.replace(/\D/g, '');
+    if (digits.length < 7) return phone;
+    return digits.slice(0, 3) + '****' + digits.slice(-4);
+  }
+
+  // 解析留言内容中的邮箱和电话
+  function parseContent(content) {
+    // 邮箱正则
+    const emailRegex = /[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/g;
+    // 电话正则（中国）
+    const phoneRegex = /1[3-9]\d{9}|0\d{2,3}-?\d{7,8}/g;
+    
+    let masked = content;
+    masked = masked.replace(emailRegex, (match) => maskEmail(match));
+    masked = masked.replace(phoneRegex, (match) => maskPhone(match));
+    
+    return masked;
+  }
+
+  // 加载留言
+  async function loadComments() {
+    const container = document.getElementById('comments-list');
+    const loading = document.getElementById('loading');
+    const noComments = document.getElementById('no-comments');
+
+    try {
+      const response = await fetch(
+        `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/issues?labels=guestbook&state=open&per_page=50`,
+        {
+          headers: {
+            'Authorization': 'token ghp_K1a2b3c4d5e6f7g8h9i0j',
+            'Accept': 'application/vnd.github.v3+json'
+          }
+        }
+      );
+
+      if (!response.ok) throw new Error('Failed to load');
+      
+      const issues = await response.json();
+      
+      loading.style.display = 'none';
+      
+      if (issues.length === 0) {
+        noComments.style.display = 'block';
+        return;
+      }
+
+      container.innerHTML = issues.map(issue => {
+        // 解析 issue body
+        const lines = issue.body.split('\n');
+        let name = '匿名访客';
+        let email = '';
+        let phone = '';
+        let content = issue.body;
+
+        for (const line of lines) {
+          if (line.startsWith('**昵称:**')) {
+            name = line.replace('**昵称:**', '').trim();
+          } else if (line.startsWith('**邮箱:**')) {
+            email = line.replace('**邮箱:**', '').trim();
+          } else if (line.startsWith('**电话:**')) {
+            phone = line.replace('**电话:**', '').trim();
+          }
+        }
+
+        // 找到内容部分（---之后）
+        const contentStart = issue.body.indexOf('---');
+        if (contentStart !== -1) {
+          content = issue.body.slice(contentStart + 3).trim();
+        }
+
+        // 屏蔽邮箱和电话
+        content = parseContent(content);
+        const maskedEmail = maskEmail(email);
+
+        return `
+          <div class="card comment-card">
+            <div class="comment-header">
+              <span class="comment-name">👤 ${name}</span>
+              <span class="comment-date">${formatDate(issue.created_at)}</span>
+            </div>
+            <div class="comment-body">
+              ${content.split('\n').map(line => `<p>${line}</p>`).join('')}
+            </div>
+            ${maskedEmail ? `<div class="comment-contact">📧 ${maskedEmail}</div>` : ''}
+          </div>
+        `;
+      }).join('');
+
+    } catch (error) {
+      loading.style.display = 'none';
+      container.innerHTML = `
+        <div class="card" style="text-align: center; padding: 24px;">
+          <span style="font-size: 24px;">😢</span>
+          <p style="color: var(--text-light); margin-top: 8px;">加载失败，请稍后再试</p>
+        </div>
+      `;
+    }
+  }
+
+  // 提交留言
+  document.getElementById('message-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    
+    const form = e.target;
+    const submitBtn = form.querySelector('.submit-btn');
+    const originalText = submitBtn.textContent;
+    
+    const name = document.getElementById('name').value.trim() || '匿名访客';
+    const email = document.getElementById('email').value.trim();
+    const content = document.getElementById('content').value.trim();
+    const category = document.getElementById('category').value;
+
+    if (content.length < 5) {
+      alert('留言内容至少5个字');
+      return;
+    }
+
+    submitBtn.textContent = '提交中...';
+    submitBtn.disabled = true;
+
+    const body = `**昵称:** ${name}
+**邮箱:** ${email}
+**电话:** 
+**板块:** ${category}
+
+---
+${content}`;
+
+    try {
+      const response = await fetch(
+        `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/issues`,
+        {
+          method: 'POST',
+          headers: {
+            'Authorization': 'token ghp_K1a2b3c4d5e6f7g8h9i0j',
+            'Accept': 'application/vnd.github.v3+json',
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            title: `💬 留言 from ${name}`,
+            body: body,
+            labels: ['guestbook']
+          })
+        }
+      );
+
+      if (!response.ok) throw new Error('Failed to submit');
+
+      form.reset();
+      submitBtn.textContent = '✅ 提交成功！';
+      
+      setTimeout(() => {
+        submitBtn.textContent = originalText;
+        submitBtn.disabled = false;
+        loadComments();
+      }, 1500);
+
+    } catch (error) {
+      alert('提交失败，请稍后再试');
+      submitBtn.textContent = originalText;
+      submitBtn.disabled = false;
+    }
+  });
+
+  // 页面加载时获取留言
+  loadComments();
+</script>
+
+<style>
+  .form-group {
+    margin-bottom: 16px;
+  }
+
+  .form-group label {
+    display: block;
+    font-size: 14px;
+    color: var(--text-light);
+    margin-bottom: 6px;
+  }
+
+  .form-group input,
+  .form-group textarea,
+  .form-group select {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    font-size: 14px;
+    font-family: inherit;
+    background: var(--bg);
+    transition: border-color 0.2s;
+  }
+
+  .form-group input:focus,
+  .form-group textarea:focus,
+  .form-group select:focus {
+    outline: none;
+    border-color: var(--accent);
+  }
+
+  .form-group textarea {
+    min-height: 100px;
+    resize: vertical;
+  }
+
+  .submit-btn {
+    background: var(--accent);
+    color: white;
+    border: none;
+    padding: 12px 28px;
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .submit-btn:hover {
+    background: #6B5FD4;
+    transform: translateY(-2px);
+  }
+
+  .submit-btn:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+    transform: none;
+  }
+
+  .form-note {
+    font-size: 12px;
+    color: var(--text-light);
+    margin-top: 12px;
+    text-align: center;
+  }
+
+  .comment-card {
+    margin-bottom: 16px;
+  }
+
+  .comment-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+
+  .comment-name {
+    font-weight: 600;
+    color: var(--text);
+  }
+
+  .comment-date {
+    font-size: 12px;
+    color: var(--text-light);
+  }
+
+  .comment-body {
+    font-size: 14px;
+    line-height: 1.7;
+  }
+
+  .comment-body p {
+    margin-bottom: 8px;
+  }
+
+  .comment-body p:last-child {
+    margin-bottom: 0;
+  }
+
+  .comment-contact {
+    font-size: 12px;
+    color: var(--text-light);
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid var(--border);
+  }
+</style>
