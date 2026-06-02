@@ -224,6 +224,38 @@ const isActive = (path: string) => currentPath === path || currentPath === path 
       color: inherit;
       margin-bottom: 20px;
     }
+    /* ===== 全局图片兜底（防止图片溢出）===== */
+    img { max-width: 100%; height: auto; }
+
+    /* ===== 文章封面图（手机 240px，电脑 320px，绝不会再大）===== */
+    .post-full-cover {
+      display: block;
+      width: auto !important;
+      max-width: 320px !important;
+      height: 240px !important;
+      object-fit: cover;
+      object-position: center;
+      border-radius: 8px;
+      border: 1px solid #e8e4dc;
+      margin: 0 auto 24px;
+    }
+    @media (min-width: 768px) {
+      .post-full-cover { max-width: 360px !important; height: 270px !important; }
+    }
+
+    /* ===== 卡片封面图（手机 160px，电脑 200px）===== */
+    .post-card-cover {
+      display: block;
+      width: 100% !important;
+      height: 160px;
+      object-fit: cover;
+      object-position: center;
+      border-bottom: 1px solid #e8e4dc;
+    }
+    @media (min-width: 768px) {
+      .post-card-cover { height: 200px; }
+    }
+
     .post-card {
       background: var(--card-bg);
       border: 1px solid var(--paper);
@@ -237,16 +269,7 @@ const isActive = (path: string) => currentPath === path || currentPath === path 
       box-shadow: 2px 2px 0 var(--accent);
       transform: translate(-1px, -1px);
     }
-    .post-card-cover {
-      width: 100%;
-      height: 160px;
-      object-fit: cover;
-      object-position: center;
-      display: block;
-      border-bottom: 1px solid var(--paper);
-    }
     @media (min-width: 768px) {
-      .post-card-cover { height: 200px; }
     }
     .post-card-body { padding: 18px 22px 20px; }
     .post-card-title {
@@ -301,25 +324,7 @@ const isActive = (path: string) => currentPath === path || currentPath === path 
       border-bottom: 1px dashed var(--paper);
     }
 
-    .post-full-cover-wrap {
-      width: 100%;
-      max-width: 320px;
-      height: 240px;
-      margin: 0 auto 26px;
-      overflow: hidden;
-      border-radius: var(--radius);
-      border: 1px solid var(--paper);
-      background: var(--paper);
-    }
     @media (min-width: 768px) {
-      .post-full-cover-wrap { max-width: 360px; height: 270px; }
-    }
-    .post-full-cover {
-      display: block;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      object-position: center;
     }
 
     .post-full-content p {
@@ -503,14 +508,6 @@ const isActive = (path: string) => currentPath === path || currentPath === path 
       box-shadow: 2px 2px 0 var(--accent);
       transform: translate(-1px, -1px);
     }
-    .post-card-cover {
-      width: 100%;
-      height: 160px;
-      object-fit: cover;
-      object-position: center;
-      display: block;
-      border-bottom: 1px solid var(--paper);
-    }
     @media (min-width: 768px) {
     }
     .post-card-body { padding: 18px 22px 20px; }
@@ -566,24 +563,7 @@ const isActive = (path: string) => currentPath === path || currentPath === path 
       border-bottom: 1px dashed var(--paper);
     }
 
-    .post-full-cover-wrap {
-      width: 100%;
-      max-width: 320px;
-      height: 240px;
-      margin: 0 auto 26px;
-      overflow: hidden;
-      border-radius: var(--radius);
-      border: 1px solid var(--paper);
-      background: var(--paper);
-    }
     @media (min-width: 768px) {
-    }
-    .post-full-cover {
-      display: block;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      object-position: center;
     }
 
     .post-full-content p {
