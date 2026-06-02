@@ -239,15 +239,14 @@ const isActive = (path: string) => currentPath === path || currentPath === path 
     }
     .post-card-cover {
       width: 100%;
-      height: 180px;
-      aspect-ratio: 4 / 3;
+      height: 160px;
       object-fit: cover;
       object-position: center;
       display: block;
       border-bottom: 1px solid var(--paper);
     }
     @media (min-width: 768px) {
-      .post-card-cover { height: 220px; }
+      .post-card-cover { height: 200px; }
     }
     .post-card-body { padding: 18px 22px 20px; }
     .post-card-title {
@@ -304,23 +303,23 @@ const isActive = (path: string) => currentPath === path || currentPath === path 
 
     .post-full-cover-wrap {
       width: 100%;
+      max-width: 320px;
+      height: 240px;
       margin: 0 auto 26px;
-      text-align: center;
+      overflow: hidden;
+      border-radius: var(--radius);
+      border: 1px solid var(--paper);
+      background: var(--paper);
+    }
+    @media (min-width: 768px) {
+      .post-full-cover-wrap { max-width: 360px; height: 270px; }
     }
     .post-full-cover {
       display: block;
-      width: 90%;
-      max-width: 480px;
-      max-height: 280px;
-      aspect-ratio: 4 / 3;
+      width: 100%;
+      height: 100%;
       object-fit: cover;
       object-position: center;
-      border-radius: var(--radius);
-      border: 1px solid var(--paper);
-      margin: 0 auto;
-    }
-    @media (min-width: 768px) {
-      .post-full-cover { max-width: 520px; max-height: 360px; }
     }
 
     .post-full-content p {
@@ -506,15 +505,14 @@ const isActive = (path: string) => currentPath === path || currentPath === path 
     }
     .post-card-cover {
       width: 100%;
-      height: 180px;
-      aspect-ratio: 4 / 3;
+      height: 160px;
       object-fit: cover;
       object-position: center;
       display: block;
       border-bottom: 1px solid var(--paper);
     }
     @media (min-width: 768px) {
-      .post-card-cover { height: 220px; }
+      .post-card-cover { height: 200px; }
     }
     .post-card-body { padding: 18px 22px 20px; }
     .post-card-title {
@@ -571,23 +569,23 @@ const isActive = (path: string) => currentPath === path || currentPath === path 
 
     .post-full-cover-wrap {
       width: 100%;
+      max-width: 320px;
+      height: 240px;
       margin: 0 auto 26px;
-      text-align: center;
+      overflow: hidden;
+      border-radius: var(--radius);
+      border: 1px solid var(--paper);
+      background: var(--paper);
+    }
+    @media (min-width: 768px) {
+      .post-full-cover-wrap { max-width: 360px; height: 270px; }
     }
     .post-full-cover {
       display: block;
-      width: 90%;
-      max-width: 480px;
-      max-height: 280px;
-      aspect-ratio: 4 / 3;
+      width: 100%;
+      height: 100%;
       object-fit: cover;
       object-position: center;
-      border-radius: var(--radius);
-      border: 1px solid var(--paper);
-      margin: 0 auto;
-    }
-    @media (min-width: 768px) {
-      .post-full-cover { max-width: 520px; max-height: 360px; }
     }
 
     .post-full-content p {
