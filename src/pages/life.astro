@@ -1,27 +1,56 @@
 ---
 import Layout from '../layouts/Layout.astro';
 
-// 扫描 src/pages/life/ 下所有 .astro 文章
-const modules = import.meta.glob('./life/*.astro', { eager: true });
+// 用 ?raw 拿到所有 life/*.astro 的原始内容，自己解析 frontmatter
+// 支持两种 frontmatter 形式：
+//   1. JS 形式：const frontmatter = { title, date, tags, excerpt, cover, hidden };
+//   2. YAML 形式：--- \n title: "..." \n --- （Astro 5 仍可识别 .astro 的 YAML frontmatter）
+const articleSources = import.meta.glob('./life/*.astro', { query: '?raw', import: 'default', eager: true });
 
-const posts = Object.entries(modules)
-  .map(([path, mod]) => {
-    const slug = path.replace('./life/', '').replace(/\.astro$/, '');
-    const fm = (mod as any).frontmatter ?? {};
-    return {
-      slug,
-      title: fm.title ?? slug,
-      date: fm.date ?? '',
-      tags: fm.tags ?? [],
-      cover: fm.cover ?? '',
-      excerpt: fm.excerpt ?? '',
-      hidden: fm.hidden ?? false,
-    };
-  })
-  // 过滤下架文章（hidden: true）
-  .filter((p) => !p.hidden)
-  // 按日期倒序
-  .sort((a, b) => (b.date > a.date ? 1 : b.date < a.date ? -1 : 0));
+function parseFrontmatter(raw) {
+  const fm = { title: '', date: '', tags: [], excerpt: '', cover: '', hidden: false };
+  // 形式 1：JS const frontmatter = { ... }
+  const jsMatch = raw.match(/const\s+frontmatter\s*=\s*(\{[\s\S]*?\})\s*;/);
+  if (jsMatch) {
+    try {
+      return { ...fm, ...(new Function(`return (${jsMatch[1]})`)()) };
+    } catch (e) {
+      console.error('frontmatter parse error (js)', e);
+    }
+  }
+  // 形式 2：YAML frontmatter (--- ... ---)
+  const yamlMatch = raw.match(/^---\s*\n([\s\S]*?)\n---/);
+  if (yamlMatch) {
+    const lines = yamlMatch[1].split('\n');
+    for (const line of lines) {
+      const m = line.match(/^(\w+):\s*(.*)$/);
+      if (!m) continue;
+      const key = m[1].trim();
+      let val = m[2].trim();
+      // 去掉首尾引号
+      val = val.replace(/^["']|["']$/g, '');
+      if (key === 'tags' && val.startsWith('[')) {
+        try { fm.tags = JSON.parse(val); } catch { fm.tags = []; }
+      } else if (key === 'hidden') {
+        fm.hidden = val === 'true';
+      } else {
+        fm[key] = val;
+      }
+    }
+    return fm;
+  }
+  return fm;
+}
+
+const posts = [];
+for (const [path, raw] of Object.entries(articleSources)) {
+  const slug = path.replace('./life/', '').replace(/\.astro$/, '');
+  const fm = parseFrontmatter(raw);
+  if (fm.hidden) continue;
+  posts.push({ slug, ...fm });
+}
+
+posts.sort((a, b) => (b.date || '').localeCompare(a.date || ''));
 ---
 
 <Layout title="🌿 岁晚闲书">
@@ -48,9 +77,9 @@ const posts = Object.entries(modules)
             )}
           </div>
           <div class="post-card-body">
-            <h2 class="post-card-title">{post.title}</h2>
+            <h2 class="post-card-title">{post.title || post.slug}</h2>
             <div class="post-card-meta">
-              {post.date} · {post.tags.join(' / ')}
+              {post.date} · {(post.tags || []).join(' / ')}
             </div>
             <p class="post-card-excerpt">{post.excerpt}</p>
             <span class="post-card-read">阅读全文 →</span>
