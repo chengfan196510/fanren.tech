@@ -1,40 +1,262 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" width="400" height="300">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="800" height="500" role="img" aria-label="程老师与艾慕伊小龙虾在暖光房间里一起写文章">
   <defs>
-    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#f5f3ee;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#e8e4dc;stop-opacity:1" />
+    <!-- 背景：奶白 + 暖光晕（不再"一片橘"） -->
+    <linearGradient id="wall" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#F8E6CC"/>
+      <stop offset="100%" stop-color="#E8C4A0"/>
     </linearGradient>
+    <!-- 窗光晕 -->
+    <radialGradient id="windowLight" cx="78%" cy="18%" r="55%">
+      <stop offset="0%" stop-color="#FFF6E0" stop-opacity="0.9"/>
+      <stop offset="60%" stop-color="#FFD89C" stop-opacity="0.25"/>
+      <stop offset="100%" stop-color="#FFF6E0" stop-opacity="0"/>
+    </radialGradient>
+    <!-- 地面 -->
+    <linearGradient id="floor" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#A87049"/>
+      <stop offset="100%" stop-color="#704A30"/>
+    </linearGradient>
+    <!-- 桌面（更暖） -->
+    <linearGradient id="desk" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#C89060"/>
+      <stop offset="100%" stop-color="#9C6840"/>
+    </linearGradient>
+    <!-- 电脑屏幕 -->
+    <linearGradient id="screen" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#D8EEF8"/>
+      <stop offset="100%" stop-color="#88B8D4"/>
+    </linearGradient>
+    <!-- 小龙虾 -->
+    <radialGradient id="crayBody" cx="38%" cy="32%" r="75%">
+      <stop offset="0%" stop-color="#F47858"/>
+      <stop offset="60%" stop-color="#D84A2A"/>
+      <stop offset="100%" stop-color="#A8281A"/>
+    </radialGradient>
+    <!-- 衣服（更清爽） -->
+    <linearGradient id="shirt" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#A8C8E0"/>
+      <stop offset="100%" stop-color="#6E94B4"/>
+    </linearGradient>
+    <!-- 皮肤 -->
+    <radialGradient id="skin" cx="40%" cy="40%" r="65%">
+      <stop offset="0%" stop-color="#FAE0C4"/>
+      <stop offset="100%" stop-color="#E0B894"/>
+    </radialGradient>
   </defs>
-  <rect width="400" height="300" fill="url(#bg)"/>
 
-  <!-- 4 张占位卡（虚线框 + 🚧） -->
-  <g opacity="0.35">
-    <rect x="30" y="50" width="70" height="90" fill="none" stroke="#9a948a" stroke-width="1.5" stroke-dasharray="4 3" rx="4"/>
-    <text x="65" y="100" text-anchor="middle" font-size="22" fill="#9a948a">🚧</text>
+  <!-- 1. 背景墙 -->
+  <rect width="800" height="500" fill="url(#wall)"/>
 
-    <rect x="110" y="50" width="70" height="90" fill="none" stroke="#9a948a" stroke-width="1.5" stroke-dasharray="4 3" rx="4"/>
-    <text x="145" y="100" text-anchor="middle" font-size="22" fill="#9a948a">🚧</text>
-
-    <rect x="190" y="50" width="70" height="90" fill="none" stroke="#9a948a" stroke-width="1.5" stroke-dasharray="4 3" rx="4"/>
-    <text x="225" y="100" text-anchor="middle" font-size="22" fill="#9a948a">🚧</text>
-
-    <rect x="270" y="50" width="70" height="90" fill="none" stroke="#9a948a" stroke-width="1.5" stroke-dasharray="4 3" rx="4"/>
-    <text x="305" y="100" text-anchor="middle" font-size="22" fill="#9a948a">🚧</text>
-  </g>
-
-  <!-- 一个大红叉 -->
-  <g stroke="#c0392b" stroke-width="4" stroke-linecap="round">
-    <line x1="40" y1="60" x2="330" y2="140"/>
-    <line x1="330" y1="60" x2="40" y2="140"/>
-  </g>
-
-  <!-- 1 张真文章（实线框 + 📝） -->
+  <!-- 2. 窗（右上角） -->
   <g>
-    <rect x="120" y="170" width="160" height="100" fill="#fbfaf6" stroke="#c0392b" stroke-width="2" rx="4"/>
-    <text x="200" y="220" text-anchor="middle" font-size="32" fill="#1a1a1a">📝</text>
-    <text x="200" y="248" text-anchor="middle" font-size="11" fill="#6b6660" font-family="sans-serif">1 篇真文章</text>
+    <rect x="600" y="40" width="160" height="180" fill="#FFFAEC" stroke="#B88058" stroke-width="3" rx="4"/>
+    <line x1="680" y1="40" x2="680" y2="220" stroke="#B88058" stroke-width="2"/>
+    <line x1="600" y1="130" x2="760" y2="130" stroke="#B88058" stroke-width="2"/>
+    <!-- 窗外远山树影 -->
+    <path d="M610 200 Q650 175 690 195 Q720 178 755 200 L755 220 L610 220 Z" fill="#C89A6A" opacity="0.7"/>
+    <circle cx="650" cy="180" r="10" fill="#D8B080" opacity="0.6"/>
+  </g>
+  <!-- 窗光晕染到整个房间 -->
+  <rect width="800" height="500" fill="url(#windowLight)"/>
+
+  <!-- 3. 墙上小画（家） -->
+  <g transform="translate(70,55)">
+    <rect width="120" height="80" fill="#FFFAF0" stroke="#8A5836" stroke-width="2.5" rx="2"/>
+    <polygon points="40,55 60,38 80,55" fill="#D89A6A"/>
+    <rect x="46" y="55" width="28" height="18" fill="#B07850"/>
+    <rect x="58" y="62" width="4" height="11" fill="#5A3820"/>
+    <text x="60" y="73" text-anchor="middle" font-size="9" fill="#FFFAF0" font-family="serif" font-weight="bold">家</text>
   </g>
 
-  <!-- 底部 caption -->
-  <text x="200" y="288" text-anchor="middle" font-size="11" fill="#9a948a" font-family="sans-serif">从 4 张占位卡 → 1 篇真文章</text>
+  <!-- 4. 书架（深棕，与墙对比强） -->
+  <g transform="translate(40,180)">
+    <rect width="140" height="180" fill="#5A3820" rx="3"/>
+    <rect x="6" y="6" width="128" height="50" fill="#3E2814"/>
+    <rect x="6" y="62" width="128" height="50" fill="#3E2814"/>
+    <rect x="6" y="118" width="128" height="50" fill="#3E2814"/>
+    <!-- 书（颜色更鲜明） -->
+    <rect x="14" y="14" width="10" height="36" fill="#E25040"/>
+    <rect x="26" y="18" width="8" height="32" fill="#F0C870"/>
+    <rect x="36" y="14" width="10" height="36" fill="#5A9A6A"/>
+    <rect x="50" y="20" width="8" height="30" fill="#4A6A8A"/>
+    <rect x="60" y="14" width="10" height="36" fill="#C04030"/>
+    <rect x="74" y="22" width="6" height="28" fill="#F0C870"/>
+    <rect x="14" y="70" width="10" height="36" fill="#5A9A6A"/>
+    <rect x="26" y="74" width="8" height="32" fill="#E25040"/>
+    <rect x="36" y="70" width="10" height="36" fill="#4A6A8A"/>
+    <rect x="50" y="78" width="8" height="28" fill="#C04030"/>
+    <rect x="60" y="72" width="10" height="34" fill="#F0C870"/>
+    <rect x="14" y="126" width="10" height="36" fill="#4A6A8A"/>
+    <rect x="26" y="130" width="8" height="32" fill="#5A9A6A"/>
+    <rect x="36" y="126" width="10" height="36" fill="#E25040"/>
+    <rect x="50" y="134" width="8" height="28" fill="#F0C870"/>
+    <rect x="60" y="128" width="10" height="34" fill="#C04030"/>
+    <!-- 书架上一盆小绿植 -->
+    <g transform="translate(95,30)">
+      <rect x="0" y="14" width="18" height="12" fill="#C8704A"/>
+      <circle cx="9" cy="10" r="8" fill="#6AA84F"/>
+      <circle cx="3" cy="6" r="6" fill="#7AB85F"/>
+      <circle cx="15" cy="4" r="6" fill="#5A9A4A"/>
+    </g>
+  </g>
+
+  <!-- 5. 地面 -->
+  <rect x="0" y="430" width="800" height="70" fill="url(#floor)"/>
+  <!-- 桌面前缘（深棕拉一条线） -->
+  <rect x="0" y="416" width="800" height="16" fill="url(#desk)"/>
+  <line x1="0" y1="416" x2="800" y2="416" stroke="#6E4A30" stroke-width="1.5" opacity="0.5"/>
+
+  <!-- 6. 茶杯（左下，热气） -->
+  <g transform="translate(110,330)">
+    <path d="M0,8 L4,46 Q4,52 10,52 L34,52 Q40,52 40,46 L44,8 Z" fill="#FFFAF0" stroke="#8A5836" stroke-width="1.8"/>
+    <ellipse cx="22" cy="8" rx="22" ry="4" fill="#6E4A30"/>
+    <path d="M40,18 Q52,22 50,32 Q48,40 40,38" fill="none" stroke="#8A5836" stroke-width="2"/>
+    <path d="M14,0 Q12,-10 16,-18 Q20,-26 16,-36" fill="none" stroke="#FFFFFF" stroke-width="2.5" stroke-linecap="round" opacity="0.8"/>
+    <path d="M28,0 Q26,-10 30,-18 Q34,-26 30,-36" fill="none" stroke="#FFFFFF" stroke-width="2.5" stroke-linecap="round" opacity="0.8"/>
+  </g>
+
+  <!-- 7. 笔记本（中央） -->
+  <g transform="translate(320,260)">
+    <rect x="0" y="0" width="160" height="100" rx="4" fill="#2A2A2A"/>
+    <rect x="6" y="6" width="148" height="88" rx="2" fill="url(#screen)"/>
+    <g font-family="'Songti SC','STKaiti',serif" fill="#2A5070" opacity="0.95">
+      <text x="80" y="32" text-anchor="middle" font-size="14" font-weight="bold">今天的小事</text>
+      <line x1="20" y1="44" x2="140" y2="44" stroke="#2A5070" stroke-width="1.2" opacity="0.5"/>
+      <line x1="20" y1="54" x2="130" y2="54" stroke="#2A5070" stroke-width="1" opacity="0.4"/>
+      <line x1="20" y1="64" x2="138" y2="64" stroke="#2A5070" stroke-width="1" opacity="0.4"/>
+      <line x1="20" y1="74" x2="118" y2="74" stroke="#2A5070" stroke-width="1" opacity="0.4"/>
+      <line x1="20" y1="84" x2="134" y2="84" stroke="#2A5070" stroke-width="1" opacity="0.4"/>
+    </g>
+    <polygon points="10,8 50,8 30,40 10,40" fill="#FFFFFF" opacity="0.25"/>
+    <path d="M-10,100 L170,100 L160,112 L0,112 Z" fill="#888" stroke="#444" stroke-width="1"/>
+  </g>
+
+  <!-- 8. 笔筒（电脑右边） -->
+  <g transform="translate(530,310)">
+    <ellipse cx="20" cy="58" rx="20" ry="4" fill="#000" opacity="0.3"/>
+    <rect x="6" y="18" width="28" height="42" rx="2" fill="#A87049" stroke="#5A3820" stroke-width="1.2"/>
+    <rect x="12" y="0" width="3" height="30" fill="#F0D8A8"/>
+    <rect x="20" y="4" width="3" height="28" fill="#5A9A6A"/>
+    <rect x="26" y="2" width="3" height="30" fill="#C25040"/>
+  </g>
+
+  <!-- ============ 程老师（左侧） ============ -->
+  <g transform="translate(150,180)">
+    <!-- 身体 -->
+    <path d="M-20,180 Q-30,140 0,120 Q40,108 80,120 Q110,140 100,180 Z" fill="url(#shirt)" stroke="#4A7090" stroke-width="2"/>
+    <!-- 领口阴影 -->
+    <path d="M28,118 L40,134 L52,118" fill="#FFFAF0" stroke="#4A7090" stroke-width="1.5"/>
+    <line x1="40" y1="118" x2="40" y2="140" stroke="#4A7090" stroke-width="1.5"/>
+
+    <!-- 头 -->
+    <ellipse cx="50" cy="78" rx="38" ry="44" fill="url(#skin)" stroke="#A87049" stroke-width="1.5"/>
+    <!-- 耳朵 -->
+    <ellipse cx="22" cy="84" rx="6" ry="10" fill="url(#skin)" stroke="#A87049" stroke-width="1.2"/>
+
+    <!-- 灰白头发 -->
+    <path d="M14,60 Q12,28 50,20 Q92,28 88,68 Q88,38 70,36 Q56,38 56,52 Q50,40 38,40 Q22,46 22,68 Q16,58 14,60 Z" fill="#F0F0F0" stroke="#8A8A8A" stroke-width="1.2"/>
+    <path d="M82,48 Q96,46 96,68 Q92,54 82,50" fill="#DCDCDC" stroke="#8A8A8A" stroke-width="1"/>
+
+    <!-- 黑框眼镜（侧面，窄圆） -->
+    <circle cx="46" cy="76" r="13" fill="#FFFAF0" stroke="#1A1A1A" stroke-width="2.8" opacity="0.4"/>
+    <circle cx="46" cy="76" r="13" fill="none" stroke="#1A1A1A" stroke-width="2.8"/>
+    <line x1="34" y1="78" x2="22" y2="82" stroke="#1A1A1A" stroke-width="2.5"/>
+    <path d="M58,80 Q62,82 64,80" fill="none" stroke="#A87049" stroke-width="1.5"/>
+
+    <!-- 眼（透过镜片） -->
+    <circle cx="46" cy="77" r="2.5" fill="#2A1810"/>
+
+    <!-- 眉毛（一道弯） -->
+    <path d="M38,64 Q46,62 54,64" fill="none" stroke="#5A5A5A" stroke-width="1.8" stroke-linecap="round"/>
+
+    <!-- 嘴 -->
+    <path d="M58,98 Q64,100 70,98" fill="none" stroke="#8A4830" stroke-width="1.8" stroke-linecap="round"/>
+
+    <!-- 手臂：伸向电脑（衣袖+手） -->
+    <path d="M86,148 Q140,150 180,140" fill="none" stroke="#6E94B4" stroke-width="34" stroke-linecap="round"/>
+    <path d="M86,148 Q140,150 180,140" fill="none" stroke="#4A7090" stroke-width="34" stroke-linecap="round" opacity="0.15" transform="translate(0,2)"/>
+    <ellipse cx="186" cy="138" rx="12" ry="10" fill="url(#skin)" stroke="#A87049" stroke-width="1.2"/>
+  </g>
+
+  <!-- ============ 艾慕伊小龙虾（右侧） ============ -->
+  <g transform="translate(580,235)">
+    <!-- 影子 -->
+    <ellipse cx="60" cy="158" rx="56" ry="6" fill="#000" opacity="0.22"/>
+
+    <!-- 触须 -->
+    <path d="M50,40 Q44,20 38,8" fill="none" stroke="#A8281A" stroke-width="3" stroke-linecap="round"/>
+    <path d="M70,40 Q76,20 82,8" fill="none" stroke="#A8281A" stroke-width="3" stroke-linecap="round"/>
+    <circle cx="38" cy="8" r="3.5" fill="#E84A2F" stroke="#8A2818" stroke-width="0.8"/>
+    <circle cx="82" cy="8" r="3.5" fill="#E84A2F" stroke="#8A2818" stroke-width="0.8"/>
+
+    <!-- 黄色小蝴蝶结 -->
+    <g transform="translate(60,32)">
+      <path d="M-10,0 L-2,-6 L-2,6 Z" fill="#FFD24A" stroke="#C89020" stroke-width="1.2"/>
+      <path d="M10,0 L2,-6 L2,6 Z" fill="#FFD24A" stroke="#C89020" stroke-width="1.2"/>
+      <circle cx="0" cy="0" r="3.2" fill="#FFA800" stroke="#C8800A" stroke-width="0.8"/>
+    </g>
+
+    <!-- 头 -->
+    <circle cx="60" cy="55" r="32" fill="url(#crayBody)" stroke="#7A1810" stroke-width="1.8"/>
+    <ellipse cx="46" cy="44" rx="11" ry="7" fill="#FFA088" opacity="0.6"/>
+
+    <!-- 大眼睛 -->
+    <circle cx="48" cy="56" r="10" fill="#FFFFFF" stroke="#1A1A1A" stroke-width="1.8"/>
+    <circle cx="72" cy="56" r="10" fill="#FFFFFF" stroke="#1A1A1A" stroke-width="1.8"/>
+    <circle cx="50" cy="58" r="5.5" fill="#2A1810"/>
+    <circle cx="74" cy="58" r="5.5" fill="#2A1810"/>
+    <circle cx="52" cy="56" r="2" fill="#FFFFFF"/>
+    <circle cx="76" cy="56" r="2" fill="#FFFFFF"/>
+    <circle cx="48" cy="60" r="0.8" fill="#FFFFFF" opacity="0.6"/>
+    <circle cx="72" cy="60" r="0.8" fill="#FFFFFF" opacity="0.6"/>
+
+    <!-- 嘴（笑） -->
+    <path d="M48,73 Q60,84 72,73" fill="#5A1808" stroke="#5A1808" stroke-width="2" stroke-linecap="round"/>
+    <path d="M50,74 Q60,80 70,74" fill="#FF8868" opacity="0.7"/>
+    <!-- 腮红 -->
+    <ellipse cx="36" cy="68" rx="4" ry="2.5" fill="#FF8868" opacity="0.7"/>
+    <ellipse cx="84" cy="68" rx="4" ry="2.5" fill="#FF8868" opacity="0.7"/>
+
+    <!-- 身体 -->
+    <ellipse cx="60" cy="115" rx="34" ry="28" fill="url(#crayBody)" stroke="#7A1810" stroke-width="1.8"/>
+    <ellipse cx="46" cy="105" rx="11" ry="7" fill="#FFA088" opacity="0.5"/>
+    <path d="M32,108 Q60,112 88,108" fill="none" stroke="#7A1810" stroke-width="0.9" opacity="0.6"/>
+    <path d="M32,118 Q60,122 88,118" fill="none" stroke="#7A1810" stroke-width="0.9" opacity="0.6"/>
+    <path d="M32,128 Q60,132 88,128" fill="none" stroke="#7A1810" stroke-width="0.9" opacity="0.6"/>
+
+    <!-- 尾巴 -->
+    <path d="M88,118 Q110,108 112,128 Q108,140 96,134 Z" fill="url(#crayBody)" stroke="#7A1810" stroke-width="1.4"/>
+    <path d="M90,120 Q104,116 106,128" fill="none" stroke="#7A1810" stroke-width="0.8" opacity="0.5"/>
+
+    <!-- 左钳：举向电脑方向（指向程老师） -->
+    <g>
+      <path d="M30,108 Q4,98 -8,80" fill="none" stroke="#A8281A" stroke-width="11" stroke-linecap="round"/>
+      <path d="M-8,80 Q-22,68 -18,54 Q-14,46 -6,52 L-4,60 L-10,68 Z" fill="url(#crayBody)" stroke="#7A1810" stroke-width="1.4"/>
+      <path d="M-6,52 Q-2,48 4,52 Q4,58 -4,58" fill="url(#crayBody)" stroke="#7A1810" stroke-width="1.4"/>
+      <ellipse cx="-10" cy="60" rx="3" ry="2" fill="#FFA088" opacity="0.7"/>
+    </g>
+
+    <!-- 右钳：举高高，欢呼 -->
+    <g>
+      <path d="M90,108 Q116,96 124,76" fill="none" stroke="#A8281A" stroke-width="11" stroke-linecap="round"/>
+      <path d="M124,76 Q138,62 132,50 Q126,44 120,50 L118,58 L124,66 Z" fill="url(#crayBody)" stroke="#7A1810" stroke-width="1.4"/>
+      <path d="M120,50 Q126,46 132,50 Q132,56 124,56" fill="url(#crayBody)" stroke="#7A1810" stroke-width="1.4"/>
+      <ellipse cx="126" cy="56" rx="3" ry="2" fill="#FFA088" opacity="0.7"/>
+    </g>
+
+    <!-- 小脚 -->
+    <path d="M40,142 L36,156" stroke="#A8281A" stroke-width="4" stroke-linecap="round"/>
+    <path d="M52,146 L50,160" stroke="#A8281A" stroke-width="4" stroke-linecap="round"/>
+    <path d="M68,146 L70,160" stroke="#A8281A" stroke-width="4" stroke-linecap="round"/>
+    <path d="M80,142 L84,156" stroke="#A8281A" stroke-width="4" stroke-linecap="round"/>
+  </g>
+
+  <!-- 说话气泡 -->
+  <g transform="translate(640,200)">
+    <path d="M0,0 Q-12,-12 4,-22 Q22,-22 24,-8 Q24,6 8,4 L4,12 L2,4 Q-4,2 0,0 Z" fill="#FFFAF0" stroke="#8A5836" stroke-width="1.5" opacity="0.98"/>
+    <text x="12" y="-6" text-anchor="middle" font-size="14" fill="#A8281A" font-family="'Songti SC','STKaiti',serif" font-weight="bold">看！</text>
+  </g>
+
+  <!-- 暖光轻晕 -->
+  <ellipse cx="400" cy="280" rx="500" ry="280" fill="#FFB060" opacity="0.05"/>
 </svg>
