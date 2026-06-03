@@ -51,6 +51,14 @@ import Layout from '../layouts/Layout.astro';
     <h3 style="margin-top: 12px;">还没有留言</h3>
     <p style="color: var(--text-light); margin-top: 8px;">来做第一个留言的人吧！</p>
   </div>
+
+  <div class="admin-entry">
+    <a href="https://admin.fanren.tech/" target="_blank" rel="noopener noreferrer">
+      <span class="admin-icon">🔒</span>
+      <span class="admin-text">站长入口</span>
+      <span class="admin-arrow">→</span>
+    </a>
+  </div>
 </Layout>
 
 <script>
@@ -343,5 +351,43 @@ import Layout from '../layouts/Layout.astro';
     margin-top: 10px;
     padding-top: 10px;
     border-top: 1px solid var(--border);
+  }
+
+  .admin-entry {
+    margin-top: 32px;
+    text-align: center;
+  }
+
+  .admin-entry a {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 18px;
+    background: transparent;
+    color: var(--text-light);
+    border: 1px dashed var(--border);
+    border-radius: 20px;
+    font-size: 13px;
+    text-decoration: none;
+    transition: all 0.2s;
+  }
+
+  .admin-entry a:hover {
+    color: var(--accent);
+    border-color: var(--accent);
+    border-style: solid;
+    background: var(--bg);
+  }
+
+  .admin-icon {
+    font-size: 14px;
+  }
+
+  .admin-arrow {
+    transition: transform 0.2s;
+  }
+
+  .admin-entry a:hover .admin-arrow {
+    transform: translateX(3px);
   }
 </style>
