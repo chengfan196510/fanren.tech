@@ -312,33 +312,45 @@ import Layout from '../layouts/Layout.astro';
   }
 
   .comment-card {
-    margin-bottom: 16px;
+    margin-bottom: 10px;
+    padding: 12px 14px;
+    background: var(--card-bg, #ffffff);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .comment-card:hover {
+    border-color: var(--text-light);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
   }
 
   .comment-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 10px;
+    margin-bottom: 6px;
   }
 
   .comment-name {
     font-weight: 600;
     color: var(--text);
+    font-size: 14px;
   }
 
   .comment-date {
-    font-size: 12px;
+    font-size: 11px;
     color: var(--text-light);
   }
 
   .comment-body {
-    font-size: 14px;
-    line-height: 1.7;
+    font-size: 13.5px;
+    line-height: 1.6;
+    color: var(--text);
   }
 
   .comment-body p {
-    margin-bottom: 8px;
+    margin-bottom: 4px;
   }
 
   .comment-body p:last-child {
@@ -346,10 +358,10 @@ import Layout from '../layouts/Layout.astro';
   }
 
   .comment-contact {
-    font-size: 12px;
+    font-size: 11px;
     color: var(--text-light);
-    margin-top: 10px;
-    padding-top: 10px;
+    margin-top: 6px;
+    padding-top: 6px;
     border-top: 1px solid var(--border);
   }
 
