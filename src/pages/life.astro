@@ -1,43 +1,70 @@
 ---
 import Layout from '../layouts/Layout.astro';
 
-const posts = [
-  {
-    slug: 'our-home',
-    title: '🏠 我们的家',
-    date: '2026-06-02',
-    tags: ['天伦之乐', '家庭'],
-    cover: '/our-home-weekend.jpg',
-    excerpt: '说"家"之前，得先交代我们家是怎么个摆法——听着有点散，但这才真实。'
-  }
-];
+// 扫描 src/pages/life/ 下所有 .astro 文章
+const modules = import.meta.glob('./life/*.astro', { eager: true });
+
+const posts = Object.entries(modules)
+  .map(([path, mod]) => {
+    const slug = path.replace('./life/', '').replace(/\.astro$/, '');
+    const fm = (mod as any).frontmatter ?? {};
+    return {
+      slug,
+      title: fm.title ?? slug,
+      date: fm.date ?? '',
+      tags: fm.tags ?? [],
+      cover: fm.cover ?? '',
+      excerpt: fm.excerpt ?? '',
+      hidden: fm.hidden ?? false,
+    };
+  })
+  // 过滤下架文章（hidden: true）
+  .filter((p) => !p.hidden)
+  // 按日期倒序
+  .sort((a, b) => (b.date > a.date ? 1 : b.date < a.date ? -1 : 0));
 ---
 
 <Layout title="🌿 岁晚闲书">
   <h1><span class="emoji">🌿</span> 岁晚闲书</h1>
   <p class="page-desc">随笔日常点滴，书写悠然退休时光</p>
 
-  <p class="section-title">天伦之乐</p>
+  {posts.length === 0 ? (
+    <div class="work-in-progress">
+      <span class="emoji">🚧</span>
+      <h2>更多文章正在路上</h2>
+      <p>松果的语录、退休后的日常，慢慢写</p>
+    </div>
+  ) : (
+    posts.map((post) => (
+      <a href={`/life/${post.slug}`} class="post-card-link">
+        <article class="post-card">
+          <div class="post-card-cover">
+            {post.cover ? (
+              <img src={post.cover} alt={post.title} />
+            ) : (
+              <div class="post-card-cover-fallback">
+                <span>🌿</span>
+              </div>
+            )}
+          </div>
+          <div class="post-card-body">
+            <h2 class="post-card-title">{post.title}</h2>
+            <div class="post-card-meta">
+              {post.date} · {post.tags.join(' / ')}
+            </div>
+            <p class="post-card-excerpt">{post.excerpt}</p>
+            <span class="post-card-read">阅读全文 →</span>
+          </div>
+        </article>
+      </a>
+    ))
+  )}
 
-  {posts.map((post) => (
-    <a href={`/life/${post.slug}`} class="post-card-link">
-      <article class="post-card">
-        <div style="width:100%;height:160px;overflow:hidden;border-bottom:1px solid #e8e4dc;background:#f5f3ee;">
-  <img src={post.cover} alt={post.title} style="display:block;width:100%;height:100%;object-fit:cover;object-position:center;" />
-</div>
-        <div class="post-card-body">
-          <h2 class="post-card-title">{post.title}</h2>
-          <div class="post-card-meta">{post.date} · {post.tags.join(' / ')}</div>
-          <p class="post-card-excerpt">{post.excerpt}</p>
-          <span class="post-card-read">阅读全文 →</span>
-        </div>
-      </article>
-    </a>
-  ))}
-
-  <div class="work-in-progress">
-    <span class="emoji">🚧</span>
-    <h2>更多文章正在路上</h2>
-    <p>松果的语录、退休后的日常，慢慢写</p>
-  </div>
+  {posts.length > 0 && (
+    <div class="work-in-progress">
+      <span class="emoji">💡</span>
+      <h2>想看什么？</h2>
+      <p>留言板告诉我，或者微信 <code>c_fan_2025</code> 直接说</p>
+    </div>
+  )}
 </Layout>
