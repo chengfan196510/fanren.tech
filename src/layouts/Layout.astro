@@ -222,20 +222,17 @@ const isActive = (path: string) => currentPath === path || currentPath === path 
     /* ===== 全局图片兜底（防止图片溢出）===== */
     img { max-width: 100%; height: auto; }
 
-    /* ===== 文章封面图（手机 240px，电脑 320px，绝不会再大）===== */
+    /* ===== 文章封面图：按真实比例显示，最大不超过 800px 宽 ===== */
     .post-full-cover {
       display: block;
-      width: auto !important;
-      max-width: 320px !important;
-      height: 240px !important;
-      object-fit: cover;
+      width: 100% !important;
+      max-width: 800px !important;
+      height: auto !important;
+      object-fit: contain;
       object-position: center;
       border-radius: 8px;
       border: 1px solid #e8e4dc;
       margin: 0 auto 24px;
-    }
-    @media (min-width: 768px) {
-      .post-full-cover { max-width: 360px !important; height: 270px !important; }
     }
 
     /* 卡片封面图 wrapper 样式已移至 <style is:global> 块，避免 .map 动态渲染的 scoped CID 失效问题 */
