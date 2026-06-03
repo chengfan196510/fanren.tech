@@ -126,37 +126,21 @@ import Layout from '../layouts/Layout.astro';
       
       const data = await response.json();
       const issues = data.comments || [];
-      
+
       loading.style.display = 'none';
-      
+
       if (issues.length === 0) {
         noComments.style.display = 'block';
         return;
       }
 
-      container.innerHTML = issues.map(issue => {
-        // 解析 issue body
-        const lines = issue.body.split('\n');
-        let name = '匿名访客';
-        let email = '';
-        let phone = '';
-        let content = issue.body;
-
-        for (const line of lines) {
-          if (line.startsWith('**昵称:**')) {
-            name = line.replace('**昵称:**', '').trim();
-          } else if (line.startsWith('**邮箱:**')) {
-            email = line.replace('**邮箱:**', '').trim();
-          } else if (line.startsWith('**电话:**')) {
-            phone = line.replace('**电话:**', '').trim();
-          }
-        }
-
-        // 找到内容部分（---之后）
-        const contentStart = issue.body.indexOf('---');
-        if (contentStart !== -1) {
-          content = issue.body.slice(contentStart + 3).trim();
-        }
+      container.innerHTML = issues.map(msg => {
+        // 新版 KV 存储直接给字段，不用解析 body
+        const name = msg.name || '匿名访客';
+        const email = msg.email || '';
+        let content = msg.content || '';
+        const createdAt = msg.created_at || new Date().toISOString();
+        const category = msg.category || 'general';
 
         // 屏蔽邮箱和电话
         content = parseContent(content);
@@ -166,10 +150,10 @@ import Layout from '../layouts/Layout.astro';
           <div class="card comment-card">
             <div class="comment-header">
               <span class="comment-name">👤 ${name}</span>
-              <span class="comment-date">${formatDate(issue.created_at)}</span>
+              <span class="comment-date">${formatDate(createdAt)}</span>
             </div>
             <div class="comment-body">
-              ${content.split('\n').map(line => `<p>${line}</p>`).join('')}
+              ${content.split('\n').map(line => `<p>${line.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')}</p>`).join('')}
             </div>
             ${maskedEmail ? `<div class="comment-contact">📧 ${maskedEmail}</div>` : ''}
           </div>
