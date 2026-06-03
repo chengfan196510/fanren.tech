@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" width="400" height="300">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f5f3ee;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#e8e4dc;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <rect width="400" height="300" fill="url(#bg)"/>
+
+  <!-- 4 张占位卡（虚线框 + 🚧） -->
+  <g opacity="0.35">
+    <rect x="30" y="50" width="70" height="90" fill="none" stroke="#9a948a" stroke-width="1.5" stroke-dasharray="4 3" rx="4"/>
+    <text x="65" y="100" text-anchor="middle" font-size="22" fill="#9a948a">🚧</text>
+
+    <rect x="110" y="50" width="70" height="90" fill="none" stroke="#9a948a" stroke-width="1.5" stroke-dasharray="4 3" rx="4"/>
+    <text x="145" y="100" text-anchor="middle" font-size="22" fill="#9a948a">🚧</text>
+
+    <rect x="190" y="50" width="70" height="90" fill="none" stroke="#9a948a" stroke-width="1.5" stroke-dasharray="4 3" rx="4"/>
+    <text x="225" y="100" text-anchor="middle" font-size="22" fill="#9a948a">🚧</text>
+
+    <rect x="270" y="50" width="70" height="90" fill="none" stroke="#9a948a" stroke-width="1.5" stroke-dasharray="4 3" rx="4"/>
+    <text x="305" y="100" text-anchor="middle" font-size="22" fill="#9a948a">🚧</text>
+  </g>
+
+  <!-- 一个大红叉 -->
+  <g stroke="#c0392b" stroke-width="4" stroke-linecap="round">
+    <line x1="40" y1="60" x2="330" y2="140"/>
+    <line x1="330" y1="60" x2="40" y2="140"/>
+  </g>
+
+  <!-- 1 张真文章（实线框 + 📝） -->
+  <g>
+    <rect x="120" y="170" width="160" height="100" fill="#fbfaf6" stroke="#c0392b" stroke-width="2" rx="4"/>
+    <text x="200" y="220" text-anchor="middle" font-size="32" fill="#1a1a1a">📝</text>
+    <text x="200" y="248" text-anchor="middle" font-size="11" fill="#6b6660" font-family="sans-serif">1 篇真文章</text>
+  </g>
+
+  <!-- 底部 caption -->
+  <text x="200" y="288" text-anchor="middle" font-size="11" fill="#9a948a" font-family="sans-serif">从 4 张占位卡 → 1 篇真文章</text>
+</svg>

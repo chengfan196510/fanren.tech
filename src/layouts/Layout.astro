@@ -238,45 +238,7 @@ const isActive = (path: string) => currentPath === path || currentPath === path 
       .post-full-cover { max-width: 360px !important; height: 270px !important; }
     }
 
-    /* ===== 卡片封面图（手机 160px，电脑 200px）===== */
-    .post-card-cover {
-      display: block;
-      width: 100% !important;
-      height: 160px;
-      object-fit: cover;
-      object-position: center;
-      border-bottom: 1px solid #e8e4dc;
-    }
-    @media (min-width: 768px) {
-      .post-card-cover { height: 200px; }
-    }
-
-    /* ===== 列表卡片封面 wrapper 变体（div 包裹）===== */
-    .post-card > .post-card-cover {
-      width: 100%;
-      height: 160px;
-      overflow: hidden;
-      border-bottom: 1px solid #e8e4dc;
-      background: #f5f3ee;
-      display: block;
-    }
-    .post-card > .post-card-cover img {
-      display: block;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      object-position: center;
-    }
-    .post-card > .post-card-cover--placeholder {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 48px;
-      color: #c8c2b6;
-    }
-    @media (min-width: 768px) {
-      .post-card > .post-card-cover { height: 200px; }
-    }
+    /* 卡片封面图 wrapper 样式已移至 <style is:global> 块，避免 .map 动态渲染的 scoped CID 失效问题 */
 
     /* 单篇文章页 */
     .post-full { padding: 0; }
@@ -604,6 +566,33 @@ const isActive = (path: string) => currentPath === path || currentPath === path 
       font-size: 12.5px;
       color: var(--accent);
       font-weight: 500;
+    }
+
+    /* ===== 卡片封面图 wrapper（必须 global，否则 scoped 失效）===== */
+    .post-card > .post-card-cover {
+      width: 100%;
+      height: 160px;
+      overflow: hidden;
+      border-bottom: 1px solid #e8e4dc;
+      background: #f5f3ee;
+      display: block;
+    }
+    .post-card > .post-card-cover img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+    }
+    .post-card > .post-card-cover--placeholder {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 48px;
+      color: #c8c2b6;
+    }
+    @media (min-width: 768px) {
+      .post-card > .post-card-cover { height: 200px; }
     }
   </style>
 </head>
