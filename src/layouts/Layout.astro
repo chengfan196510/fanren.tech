@@ -222,11 +222,11 @@ const isActive = (path: string) => currentPath === path || currentPath === path 
     /* ===== 全局图片兜底（防止图片溢出）===== */
     img { max-width: 100%; height: auto; }
 
-    /* ===== 文章封面图：按真实比例显示，最大不超过 800px 宽 ===== */
+    /* ===== 文章封面图：按真实比例显示，和正文阅读栏同宽（680px） ===== */
     .post-full-cover {
       display: block;
       width: 100% !important;
-      max-width: 800px !important;
+      max-width: 680px !important;     /* 跟正文 --max-width 一致 */
       height: auto !important;
       object-fit: contain;
       object-position: center;
