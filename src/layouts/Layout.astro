@@ -224,6 +224,38 @@ const isActive = (path: string) => currentPath === path || currentPath === path 
       color: inherit;
       margin-bottom: 20px;
     }
+    /* ===== 全局图片兜底（防止图片溢出）===== */
+    img { max-width: 100%; height: auto; }
+
+    /* ===== 文章封面图（手机 240px，电脑 320px，绝不会再大）===== */
+    .post-full-cover {
+      display: block;
+      width: auto !important;
+      max-width: 320px !important;
+      height: 240px !important;
+      object-fit: cover;
+      object-position: center;
+      border-radius: 8px;
+      border: 1px solid #e8e4dc;
+      margin: 0 auto 24px;
+    }
+    @media (min-width: 768px) {
+      .post-full-cover { max-width: 360px !important; height: 270px !important; }
+    }
+
+    /* ===== 卡片封面图（手机 160px，电脑 200px）===== */
+    .post-card-cover {
+      display: block;
+      width: 100% !important;
+      height: 160px;
+      object-fit: cover;
+      object-position: center;
+      border-bottom: 1px solid #e8e4dc;
+    }
+    @media (min-width: 768px) {
+      .post-card-cover { height: 200px; }
+    }
+
     .post-card {
       background: var(--card-bg);
       border: 1px solid var(--paper);
@@ -237,17 +269,7 @@ const isActive = (path: string) => currentPath === path || currentPath === path 
       box-shadow: 2px 2px 0 var(--accent);
       transform: translate(-1px, -1px);
     }
-    .post-card-cover {
-      width: 100%;
-      height: 180px;
-      aspect-ratio: 4 / 3;
-      object-fit: cover;
-      object-position: center;
-      display: block;
-      border-bottom: 1px solid var(--paper);
-    }
     @media (min-width: 768px) {
-      .post-card-cover { height: 220px; }
     }
     .post-card-body { padding: 18px 22px 20px; }
     .post-card-title {
@@ -302,25 +324,7 @@ const isActive = (path: string) => currentPath === path || currentPath === path 
       border-bottom: 1px dashed var(--paper);
     }
 
-    .post-full-cover-wrap {
-      width: 100%;
-      margin: 0 auto 26px;
-      text-align: center;
-    }
-    .post-full-cover {
-      display: block;
-      width: 90%;
-      max-width: 480px;
-      max-height: 280px;
-      aspect-ratio: 4 / 3;
-      object-fit: cover;
-      object-position: center;
-      border-radius: var(--radius);
-      border: 1px solid var(--paper);
-      margin: 0 auto;
-    }
     @media (min-width: 768px) {
-      .post-full-cover { max-width: 520px; max-height: 360px; }
     }
 
     .post-full-content p {
@@ -504,17 +508,7 @@ const isActive = (path: string) => currentPath === path || currentPath === path 
       box-shadow: 2px 2px 0 var(--accent);
       transform: translate(-1px, -1px);
     }
-    .post-card-cover {
-      width: 100%;
-      height: 180px;
-      aspect-ratio: 4 / 3;
-      object-fit: cover;
-      object-position: center;
-      display: block;
-      border-bottom: 1px solid var(--paper);
-    }
     @media (min-width: 768px) {
-      .post-card-cover { height: 220px; }
     }
     .post-card-body { padding: 18px 22px 20px; }
     .post-card-title {
@@ -555,180 +549,4 @@ const isActive = (path: string) => currentPath === path || currentPath === path 
 
     .post-full-title {
       font-size: 22px;
-      font-weight: 700;
-      color: var(--text);
-      margin-bottom: 8px;
-    }
-    @media (min-width: 768px) { .post-full-title { font-size: 26px; } }
-
-    .post-full-meta {
-      font-size: 12.5px;
-      color: var(--text-fade);
-      margin-bottom: 22px;
-      padding-bottom: 16px;
-      border-bottom: 1px dashed var(--paper);
-    }
-
-    .post-full-cover-wrap {
-      width: 100%;
-      margin: 0 auto 26px;
-      text-align: center;
-    }
-    .post-full-cover {
-      display: block;
-      width: 90%;
-      max-width: 480px;
-      max-height: 280px;
-      aspect-ratio: 4 / 3;
-      object-fit: cover;
-      object-position: center;
-      border-radius: var(--radius);
-      border: 1px solid var(--paper);
-      margin: 0 auto;
-    }
-    @media (min-width: 768px) {
-      .post-full-cover { max-width: 520px; max-height: 360px; }
-    }
-
-    .post-full-content p {
-      font-size: 14.5px;
-      line-height: 1.95;
-      color: var(--text);
-      margin-bottom: 16px;
-      text-indent: 2em;
-    }
-    @media (min-width: 768px) {
-      .post-full-content p { font-size: 15.5px; }
-    }
-    .post-full-content p strong { color: var(--accent); font-weight: 500; }
-
-    .about-section {
-      background: var(--card-bg);
-      border-radius: var(--radius);
-      border: 1px solid var(--paper);
-      box-shadow: 1px 1px 0 var(--paper);
-    }
-    @media (max-width: 767px) { .about-section { margin-top: 20px; padding: 18px 20px; } }
-    @media (min-width: 768px) { .about-section { margin-top: 28px; padding: 24px 28px; } }
-
-    .about-section p { font-size: 13px; color: var(--text-light); line-height: 1.8; }
-    @media (min-width: 768px) { .about-section p { font-size: 14px; } }
-
-    /* 底部导航：白板风，简洁 */
-    .bottom-nav {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      background: var(--card-bg);
-      border-top: 1px solid var(--paper);
-      display: flex;
-      justify-content: space-around;
-      padding: 6px 0;
-      z-index: 100;
-    }
-
-    .nav-item {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 2px;
-      text-decoration: none;
-      color: var(--text-light);
-      font-size: 10px;
-      padding: 6px 6px;
-      border-radius: 6px;
-      transition: all 0.15s;
-      min-width: 50px;
-    }
-    .nav-item .icon { font-size: 18px; }
-    .nav-item.active { color: var(--accent); }
-    .nav-item:active { transform: scale(0.95); }
-
-    @media (max-width: 360px) {
-      .nav-item { padding: 4px 4px; min-width: 44px; font-size: 9px; }
-      .nav-item .icon { font-size: 16px; }
-    }
-  </style>
-</head>
-<body>
-  <div class="wrapper">
-    <aside class="sidebar">
-      <img src="/avatar.jpg" alt="程凡" class="avatar" />
-      <h1 class="site-title">凡耘手记</h1>
-      <p class="site-desc">一介凡人，闲耘方寸技田</p>
-      <div class="divider"></div>
-      <nav>
-        <a href="/" class:list={["nav-item", { active: isActive('/') || isActive('/index') }]}>
-          <span class="icon">🏠</span>
-          <span>首页</span>
-        </a>
-        <a href="/teaching" class:list={["nav-item", { active: isActive('/teaching') }]}>
-          <span class="icon">🛠️</span>
-          <span>杏坛拾器</span>
-        </a>
-        <a href="/tech" class:list={["nav-item", { active: isActive('/tech') }]}>
-          <span class="icon">📱</span>
-          <span>数码闲赏</span>
-        </a>
-        <a href="/ai" class:list={["nav-item", { active: isActive('/ai') }]}>
-          <span class="icon">🤖</span>
-          <span>新知漫解</span>
-        </a>
-        <a href="/life" class:list={["nav-item", { active: isActive('/life') }]}>
-          <span class="icon">🌿</span>
-          <span>岁晚闲书</span>
-        </a>
-        <a href="/guestbook" class:list={["nav-item", { active: isActive('/guestbook') }]}>
-          <span class="icon">💬</span>
-          <span>留言板</span>
-        </a>
-      </nav>
-      <div class="footer">
-        📅 建于 2026 · 宁波
-      </div>
-    </aside>
-
-    <main>
-      <div class="container">
-        <header>
-          <img src="/avatar.jpg" alt="程凡" class="avatar" />
-          <h1 class="site-title">凡耘手记</h1>
-          <p class="site-desc">一介凡人，闲耘方寸技田</p>
-        </header>
-
-        <div class="divider"></div>
-
-        <slot />
-      </div>
-    </main>
-  </div>
-
-  <nav class="bottom-nav">
-    <a href="/" class:list={["nav-item", { active: isActive('/') || isActive('/index') }]}>
-      <span class="icon">🏠</span>
-      <span>首页</span>
-    </a>
-    <a href="/teaching" class:list={["nav-item", { active: isActive('/teaching') }]}>
-      <span class="icon">🛠️</span>
-      <span>杏坛</span>
-    </a>
-    <a href="/tech" class:list={["nav-item", { active: isActive('/tech') }]}>
-      <span class="icon">📱</span>
-      <span>数码</span>
-    </a>
-    <a href="/ai" class:list={["nav-item", { active: isActive('/ai') }]}>
-      <span class="icon">🤖</span>
-      <span>新知</span>
-    </a>
-    <a href="/life" class:list={["nav-item", { active: isActive('/life') }]}>
-      <span class="icon">🌿</span>
-      <span>闲书</span>
-    </a>
-    <a href="/guestbook" class:list={["nav-item", { active: isActive('/guestbook') }]}>
-      <span class="icon">💬</span>
-      <span>留言</span>
-    </a>
-  </nav>
-</body>
-</html>
+      font-

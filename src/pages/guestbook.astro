@@ -54,8 +54,9 @@ import Layout from '../layouts/Layout.astro';
 </Layout>
 
 <script>
-  const REPO_OWNER = 'chengfan196510';
-  const REPO_NAME = 'fanren.tech';
+  // 通过 Cloudflare Worker 中转（api.fanren.tech）调用 GitHub API
+  // Worker 在服务端持有 GitHub PAT，前端零 token，零暴露
+  const API_BASE = 'https://api.fanren.tech';
 
   // 格式化日期
   function formatDate(dateStr) {
@@ -113,18 +114,18 @@ import Layout from '../layouts/Layout.astro';
 
     try {
       const response = await fetch(
-        `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/issues?labels=guestbook&state=open&per_page=50`,
+        `${API_BASE}/api/guestbook`,
         {
           headers: {
-            'Authorization': 'token ghp_K1a2b3c4d5e6f7g8h9i0j',
-            'Accept': 'application/vnd.github.v3+json'
+            'Accept': 'application/json'
           }
         }
       );
 
       if (!response.ok) throw new Error('Failed to load');
       
-      const issues = await response.json();
+      const data = await response.json();
+      const issues = data.comments || [];
       
       loading.style.display = 'none';
       
@@ -207,33 +208,29 @@ import Layout from '../layouts/Layout.astro';
     submitBtn.textContent = '提交中...';
     submitBtn.disabled = true;
 
-    const body = `**昵称:** ${name}
-**邮箱:** ${email}
-**电话:** 
-**板块:** ${category}
-
----
-${content}`;
-
     try {
-      const response = await fetch(
-        `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/issues`,
-        {
-          method: 'POST',
-          headers: {
-            'Authorization': 'token ghp_K1a2b3c4d5e6f7g8h9i0j',
-            'Accept': 'application/vnd.github.v3+json',
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            title: `💬 留言 from ${name}`,
-            body: body,
-            labels: ['guestbook']
-          })
-        }
-      );
+    const response = await fetch(
+      `${API_BASE}/api/guestbook`,
+      {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          name,
+          email,
+          content,
+          category
+        })
+      }
+    );
 
-      if (!response.ok) throw new Error('Failed to submit');
+    if (!response.ok) {
+      const err = await response.json().catch(() => ({}));
+      alert(err.error || '提交失败，请稍后再试');
+      return;
+    }
 
       form.reset();
       submitBtn.textContent = '✅ 提交成功！';
