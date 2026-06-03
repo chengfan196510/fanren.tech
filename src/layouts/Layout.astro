@@ -217,13 +217,8 @@ const isActive = (path: string) => currentPath === path || currentPath === path 
     .post p strong { color: var(--accent); font-weight: 500; }
 
 
-    /* 文章列表卡片（栏目页用） */
-    .post-card-link {
-      display: block;
-      text-decoration: none;
-      color: inherit;
-      margin-bottom: 14px;
-    }
+    /* 文章列表卡片（栏目页用） —— 改放全局块，避免 .map 动态渲染时 scoped CID 失效 */
+
     /* ===== 全局图片兜底（防止图片溢出）===== */
     img { max-width: 100%; height: auto; }
 
@@ -254,40 +249,6 @@ const isActive = (path: string) => currentPath === path || currentPath === path 
     }
     @media (min-width: 768px) {
       .post-card-cover { height: 200px; }
-    }
-
-    .post-card {
-      background: var(--card-bg);
-      border: 1px solid #c8c2b6;
-      border-radius: 6px;
-      overflow: hidden;
-      transition: border-color .2s ease;
-    }
-    .post-card-link:hover .post-card {
-      border-color: var(--accent);
-    }
-    .post-card-body { padding: 12px 14px 14px; }
-    .post-card-title {
-      font-size: 16px;
-      font-weight: 700;
-      color: var(--text);
-      margin-bottom: 4px;
-    }
-    .post-card-meta {
-      font-size: 11.5px;
-      color: var(--text-fade);
-      margin-bottom: 6px;
-    }
-    .post-card-excerpt {
-      font-size: 13px;
-      color: var(--text-light);
-      line-height: 1.6;
-      margin-bottom: 8px;
-    }
-    .post-card-read {
-      font-size: 12.5px;
-      color: var(--accent);
-      font-weight: 500;
     }
 
     /* 单篇文章页 */
@@ -483,47 +444,6 @@ const isActive = (path: string) => currentPath === path || currentPath === path 
     .post p strong { color: var(--accent); font-weight: 500; }
 
 
-    /* 文章列表卡片（栏目页用） */
-    .post-card-link {
-      display: block;
-      text-decoration: none;
-      color: inherit;
-      margin-bottom: 14px;
-    }
-    .post-card {
-      background: var(--card-bg);
-      border: 1px solid #c8c2b6;
-      border-radius: 6px;
-      overflow: hidden;
-      transition: border-color .2s ease;
-    }
-    .post-card-link:hover .post-card {
-      border-color: var(--accent);
-    }
-    .post-card-body { padding: 12px 14px 14px; }
-    .post-card-title {
-      font-size: 16px;
-      font-weight: 700;
-      color: var(--text);
-      margin-bottom: 4px;
-    }
-    .post-card-meta {
-      font-size: 11.5px;
-      color: var(--text-fade);
-      margin-bottom: 6px;
-    }
-    .post-card-excerpt {
-      font-size: 13px;
-      color: var(--text-light);
-      line-height: 1.6;
-      margin-bottom: 8px;
-    }
-    .post-card-read {
-      font-size: 12.5px;
-      color: var(--accent);
-      font-weight: 500;
-    }
-
     /* 单篇文章页 */
     .post-full { padding: 0; }
     .post-back {
@@ -614,6 +534,49 @@ const isActive = (path: string) => currentPath === path || currentPath === path 
     @media (max-width: 360px) {
       .nav-item { padding: 4px 4px; min-width: 44px; font-size: 9px; }
       .nav-item .icon { font-size: 16px; }
+    }
+  </style>
+
+  <style is:global>
+    /* ===== 文章列表卡片（全局块，避开 .map 动态渲染的 scoped CID 失效问题）===== */
+    .post-card-link {
+      display: block;
+      text-decoration: none;
+      color: inherit;
+      margin-bottom: 14px;
+    }
+    .post-card {
+      background: var(--card-bg);
+      border: 1px solid #c8c2b6;
+      border-radius: 6px;
+      overflow: hidden;
+      transition: border-color .2s ease;
+    }
+    .post-card-link:hover .post-card {
+      border-color: var(--accent);
+    }
+    .post-card-body { padding: 12px 14px 14px; }
+    .post-card-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 4px;
+    }
+    .post-card-meta {
+      font-size: 11.5px;
+      color: var(--text-fade);
+      margin-bottom: 6px;
+    }
+    .post-card-excerpt {
+      font-size: 13px;
+      color: var(--text-light);
+      line-height: 1.6;
+      margin-bottom: 8px;
+    }
+    .post-card-read {
+      font-size: 12.5px;
+      color: var(--accent);
+      font-weight: 500;
     }
   </style>
 </head>
