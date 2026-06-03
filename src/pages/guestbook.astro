@@ -33,7 +33,7 @@ import Layout from '../layouts/Layout.astro';
       </div>
       <button type="submit" class="submit-btn">提交留言</button>
     </form>
-    <p class="form-note">* 回复功能正在开发中...</p>
+    <p class="form-note">* 留言提交后会进入待审核状态，审核通过后才会显示 🌿</p>
   </div>
 
   <p class="section-title">近期留言</p>
@@ -233,13 +233,13 @@ import Layout from '../layouts/Layout.astro';
     }
 
       form.reset();
-      submitBtn.textContent = '✅ 提交成功！';
+      submitBtn.textContent = '🌱 留言已提交，等待审核';
       
       setTimeout(() => {
         submitBtn.textContent = originalText;
         submitBtn.disabled = false;
-        loadComments();
-      }, 1500);
+        // 不立即刷新列表（留言还没审核通过）
+      }, 2500);
 
     } catch (error) {
       alert('提交失败，请稍后再试');
