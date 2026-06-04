@@ -164,28 +164,31 @@ import Layout from '../layouts/Layout.astro';
     background: linear-gradient(
       to right,
       transparent 0%,
-      transparent 45%,
-      rgba(250, 247, 240, 0.55) 70%,
-      rgba(250, 247, 240, 0.85) 100%
+      transparent 40%,
+      rgba(60, 50, 35, 0.35) 65%,
+      rgba(60, 50, 35, 0.7) 100%
     );
     pointer-events: none;
   }
 
   .hero-banner-title {
-    font-size: 56px;
-    font-weight: 700;
-    color: #3a4a3a;
-    letter-spacing: 0.18em;
-    text-shadow: 0 2px 8px rgba(250, 247, 240, 0.6);
+    font-size: 72px;
+    font-weight: 800;
+    color: #fefaf2;
+    letter-spacing: 0.22em;
+    text-shadow:
+      0 2px 12px rgba(40, 30, 15, 0.5),
+      0 1px 0 rgba(255, 250, 235, 0.4);
     line-height: 1;
   }
 
   .hero-banner-sub {
-    margin-top: 14px;
-    font-size: 16px;
-    color: #5a6a5a;
-    letter-spacing: 0.12em;
-    text-shadow: 0 1px 4px rgba(250, 247, 240, 0.7);
+    margin-top: 18px;
+    font-size: 19px;
+    font-weight: 500;
+    color: #f5ebd3;
+    letter-spacing: 0.14em;
+    text-shadow: 0 2px 8px rgba(40, 30, 15, 0.6);
   }
 
   /* 移动端:标题缩放 */
@@ -208,12 +211,12 @@ import Layout from '../layouts/Layout.astro';
       );
     }
     .hero-banner-title {
-      font-size: 32px;
-      letter-spacing: 0.12em;
+      font-size: 40px;
+      letter-spacing: 0.16em;
     }
     .hero-banner-sub {
-      font-size: 13px;
-      margin-top: 8px;
+      font-size: 14px;
+      margin-top: 10px;
     }
   }
 
