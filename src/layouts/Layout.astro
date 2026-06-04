@@ -351,6 +351,55 @@ const isActive = (path: string) => currentPath === path || currentPath === path 
     }
     .section-title::before { content: '· '; color: var(--accent); }
 
+    /* 物理分割：纸面折痕感 */
+    .section-divider {
+      display: flex;
+      align-items: center;
+      margin: 36px 0 24px;
+      color: var(--text-light);
+      font-size: 12px;
+    }
+    .section-divider::before,
+    .section-divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--paper);
+    }
+    .section-divider::before { margin-right: 12px; }
+    .section-divider::after { margin-left: 12px; }
+    .section-divider span { letter-spacing: 0.1em; }
+
+    /* 带图卡片：上方配图,下方文案 */
+    .card-with-cover {
+      display: block;
+      text-decoration: none;
+      color: inherit;
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      border: 1px solid var(--paper);
+      box-shadow: 1px 1px 0 var(--paper);
+      transition: all 0.2s;
+      overflow: hidden;
+    }
+    .card-with-cover:hover {
+      border-color: var(--accent);
+      box-shadow: 2px 2px 0 var(--accent);
+      transform: translate(-1px, -1px);
+    }
+    .card-with-cover-img {
+      display: block;
+      width: 100%;
+      height: 160px;
+      object-fit: cover;
+      border-bottom: 1px solid var(--paper);
+      background: var(--paper);
+    }
+    .card-with-cover-body {
+      padding: 14px 18px 16px;
+    }
+    .card-with-cover .card-tag { margin-top: 12px; }
+
     .work-in-progress { text-align: center; color: var(--text-light); }
     .work-in-progress .emoji { margin-bottom: 14px; display: block; }
     .work-in-progress h2 { font-size: 16px; color: var(--text); margin-bottom: 6px; }

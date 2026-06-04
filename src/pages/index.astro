@@ -20,47 +20,52 @@ import Layout from '../layouts/Layout.astro';
 
   <p class="section-title">四个栏目</p>
 
-  <a href="/teaching" style="text-decoration:none;color:inherit;display:block;">
-    <div class="card">
+  <a href="/teaching" class="card-with-cover">
+    <img src="/card-teaching.jpg" alt="杏坛拾器" class="card-with-cover-img" />
+    <div class="card-with-cover-body">
       <div class="card-title">🛠️ 杏坛拾器</div>
       <div class="card-desc">精选教学工具，分享落地实操心得</div>
       <span class="card-tag">每周更新</span>
     </div>
   </a>
 
-  <a href="/tech" style="text-decoration:none;color:inherit;display:block;">
-    <div class="card">
+  <a href="/tech" class="card-with-cover">
+    <img src="/card-tech.jpg" alt="数码闲赏" class="card-with-cover-img" />
+    <div class="card-with-cover-body">
       <div class="card-title">📱 数码闲赏</div>
       <div class="card-desc">实测数码好物，记录真机把玩体验</div>
       <span class="card-tag">个人爱好</span>
     </div>
   </a>
 
-  <a href="/ai" style="text-decoration:none;color:inherit;display:block;">
-    <div class="card">
+  <a href="/ai" class="card-with-cover">
+    <img src="/card-ai.jpg" alt="新知漫解" class="card-with-cover-img" />
+    <div class="card-with-cover-body">
       <div class="card-title">🤖 新知漫解</div>
       <div class="card-desc">钻研AI新应用，白话科普自学感悟</div>
       <span class="card-tag">边学边写</span>
     </div>
   </a>
 
-  <a href="/life" style="text-decoration:none;color:inherit;display:block;">
-    <div class="card">
+  <a href="/life" class="card-with-cover">
+    <img src="/card-life.jpg" alt="岁晚闲书" class="card-with-cover-img" />
+    <div class="card-with-cover-body">
       <div class="card-title">🌿 岁晚闲书</div>
       <div class="card-desc">随笔日常点滴，书写悠然退休时光</div>
       <span class="card-tag">记录日常</span>
     </div>
   </a>
 
-  <p class="section-title" style="margin-top: 32px;">另一片自留地</p>
+  <div class="section-divider"><span>另一片自留地</span></div>
 
   <a
     href="https://chengfan196510.github.io/school-it-weekly/"
     target="_blank"
     rel="noopener"
-    style="text-decoration:none;color:inherit;display:block;"
+    class="card-with-cover"
   >
-    <div class="card">
+    <img src="/card-weekly.jpg" alt="校园信息化周报" class="card-with-cover-img" />
+    <div class="card-with-cover-body">
       <div class="card-title">📋 校园信息化周报</div>
       <div class="card-desc">
         每周一份，记录校园信息化的小进展与小思考。
