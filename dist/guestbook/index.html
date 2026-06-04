@@ -1,8 +1,163 @@
-<!DOCTYPE html><html lang="zh-CN" data-astro-cid-sckkx6r4> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5"><title>💬 留言板</title><!-- ===== SEO / 文章摘要（搜索结果用） ===== --><meta name="description" content="程凡的退休闲书博客 - 杏坛拾器、数码体验、新知科普、退休日记"><meta name="author" content="程凡"><!-- ===== Open Graph（微信、Facebook、知乎、微博 读这套） ===== --><meta property="og:type" content="website"><meta property="og:title" content="💬 留言板"><meta property="og:description" content="程凡的退休闲书博客 - 杏坛拾器、数码体验、新知科普、退休日记"><meta property="og:image" content="https://fanren.tech/avatar.jpg"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:url" content="https://fanren.tech/guestbook/"><meta property="og:site_name" content="凡耘手记"><meta property="og:locale" content="zh_CN"><!-- ===== Twitter Card（X / 部分博客平台读这套） ===== --><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="💬 留言板"><meta name="twitter:description" content="程凡的退休闲书博客 - 杏坛拾器、数码体验、新知科普、退休日记"><meta name="twitter:image" content="https://fanren.tech/avatar.jpg"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=LXGW+WenKai:wght@400;500;700&display=swap" rel="stylesheet"><link rel="stylesheet" href="/_astro/ai.TicwDUje.css">
-<style>.form-group{margin-bottom:16px}.form-group label{display:block;font-size:14px;color:var(--text-light);margin-bottom:6px}.form-group input,.form-group textarea,.form-group select{width:100%;padding:12px 14px;border:1px solid var(--border);border-radius:10px;font-size:14px;font-family:inherit;background:var(--bg);transition:border-color .2s}.form-group input:focus,.form-group textarea:focus,.form-group select:focus{outline:none;border-color:var(--accent)}.form-group textarea{min-height:100px;resize:vertical}.submit-btn{background:var(--accent);color:#fff;border:none;padding:12px 28px;border-radius:10px;font-size:15px;font-weight:500;cursor:pointer;transition:all .2s}.submit-btn:hover{background:#6b5fd4;transform:translateY(-2px)}.submit-btn:disabled{opacity:.7;cursor:not-allowed;transform:none}.form-note{font-size:12px;color:var(--text-light);margin-top:12px;text-align:center}.comment-card{margin-bottom:10px;padding:12px 14px;background:var(--card-bg, #ffffff);border:1px solid var(--paper);border-radius:6px;transition:border-color .2s ease,box-shadow .2s ease}.comment-card:hover{border-color:var(--text-light);box-shadow:0 1px 4px #0000000a}.comment-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}.comment-name{font-weight:600;color:var(--text);font-size:14px}.comment-date{font-size:11px;color:var(--text-light)}.comment-body{font-size:13.5px;line-height:1.6;color:var(--text)}.comment-body p{margin-bottom:4px}.comment-body p:last-child{margin-bottom:0}.comment-contact{font-size:11px;color:var(--text-light);margin-top:6px;padding-top:6px;border-top:1px solid var(--paper)}.admin-entry{margin-top:32px;text-align:center}.admin-entry a{display:inline-flex;align-items:center;gap:8px;padding:8px 18px;background:transparent;color:var(--text-light);border:1px dashed var(--border);border-radius:20px;font-size:13px;text-decoration:none;transition:all .2s}.admin-entry a:hover{color:var(--accent);border-color:var(--accent);border-style:solid;background:var(--bg)}.admin-icon{font-size:14px}.admin-arrow{transition:transform .2s}.admin-entry a:hover .admin-arrow{transform:translate(3px)}
-</style></head> <body data-astro-cid-sckkx6r4> <div class="wrapper" data-astro-cid-sckkx6r4> <aside class="sidebar" data-astro-cid-sckkx6r4> <img src="/avatar.jpg" alt="程凡" class="avatar" data-astro-cid-sckkx6r4> <h1 class="site-title" data-astro-cid-sckkx6r4>凡耘手记</h1> <p class="site-desc" data-astro-cid-sckkx6r4>一介凡人，闲耘方寸技田</p> <div class="divider" data-astro-cid-sckkx6r4></div> <nav data-astro-cid-sckkx6r4> <a href="/" class="nav-item" data-astro-cid-sckkx6r4> <span class="icon" data-astro-cid-sckkx6r4>🏠</span> <span data-astro-cid-sckkx6r4>首页</span> </a> <a href="/teaching" class="nav-item" data-astro-cid-sckkx6r4> <span class="icon" data-astro-cid-sckkx6r4>🛠️</span> <span data-astro-cid-sckkx6r4>杏坛拾器</span> </a> <a href="/tech" class="nav-item" data-astro-cid-sckkx6r4> <span class="icon" data-astro-cid-sckkx6r4>📱</span> <span data-astro-cid-sckkx6r4>数码闲赏</span> </a> <a href="/ai" class="nav-item" data-astro-cid-sckkx6r4> <span class="icon" data-astro-cid-sckkx6r4>🤖</span> <span data-astro-cid-sckkx6r4>新知漫解</span> </a> <a href="/life" class="nav-item" data-astro-cid-sckkx6r4> <span class="icon" data-astro-cid-sckkx6r4>🌿</span> <span data-astro-cid-sckkx6r4>岁晚闲书</span> </a> <a href="/guestbook" class="nav-item active" data-astro-cid-sckkx6r4> <span class="icon" data-astro-cid-sckkx6r4>💬</span> <span data-astro-cid-sckkx6r4>留言板</span> </a> </nav> <div class="footer" data-astro-cid-sckkx6r4>
+<!DOCTYPE html><html lang="zh-CN" data-astro-cid-sckkx6r4> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5"><title>💬 留言板</title><!-- ===== SEO / 文章摘要（搜索结果用） ===== --><meta name="description" content="程凡的退休闲书博客 - 杏坛拾器、数码体验、新知科普、退休日记"><meta name="author" content="程凡"><!-- ===== Open Graph（微信、Facebook、知乎、微博 读这套） ===== --><meta property="og:type" content="website"><meta property="og:title" content="💬 留言板"><meta property="og:description" content="程凡的退休闲书博客 - 杏坛拾器、数码体验、新知科普、退休日记"><meta property="og:image" content="https://fanren.tech/avatar.jpg"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:url" content="https://fanren.tech/guestbook/"><meta property="og:site_name" content="凡耘手记"><meta property="og:locale" content="zh_CN"><!-- ===== Twitter Card（X / 部分博客平台读这套） ===== --><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="💬 留言板"><meta name="twitter:description" content="程凡的退休闲书博客 - 杏坛拾器、数码体验、新知科普、退休日记"><meta name="twitter:image" content="https://fanren.tech/avatar.jpg"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=LXGW+WenKai:wght@400;500;700&display=swap" rel="stylesheet"><style>.form-group{margin-bottom:16px}.form-group label{display:block;font-size:14px;color:var(--text-light);margin-bottom:6px}.form-group input,.form-group textarea,.form-group select{width:100%;padding:12px 14px;border:1px solid var(--border);border-radius:10px;font-size:14px;font-family:inherit;background:var(--bg);transition:border-color .2s}.form-group input:focus,.form-group textarea:focus,.form-group select:focus{outline:none;border-color:var(--accent)}.form-group textarea{min-height:100px;resize:vertical}.submit-btn{background:var(--accent);color:#fff;border:none;padding:12px 28px;border-radius:10px;font-size:15px;font-weight:500;cursor:pointer;transition:all .2s}.submit-btn:hover{background:#6b5fd4;transform:translateY(-2px)}.submit-btn:disabled{opacity:.7;cursor:not-allowed;transform:none}.form-note{font-size:12px;color:var(--text-light);margin-top:12px;text-align:center}.comment-card{margin-bottom:10px;padding:12px 14px;background:var(--card-bg, #ffffff);border:1px solid var(--paper);border-radius:6px;transition:border-color .2s ease,box-shadow .2s ease}.comment-card:hover{border-color:var(--text-light);box-shadow:0 1px 4px #0000000a}.comment-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}.comment-name{font-weight:600;color:var(--text);font-size:14px}.comment-date{font-size:11px;color:var(--text-light)}.comment-body{font-size:13.5px;line-height:1.6;color:var(--text)}.comment-body p{margin-bottom:4px}.comment-body p:last-child{margin-bottom:0}.comment-contact{font-size:11px;color:var(--text-light);margin-top:6px;padding-top:6px;border-top:1px solid var(--paper)}.admin-entry{margin-top:32px;text-align:center}.admin-entry a{display:inline-flex;align-items:center;gap:8px;padding:8px 18px;background:transparent;color:var(--text-light);border:1px dashed var(--border);border-radius:20px;font-size:13px;text-decoration:none;transition:all .2s}.admin-entry a:hover{color:var(--accent);border-color:var(--accent);border-style:solid;background:var(--bg)}.admin-icon{font-size:14px}.admin-arrow{transition:transform .2s}.admin-entry a:hover .admin-arrow{transform:translate(3px)}
+</style>
+<link rel="stylesheet" href="/_astro/ai.BLl9fHuQ.css"></head> <body data-astro-cid-sckkx6r4> <div class="wrapper" data-astro-cid-sckkx6r4> <aside class="sidebar" data-astro-cid-sckkx6r4> <img src="/avatar.jpg" alt="程凡" class="avatar" data-astro-cid-sckkx6r4> <h1 class="site-title" data-astro-cid-sckkx6r4>凡耘手记</h1> <p class="site-desc" data-astro-cid-sckkx6r4>一介凡人，闲耘方寸技田</p> <div class="divider" data-astro-cid-sckkx6r4></div> <nav data-astro-cid-sckkx6r4> <a href="/" class="nav-item" data-astro-cid-sckkx6r4> <span class="icon" data-astro-cid-sckkx6r4>🏠</span> <span data-astro-cid-sckkx6r4>首页</span> </a> <a href="/teaching" class="nav-item" data-astro-cid-sckkx6r4> <span class="icon" data-astro-cid-sckkx6r4>🛠️</span> <span data-astro-cid-sckkx6r4>杏坛拾器</span> </a> <a href="/tech" class="nav-item" data-astro-cid-sckkx6r4> <span class="icon" data-astro-cid-sckkx6r4>📱</span> <span data-astro-cid-sckkx6r4>数码闲赏</span> </a> <a href="/ai" class="nav-item" data-astro-cid-sckkx6r4> <span class="icon" data-astro-cid-sckkx6r4>🤖</span> <span data-astro-cid-sckkx6r4>新知漫解</span> </a> <a href="/life" class="nav-item" data-astro-cid-sckkx6r4> <span class="icon" data-astro-cid-sckkx6r4>🌿</span> <span data-astro-cid-sckkx6r4>岁晚闲书</span> </a> <a href="/guestbook" class="nav-item active" data-astro-cid-sckkx6r4> <span class="icon" data-astro-cid-sckkx6r4>💬</span> <span data-astro-cid-sckkx6r4>留言板</span> </a> </nav> <div class="footer" data-astro-cid-sckkx6r4>
 📅 建于 2026 · 宁波
-</div> </aside> <main data-astro-cid-sckkx6r4> <div class="container" data-astro-cid-sckkx6r4> <header data-astro-cid-sckkx6r4> <img src="/avatar.jpg" alt="程凡" class="avatar" data-astro-cid-sckkx6r4> <h1 class="site-title" data-astro-cid-sckkx6r4>凡耘手记</h1> <p class="site-desc" data-astro-cid-sckkx6r4>一介凡人，闲耘方寸技田</p> </header> <div class="divider" data-astro-cid-sckkx6r4></div>  <h1><span class="emoji">💬</span> 留言板</h1> <p class="page-desc">写下你的想法，我会认真回复</p> <div id="guestbook-form" class="about-section"> <h2>📝 留言</h2> <form id="message-form"> <div class="form-group"> <label for="name">昵称（选填）</label> <input type="text" id="name" name="name" placeholder="叫什么好呢" maxlength="50"> </div> <div class="form-group"> <label for="email">邮箱（选填，不公开）</label> <input type="email" id="email" name="email" placeholder="方便我回复你"> </div> <div class="form-group"> <label for="content">留言内容 *</label> <textarea id="content" name="content" placeholder="想说点什么..." required minlength="5" maxlength="1000"></textarea> </div> <div class="form-group"> <label for="category">留言板块</label> <select id="category" name="category"> <option value="general">💬 随便聊聊</option> <option value="teaching">🛠️ 杏坛拾器</option> <option value="tech">📱 数码闲赏</option> <option value="ai">🤖 新知漫解</option> <option value="life">🌿 岁晚闲书</option> </select> </div> <button type="submit" class="submit-btn">提交留言</button> </form> <p class="form-note">* 留言提交后会进入待审核状态，审核通过后才会显示 🌿</p> </div> <p class="section-title">近期留言</p> <div id="comments-container"> <div id="loading" class="card" style="text-align: center; padding: 24px;"> <span style="font-size: 24px;">⏳</span> <p style="color: var(--text-light); margin-top: 8px;">加载中...</p> </div> <div id="comments-list"></div> </div> <div id="no-comments" class="card" style="text-align: center; padding: 32px; display: none;"> <span style="font-size: 40px;">🌱</span> <h3 style="margin-top: 12px;">还没有留言</h3> <p style="color: var(--text-light); margin-top: 8px;">来做第一个留言的人吧！</p> </div> <div class="admin-entry"> <a href="https://admin.fanren.tech/" target="_blank" rel="noopener noreferrer"> <span class="admin-icon">🔒</span> <span class="admin-text">站长入口</span> <span class="admin-arrow">→</span> </a> </div>  </div> </main> </div> <nav class="bottom-nav" data-astro-cid-sckkx6r4> <a href="/" class="nav-item" data-astro-cid-sckkx6r4> <span class="icon" data-astro-cid-sckkx6r4>🏠</span> <span data-astro-cid-sckkx6r4>首页</span> </a> <a href="/teaching" class="nav-item" data-astro-cid-sckkx6r4> <span class="icon" data-astro-cid-sckkx6r4>🛠️</span> <span data-astro-cid-sckkx6r4>杏坛</span> </a> <a href="/tech" class="nav-item" data-astro-cid-sckkx6r4> <span class="icon" data-astro-cid-sckkx6r4>📱</span> <span data-astro-cid-sckkx6r4>数码</span> </a> <a href="/ai" class="nav-item" data-astro-cid-sckkx6r4> <span class="icon" data-astro-cid-sckkx6r4>🤖</span> <span data-astro-cid-sckkx6r4>新知</span> </a> <a href="/life" class="nav-item" data-astro-cid-sckkx6r4> <span class="icon" data-astro-cid-sckkx6r4>🌿</span> <span data-astro-cid-sckkx6r4>闲书</span> </a> <a href="/guestbook" class="nav-item active" data-astro-cid-sckkx6r4> <span class="icon" data-astro-cid-sckkx6r4>💬</span> <span data-astro-cid-sckkx6r4>留言</span> </a> </nav> </body></html> <script type="module">const d="https://api.fanren.tech";function y(e){const t=new Date(e),a=new Date-t,o=Math.floor(a/(1e3*60*60*24));return o===0?"今天":o===1?"昨天":o<7?`${o}天前`:t.toLocaleDateString("zh-CN",{year:"numeric",month:"long",day:"numeric"})}function p(e){if(!e)return"";const[t,n]=e.split("@");return!t||!n?"":t[0]+"***@"+n}function f(e){if(!e)return"";const t=e.replace(/\D/g,"");return t.length<7?e:t.slice(0,3)+"****"+t.slice(-4)}function h(e){const t=/[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/g,n=/1[3-9]\d{9}|0\d{2,3}-?\d{7,8}/g;let a=e;return a=a.replace(t,o=>p(o)),a=a.replace(n,o=>f(o)),a}async function v(){const e=document.getElementById("comments-list"),t=document.getElementById("loading"),n=document.getElementById("no-comments");try{const a=await fetch(`${d}/api/guestbook`,{headers:{Accept:"application/json"}});if(!a.ok)throw new Error("Failed to load");const i=(await a.json()).comments||[];if(t.style.display="none",i.length===0){n.style.display="block";return}e.innerHTML=i.map(c=>{const l=c.name||"匿名访客",s=c.email||"";let r=c.content||"";const u=c.created_at||new Date().toISOString(),x=c.category||"general";r=h(r);const m=p(s);return`
+</div> </aside> <main data-astro-cid-sckkx6r4> <div class="container" data-astro-cid-sckkx6r4> <header data-astro-cid-sckkx6r4> <img src="/avatar.jpg" alt="程凡" class="avatar" data-astro-cid-sckkx6r4> <h1 class="site-title" data-astro-cid-sckkx6r4>凡耘手记</h1> <p class="site-desc" data-astro-cid-sckkx6r4>一介凡人，闲耘方寸技田</p> </header> <div class="divider" data-astro-cid-sckkx6r4></div>  <h1><span class="emoji">💬</span> 留言板</h1> <p class="page-desc">写下你的想法，我会认真回复</p> <div id="guestbook-form" class="about-section"> <h2>📝 留言</h2> <form id="message-form"> <div class="form-group"> <label for="name">昵称（选填）</label> <input type="text" id="name" name="name" placeholder="叫什么好呢" maxlength="50"> </div> <div class="form-group"> <label for="email">邮箱（选填，不公开）</label> <input type="email" id="email" name="email" placeholder="方便我回复你"> </div> <div class="form-group"> <label for="content">留言内容 *</label> <textarea id="content" name="content" placeholder="想说点什么..." required minlength="5" maxlength="1000"></textarea> </div> <div class="form-group"> <label for="category">留言板块</label> <select id="category" name="category"> <option value="general">💬 随便聊聊</option> <option value="teaching">🛠️ 杏坛拾器</option> <option value="tech">📱 数码闲赏</option> <option value="ai">🤖 新知漫解</option> <option value="life">🌿 岁晚闲书</option> </select> </div> <button type="submit" class="submit-btn">提交留言</button> </form> <p class="form-note">* 留言提交后会进入待审核状态，审核通过后才会显示 🌿</p> </div> <p class="section-title">近期留言</p> <div id="comments-container"> <div id="loading" class="card" style="text-align: center; padding: 24px;"> <span style="font-size: 24px;">⏳</span> <p style="color: var(--text-light); margin-top: 8px;">加载中...</p> </div> <div id="comments-list"></div> </div> <div id="no-comments" class="card" style="text-align: center; padding: 32px; display: none;"> <span style="font-size: 40px;">🌱</span> <h3 style="margin-top: 12px;">还没有留言</h3> <p style="color: var(--text-light); margin-top: 8px;">来做第一个留言的人吧！</p> </div> <div class="admin-entry"> <a href="https://admin.fanren.tech/" target="_blank" rel="noopener noreferrer"> <span class="admin-icon">🔒</span> <span class="admin-text">站长入口</span> <span class="admin-arrow">→</span> </a> </div>  <!-- ============ 详情页浮动分享按钮（仅当 type === 'article' 时显示）============ --><!-- ============ 分享弹窗（复用）============ --><div class="share-modal" id="shareModal" aria-hidden="true"> <div class="share-modal-backdrop" id="shareModalBackdrop"></div> <div class="share-modal-content" role="dialog" aria-modal="true" aria-label="分享到"> <div class="share-modal-header"> <span class="share-modal-title">📤 分享到</span> <button class="share-modal-close" id="shareModalClose" aria-label="关闭">×</button> </div> <div class="share-modal-body"> <!-- 移动端会显示这个按钮：调起系统原生分享 --> <button class="share-btn share-btn-native" id="shareNative"> <span class="share-btn-icon">📲</span> <span class="share-btn-text">系统分享</span> <span class="share-btn-hint">微信/钉钉/小红书都在这里</span> </button> <div class="share-divider"><span>或</span></div> <!-- 微信专属：二维码 + 长按识别 --> <div class="share-qrcode-wrap"> <p class="share-qrcode-label">微信扫一扫</p> <div class="share-qrcode" id="shareQrcode"></div> <p class="share-qrcode-hint">用微信扫一扫即可分享</p> </div> <div class="share-divider"><span>其他</span></div> <div class="share-btn-grid"> <button class="share-btn" data-action="wechat-friend" id="shareWechatFriend"> <span class="share-btn-icon" style="color:#07c160">💬</span> <span class="share-btn-text">微信好友</span> </button> <button class="share-btn" data-action="wechat-moments" id="shareWechatMoments"> <span class="share-btn-icon" style="color:#07c160">👥</span> <span class="share-btn-text">朋友圈</span> </button> <button class="share-btn" data-action="dingtalk" id="shareDingtalk"> <span class="share-btn-icon" style="color:#0089ff">📘</span> <span class="share-btn-text">钉钉</span> </button> <a class="share-btn" href="https://service.weibo.com/share/share.php?url=https%3A%2F%2Ffanren.tech%2Fguestbook%2F&title=%F0%9F%92%AC%20%E7%95%99%E8%A8%80%E6%9D%BF" target="_blank" rel="noopener"> <span class="share-btn-icon" style="color:#e6162d">🟧</span> <span class="share-btn-text">微博</span> </a> <a class="share-btn" href="https://connect.qq.com/widget/shareqq/index.html?url=https%3A%2F%2Ffanren.tech%2Fguestbook%2F&title=%F0%9F%92%AC%20%E7%95%99%E8%A8%80%E6%9D%BF&summary=%E7%A8%8B%E5%87%A1%E7%9A%84%E9%80%80%E4%BC%91%E9%97%B2%E4%B9%A6%E5%8D%9A%E5%AE%A2%20-%20%E6%9D%8F%E5%9D%9B%E6%8B%BE%E5%99%A8%E3%80%81%E6%95%B0%E7%A0%81%E4%BD%93%E9%AA%8C%E3%80%81%E6%96%B0%E7%9F%A5%E7%A7%91%E6%99%AE%E3%80%81%E9%80%80%E4%BC%91%E6%97%A5%E8%AE%B0" target="_blank" rel="noopener"> <span class="share-btn-icon" style="color:#12B7F5">🐧</span> <span class="share-btn-text">QQ</span> </a> <a class="share-btn" href="https://qr.jirengu.com/api/qr?url=https%3A%2F%2Ffanren.tech%2Fguestbook%2F&size=200" target="_blank" rel="noopener"> <span class="share-btn-icon" style="color:#ff2442">📕</span> <span class="share-btn-text">小红书</span> </a> <button class="share-btn" data-action="copy" id="shareCopy"> <span class="share-btn-icon" style="color:#6b6660">🔗</span> <span class="share-btn-text">复制链接</span> </button> <button class="share-btn" data-action="email" id="shareEmail"> <span class="share-btn-icon" style="color:#2874a6">✉️</span> <span class="share-btn-text">邮件</span> </button> </div> <p class="share-tip" id="shareTip"></p> </div> </div> </div> <!-- ============ 样式 ============ -->  <!-- ============ 脚本（只在这一个组件内 inline，CDN 引入 qrcodejs）============ --> <script>
+  (function() {
+    const pageUrl = window.location.href;
+    const pageTitle = document.title;
+    const pageDesc = (document.querySelector('meta[name="description"]') || {}).content || '';
+
+    // ===== 工具：注入 QRCode 库（仅首次）=====
+    let qrcodeLoaded = false;
+    function loadQRCode() {
+      return new Promise((resolve, reject) => {
+        if (qrcodeLoaded && window.QRCode) return resolve();
+        const s = document.createElement('script');
+        s.src = 'https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js';
+        s.onload = () => { qrcodeLoaded = true; resolve(); };
+        s.onerror = reject;
+        document.head.appendChild(s);
+      });
+    }
+
+    // ===== 工具：弹窗控制 =====
+    const modal = document.getElementById('shareModal');
+    const backdrop = document.getElementById('shareModalBackdrop');
+    const closeBtn = document.getElementById('shareModalClose');
+    let qrcodeInstance = null;
+
+    function openShare() {
+      modal.classList.add('is-open');
+      modal.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+      // 加载并生成二维码
+      loadQRCode().then(() => {
+        const box = document.getElementById('shareQrcode');
+        if (box) {
+          box.innerHTML = '';
+          qrcodeInstance = new QRCode(box, {
+            text: pageUrl,
+            width: 152,
+            height: 152,
+            colorDark: '#1a1a1a',
+            colorLight: '#ffffff',
+            correctLevel: QRCode.CorrectLevel.M,
+          });
+        }
+      }).catch(() => {
+        const box = document.getElementById('shareQrcode');
+        if (box) box.innerHTML = '<a href="' + pageUrl + '" target="_blank" style="font-size:11px;color:#2874a6;word-break:break-all;padding:8px;">点击打开链接</a>';
+      });
+    }
+
+    function closeShare() {
+      modal.classList.remove('is-open');
+      modal.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+    }
+
+    function showTip(msg, isError) {
+      const tip = document.getElementById('shareTip');
+      if (!tip) return;
+      tip.textContent = msg;
+      tip.classList.add('is-show');
+      tip.style.color = isError ? '#c0392b' : '';
+      tip.style.background = isError ? '#f3d9d3' : '';
+      clearTimeout(tip._t);
+      tip._t = setTimeout(() => {
+        tip.classList.remove('is-show');
+        setTimeout(() => { tip.textContent = ''; }, 200);
+      }, 2200);
+    }
+
+    // ===== 绑定事件 =====
+    const fab = document.getElementById('shareFab');
+    if (fab) fab.addEventListener('click', openShare);
+    if (closeBtn) closeBtn.addEventListener('click', closeShare);
+    if (backdrop) backdrop.addEventListener('click', closeShare);
+
+    // ESC 关闭
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && modal.classList.contains('is-open')) closeShare();
+    });
+
+    // ===== 系统分享（手机用）=====
+    const nativeBtn = document.getElementById('shareNative');
+    if (nativeBtn) {
+      nativeBtn.addEventListener('click', async () => {
+        if (navigator.share) {
+          try {
+            await navigator.share({
+              title: pageTitle,
+              text: pageDesc,
+              url: pageUrl,
+            });
+            closeShare();
+          } catch (e) {
+            if (e.name !== 'AbortError') showTip('分享失败,请尝试下方按钮', true);
+          }
+        } else {
+          showTip('当前浏览器不支持系统分享,请用下方按钮');
+        }
+      });
+    }
+
+    // ===== 微信好友：引导扫码 =====
+    document.getElementById('shareWechatFriend')?.addEventListener('click', () => {
+      // 滚动到二维码位置
+      const qr = document.getElementById('shareQrcode');
+      if (qr) qr.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      showTip('👆 用微信「扫一扫」识别二维码');
+    });
+
+    // ===== 朋友圈：生成图片提示 =====
+    document.getElementById('shareWechatMoments')?.addEventListener('click', () => {
+      const qr = document.getElementById('shareQrcode');
+      if (qr) qr.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      showTip('👆 截图本页 → 打开微信朋友圈 → 长按相册发布');
+    });
+
+    // ===== 钉钉：尝试唤起 app =====
+    document.getElementById('shareDingtalk')?.addEventListener('click', () => {
+      const dingtalkUrl = `dingtalk://dingtalkclient/page/link?url=${encodeURIComponent(pageUrl)}&pc_slide=false`;
+      const start = Date.now();
+      window.location.href = dingtalkUrl;
+      setTimeout(() => {
+        // 如果 1.5s 后页面没切走,说明没装钉钉
+        if (Date.now() - start < 1800 && document.visibilityState === 'visible') {
+          showTip('未检测到钉钉,可手动复制链接到钉钉');
+        }
+      }, 1500);
+    });
+
+    // ===== 复制链接 =====
+    document.getElementById('shareCopy')?.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(pageUrl);
+        showTip('✅ 链接已复制,去 app 粘贴吧');
+      } catch (e) {
+        // fallback：选中文本
+        const ta = document.createElement('textarea');
+        ta.value = pageUrl;
+        document.body.appendChild(ta);
+        ta.select();
+        try {
+          document.execCommand('copy');
+          showTip('✅ 链接已复制');
+        } catch (e2) {
+          showTip('复制失败,请手动选择地址栏', true);
+        }
+        document.body.removeChild(ta);
+      }
+    });
+
+    // ===== 邮件 =====
+    document.getElementById('shareEmail')?.addEventListener('click', () => {
+      window.location.href = `mailto:?subject=${encodeURIComponent(pageTitle)}&body=${encodeURIComponent(pageDesc + '\n\n' + pageUrl)}`;
+    });
+  })();
+</script> </div> </main> </div> <nav class="bottom-nav" data-astro-cid-sckkx6r4> <a href="/" class="nav-item" data-astro-cid-sckkx6r4> <span class="icon" data-astro-cid-sckkx6r4>🏠</span> <span data-astro-cid-sckkx6r4>首页</span> </a> <a href="/teaching" class="nav-item" data-astro-cid-sckkx6r4> <span class="icon" data-astro-cid-sckkx6r4>🛠️</span> <span data-astro-cid-sckkx6r4>杏坛</span> </a> <a href="/tech" class="nav-item" data-astro-cid-sckkx6r4> <span class="icon" data-astro-cid-sckkx6r4>📱</span> <span data-astro-cid-sckkx6r4>数码</span> </a> <a href="/ai" class="nav-item" data-astro-cid-sckkx6r4> <span class="icon" data-astro-cid-sckkx6r4>🤖</span> <span data-astro-cid-sckkx6r4>新知</span> </a> <a href="/life" class="nav-item" data-astro-cid-sckkx6r4> <span class="icon" data-astro-cid-sckkx6r4>🌿</span> <span data-astro-cid-sckkx6r4>闲书</span> </a> <a href="/guestbook" class="nav-item active" data-astro-cid-sckkx6r4> <span class="icon" data-astro-cid-sckkx6r4>💬</span> <span data-astro-cid-sckkx6r4>留言</span> </a> </nav> </body></html> <script type="module">const d="https://api.fanren.tech";function y(e){const t=new Date(e),a=new Date-t,o=Math.floor(a/(1e3*60*60*24));return o===0?"今天":o===1?"昨天":o<7?`${o}天前`:t.toLocaleDateString("zh-CN",{year:"numeric",month:"long",day:"numeric"})}function p(e){if(!e)return"";const[t,n]=e.split("@");return!t||!n?"":t[0]+"***@"+n}function f(e){if(!e)return"";const t=e.replace(/\D/g,"");return t.length<7?e:t.slice(0,3)+"****"+t.slice(-4)}function h(e){const t=/[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/g,n=/1[3-9]\d{9}|0\d{2,3}-?\d{7,8}/g;let a=e;return a=a.replace(t,o=>p(o)),a=a.replace(n,o=>f(o)),a}async function v(){const e=document.getElementById("comments-list"),t=document.getElementById("loading"),n=document.getElementById("no-comments");try{const a=await fetch(`${d}/api/guestbook`,{headers:{Accept:"application/json"}});if(!a.ok)throw new Error("Failed to load");const i=(await a.json()).comments||[];if(t.style.display="none",i.length===0){n.style.display="block";return}e.innerHTML=i.map(c=>{const l=c.name||"匿名访客",s=c.email||"";let r=c.content||"";const u=c.created_at||new Date().toISOString(),x=c.category||"general";r=h(r);const m=p(s);return`
           <div class="card comment-card">
             <div class="comment-header">
               <span class="comment-name">👤 ${l}</span>
