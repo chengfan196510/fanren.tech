@@ -1,10 +1,37 @@
 ---
 import Layout from '../layouts/Layout.astro';
+
+// 用 import.meta.glob 拿到所有 tech/ 下的文章
+// 用 ?raw 拿到原始文件内容，自己解析 frontmatter
+const articleSources = import.meta.glob('./tech/*.astro', { query: '?raw', import: 'default', eager: true });
+
+function parseFrontmatter(raw) {
+  const fm = { title: '', date: '', tags: [], excerpt: '', cover: null, hidden: false };
+  const match = raw.match(/const\s+frontmatter\s*=\s*(\{[\s\S]*?\})\s*;/);
+  if (match) {
+    try {
+      return { ...fm, ...(new Function(`return (${match[1]})`)()) };
+    } catch (e) {
+      console.error('frontmatter parse error', e);
+    }
+  }
+  return fm;
+}
+
+const articles = [];
+for (const [path, raw] of Object.entries(articleSources)) {
+  const slug = path.replace('./tech/', '').replace('.astro', '');
+  const fm = parseFrontmatter(raw);
+  if (fm.hidden) continue;
+  articles.push({ slug, ...fm });
+}
+
+articles.sort((a, b) => (b.date || '').localeCompare(a.date || ''));
 ---
 
 <Layout
   title="📱 数码闲赏 · 凡耘手记"
-  description="实测数码好物,记录真机把玩体验。手机、平板、耳机、键盘的雅致心得,不恰饭、不说废话。"
+  description="实测数码好物,记录真机把玩体验。手机、平板、耳机、智能眼镜的雅致心得,不恰饭、不说废话。"
   image="/card-tech.jpg"
 >
   <h1><span class="emoji">📱</span> 数码闲赏</h1>
@@ -13,32 +40,49 @@ import Layout from '../layouts/Layout.astro';
   <div class="about-section">
     <h2>📷 数码控自白</h2>
     <p>
-      手机、平板、耳机、键盘……数码产品我见了就想摸。
+      手机、平板、耳机、键盘、智能眼镜……数码产品我见了就想摸。
       不是发烧友，但喜欢折腾。用过都说好的，推荐；踩过坑的，也写。
       写东西的原则：不说废话，不恰饭。
     </p>
   </div>
 
-  <p class="section-title">最近在玩</p>
+  <p class="section-title">📚 已发布文章</p>
 
-  <div class="card">
-    <div class="card-title">iPad 生产力软件推荐</div>
-    <div class="card-desc">备课本数字化的好帮手</div>
-  </div>
-
-  <div class="card">
-    <div class="card-title">便携键盘横评</div>
-    <div class="card-desc">打字手感才是生产力</div>
-  </div>
-
-  <div class="card">
-    <div class="card-title">拍照修图 workflow</div>
-    <div class="card-desc">记录生活的完整工具链</div>
-  </div>
+  {articles.length === 0 ? (
+    <div class="work-in-progress">
+      <span class="emoji">🚧</span>
+      <h2>还没有文章</h2>
+      <p>第一篇正在路上，敬请期待</p>
+    </div>
+  ) : (
+    articles.map((post) => (
+      <a href={`/tech/${post.slug}`} class="post-card-link">
+        <article class="post-card">
+          {post.cover ? (
+            <div class="post-card-cover">
+              <img src={post.cover} alt={post.title} />
+            </div>
+          ) : (
+            <div class="post-card-cover post-card-cover--placeholder">
+              <span class="emoji">📱</span>
+            </div>
+          )}
+          <div class="post-card-body">
+            <h2 class="post-card-title">{post.title}</h2>
+            <div class="post-card-meta">
+              {post.date} · {(post.tags || []).join(' / ')}
+            </div>
+            <p class="post-card-excerpt">{post.excerpt}</p>
+            <span class="post-card-read">阅读全文 →</span>
+          </div>
+        </article>
+      </a>
+    ))
+  )}
 
   <div class="work-in-progress">
-    <span class="emoji">🚧</span>
-    <h2>正在整理装备心得</h2>
-    <p>马上和大家分享</p>
+    <span class="emoji">💡</span>
+    <h2>想看什么？</h2>
+    <p>留言告诉我，你心里种草了哪件数码宝贝</p>
   </div>
 </Layout>
