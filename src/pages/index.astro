@@ -7,7 +7,7 @@ import Layout from '../layouts/Layout.astro';
   description="一介凡人,闲耘方寸技田。一个即将退休的语文老师 + 智慧办主任,记录教学、数码、AI 和退休生活。"
   image="/avatar.jpg"
 >
-  <!-- ============ 顶部 Banner ============ -->
+  <!-- ============ 顶部 Banner(只图,不叠文字,避免与侧边栏重复) ============ -->
   <div class="hero-banner">
     <img
       src="/banner.jpg"
@@ -16,10 +16,6 @@ import Layout from '../layouts/Layout.astro';
       width="3128"
       height="1340"
     />
-    <div class="hero-banner-overlay">
-      <div class="hero-banner-title">凡耘手记</div>
-      <div class="hero-banner-sub">一介凡人，闲耘方寸技田</div>
-    </div>
   </div>
 
   <div class="about-section">
@@ -153,70 +149,10 @@ import Layout from '../layouts/Layout.astro';
     display: block;
   }
 
-  .hero-banner-overlay {
-    position: absolute;
-    inset: 0;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: flex-end;
-    padding: 0 8% 0 4%;
-    background: linear-gradient(
-      to right,
-      transparent 0%,
-      transparent 40%,
-      rgba(60, 50, 35, 0.35) 65%,
-      rgba(60, 50, 35, 0.7) 100%
-    );
-    pointer-events: none;
-  }
-
-  .hero-banner-title {
-    font-size: 72px;
-    font-weight: 800;
-    color: #fefaf2;
-    letter-spacing: 0.22em;
-    text-shadow:
-      0 2px 12px rgba(40, 30, 15, 0.5),
-      0 1px 0 rgba(255, 250, 235, 0.4);
-    line-height: 1;
-  }
-
-  .hero-banner-sub {
-    margin-top: 18px;
-    font-size: 19px;
-    font-weight: 500;
-    color: #f5ebd3;
-    letter-spacing: 0.14em;
-    text-shadow: 0 2px 8px rgba(40, 30, 15, 0.6);
-  }
-
-  /* 移动端:标题缩放 */
   @media (max-width: 720px) {
     .hero-banner {
       aspect-ratio: 16 / 9;
       border-radius: 8px;
-    }
-    .hero-banner-overlay {
-      padding: 0 6% 0 3%;
-      align-items: center;
-      justify-content: flex-end;
-      padding-bottom: 14%;
-      background: linear-gradient(
-        to bottom,
-        transparent 0%,
-        transparent 40%,
-        rgba(250, 247, 240, 0.7) 80%,
-        rgba(250, 247, 240, 0.9) 100%
-      );
-    }
-    .hero-banner-title {
-      font-size: 40px;
-      letter-spacing: 0.16em;
-    }
-    .hero-banner-sub {
-      font-size: 14px;
-      margin-top: 10px;
     }
   }
 
