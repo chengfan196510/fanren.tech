@@ -918,4 +918,19 @@ const isActive = (path: string) => currentPath === path || currentPath === path 
     </a>
   </nav>
 </body>
+
+<!-- ===== 访问统计埋点（站点性能无影响，失败静默） ===== -->
+<script is:inline>
+(function() {
+  if (typeof navigator === 'undefined' || !navigator.sendBeacon) return;
+  var host = location.hostname;
+  if (host === 'admin.fanren.tech') return; // 后台不统计
+  var data = JSON.stringify({
+    path: location.pathname + location.search,
+    referer: document.referrer || ''
+  });
+  // admin.fanren.tech 跑统计接口，POST 失败也不影响页面
+  navigator.sendBeacon('https://admin.fanren.tech/api/track', new Blob([data], {type: 'application/json'}));
+})();
+</script>
 </html>
