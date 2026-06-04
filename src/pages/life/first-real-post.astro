@@ -9,7 +9,13 @@ const frontmatter = {
 };
 ---
 
-<Layout title={`${frontmatter.title} · 岁晚闲书`}>
+<Layout
+  title={`${frontmatter.title} · 岁晚闲书`}
+  description={frontmatter.excerpt}
+  image={frontmatter.cover}
+  type="article"
+  publishedTime={`${frontmatter.date}T00:00:00+08:00`}
+>
   <article class="post-full">
     <a href="/life" class="post-back">← 返回岁晚闲书</a>
 
