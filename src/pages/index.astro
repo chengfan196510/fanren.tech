@@ -23,7 +23,7 @@ import Layout from '../layouts/Layout.astro';
   <a href="/teaching" class="post-card-link">
     <article class="post-card">
       <div class="post-card-cover">
-        <img src="/card-teaching.jpg" alt="杏坛拾器" />
+        <img src="/card-teaching.jpg" alt="杏坛拾器" loading="lazy" />
       </div>
       <div class="post-card-body">
         <h2 class="post-card-title">🛠️ 杏坛拾器</h2>
@@ -37,7 +37,7 @@ import Layout from '../layouts/Layout.astro';
   <a href="/tech" class="post-card-link">
     <article class="post-card">
       <div class="post-card-cover">
-        <img src="/card-tech.jpg" alt="数码闲赏" />
+        <img src="/card-tech.jpg" alt="数码闲赏" loading="lazy" />
       </div>
       <div class="post-card-body">
         <h2 class="post-card-title">📱 数码闲赏</h2>
@@ -51,7 +51,7 @@ import Layout from '../layouts/Layout.astro';
   <a href="/ai" class="post-card-link">
     <article class="post-card">
       <div class="post-card-cover">
-        <img src="/card-ai.jpg" alt="新知漫解" />
+        <img src="/card-ai.jpg" alt="新知漫解" loading="lazy" />
       </div>
       <div class="post-card-body">
         <h2 class="post-card-title">🤖 新知漫解</h2>
@@ -65,7 +65,7 @@ import Layout from '../layouts/Layout.astro';
   <a href="/life" class="post-card-link">
     <article class="post-card">
       <div class="post-card-cover">
-        <img src="/card-life.jpg" alt="岁晚闲书" />
+        <img src="/card-life.jpg" alt="岁晚闲书" loading="lazy" />
       </div>
       <div class="post-card-body">
         <h2 class="post-card-title">🌿 岁晚闲书</h2>
@@ -76,32 +76,237 @@ import Layout from '../layouts/Layout.astro';
     </article>
   </a>
 
-  <div class="section-divider"><span>另一片自留地</span></div>
+  <!-- ============ 物理分割 ============ -->
+  <div class="section-divider">
+    <div class="section-divider-line"></div>
+    <div class="section-divider-content">
+      <div class="section-divider-icon">🌐</div>
+      <div class="section-divider-title">另一片自留地</div>
+      <div class="section-divider-sub">本站之外的内容 · 工作中的沉淀</div>
+    </div>
+    <div class="section-divider-line"></div>
+  </div>
 
+  <!-- ============ 周报卡片:水平布局 + 淡蓝标识 ============ -->
   <a
     href="https://chengfan196510.github.io/school-it-weekly/"
     target="_blank"
     rel="noopener"
-    class="post-card-link"
+    class="external-card-link"
   >
-    <article class="post-card">
-      <div class="post-card-cover">
-        <img src="/card-weekly.jpg" alt="校园信息化周报" />
+    <article class="external-card">
+      <div class="external-card-cover">
+        <img src="/card-weekly.jpg" alt="校园信息化周报" loading="lazy" />
+        <div class="external-card-badge">↗ 外部站点</div>
       </div>
-      <div class="post-card-body">
-        <h2 class="post-card-title">📋 校园信息化周报</h2>
-        <div class="post-card-meta">外部站点 · 每周五更新</div>
-        <p class="post-card-excerpt">
+      <div class="external-card-body">
+        <div class="external-card-eyebrow">每周五更新 · 工作周报</div>
+        <h2 class="external-card-title">📋 校园信息化周报</h2>
+        <p class="external-card-desc">
           每周一份，记录校园信息化的小进展与小思考。
-          <br />
-          <span style="color: var(--text-light); font-size: 12px;">
-            宁波诺丁汉大学附属中学 · 智慧办
-          </span>
+          偶有弯路、有吐槽、有值得分享的小工具。
         </p>
-        <span class="post-card-read">前往查看 →（新窗口）</span>
+        <div class="external-card-attr">
+          宁波诺丁汉大学附属中学 · 智慧办
+        </div>
+        <div class="external-card-cta">
+          前往查看 <span class="external-card-arrow">→</span>
+          <span class="external-card-hint">将在新窗口打开</span>
+        </div>
       </div>
     </article>
   </a>
 </Layout>
-</content>
-</invoke>
+
+<style>
+  /* ============ 物理分割 ============ */
+  .section-divider {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    margin: 56px 0 32px;
+  }
+
+  .section-divider-line {
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(
+      to right,
+      transparent 0%,
+      var(--border, #d8d2c4) 20%,
+      var(--border, #d8d2c4) 80%,
+      transparent 100%
+    );
+  }
+
+  .section-divider-content {
+    text-align: center;
+    flex-shrink: 0;
+  }
+
+  .section-divider-icon {
+    font-size: 22px;
+    margin-bottom: 4px;
+    line-height: 1;
+  }
+
+  .section-divider-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--text);
+    letter-spacing: 0.08em;
+  }
+
+  .section-divider-sub {
+    font-size: 12px;
+    color: var(--text-light);
+    margin-top: 4px;
+    letter-spacing: 0.04em;
+  }
+
+  /* ============ 外部站点卡片(水平布局) ============ */
+  .external-card-link {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .external-card {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: 0;
+    background: linear-gradient(
+      135deg,
+      #f5f7fa 0%,
+      #eef2f7 100%
+    );
+    border: 1px solid #c4d1e0;
+    border-radius: 12px;
+    overflow: hidden;
+    transition: transform 0.25s ease, box-shadow 0.25s ease,
+      border-color 0.25s ease;
+    box-shadow: 0 2px 6px rgba(60, 90, 130, 0.06);
+  }
+
+  .external-card-link:hover .external-card {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(60, 90, 130, 0.12);
+    border-color: #8aa5c4;
+  }
+
+  .external-card-cover {
+    position: relative;
+    min-height: 260px;
+    overflow: hidden;
+  }
+
+  .external-card-cover img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .external-card-badge {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    background: rgba(255, 255, 255, 0.95);
+    color: #4a6a8a;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 5px 12px;
+    border-radius: 14px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+    letter-spacing: 0.04em;
+  }
+
+  .external-card-body {
+    padding: 32px 36px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .external-card-eyebrow {
+    font-size: 12px;
+    color: #4a6a8a;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+
+  .external-card-title {
+    font-size: 24px;
+    font-weight: 700;
+    color: #2a3f5c;
+    margin: 0 0 14px;
+  }
+
+  .external-card-desc {
+    font-size: 15px;
+    line-height: 1.7;
+    color: #4a5a72;
+    margin: 0 0 16px;
+  }
+
+  .external-card-attr {
+    font-size: 13px;
+    color: #6a7a92;
+    padding: 8px 14px;
+    background: rgba(255, 255, 255, 0.6);
+    border-left: 3px solid #8aa5c4;
+    border-radius: 0 4px 4px 0;
+    margin-bottom: 18px;
+    display: inline-block;
+    width: fit-content;
+  }
+
+  .external-card-cta {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #4a6a8a;
+  }
+
+  .external-card-arrow {
+    display: inline-block;
+    transition: transform 0.25s ease;
+  }
+
+  .external-card-link:hover .external-card-arrow {
+    transform: translateX(4px);
+  }
+
+  .external-card-hint {
+    font-size: 12px;
+    color: #8a9ab2;
+    font-weight: 400;
+  }
+
+  /* ============ 移动端:水平变垂直 ============ */
+  @media (max-width: 720px) {
+    .external-card {
+      grid-template-columns: 1fr;
+    }
+
+    .external-card-cover {
+      min-height: 200px;
+    }
+
+    .external-card-body {
+      padding: 24px 22px;
+    }
+
+    .external-card-title {
+      font-size: 20px;
+    }
+
+    .section-divider {
+      margin: 44px 0 24px;
+    }
+  }
+</style>
