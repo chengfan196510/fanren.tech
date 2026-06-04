@@ -114,55 +114,27 @@ const isActive = (path: string) => currentPath === path || currentPath === path 
 
       .site-logo--mobile { display: none !important; }
 
+      /* 桌面侧栏：纯文字 logo（不放大图） */
       .sidebar .site-logo {
-        position: relative;
         display: block;
-        width: 100%;
-        aspect-ratio: 21 / 9;
-        border-radius: 10px;
-        overflow: hidden;
-        margin-bottom: 20px;
-        box-shadow: 1px 1px 0 var(--paper);
         text-decoration: none;
-      }
-      .sidebar .site-logo-img {
-        display: block;
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-      }
-      .sidebar .site-logo-text {
-        position: absolute;
-        inset: 0;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: flex-end;
-        padding: 0 14px;
-        background: linear-gradient(
-          to right,
-          transparent 0%,
-          transparent 35%,
-          rgba(60, 50, 35, 0.45) 70%,
-          rgba(60, 50, 35, 0.78) 100%
-        );
+        margin-bottom: 20px;
+        padding-bottom: 18px;
+        border-bottom: 1px dashed var(--paper);
       }
       .sidebar .site-logo-title {
-        font-size: 20px;
-        font-weight: 800;
-        color: #fefaf2;
-        letter-spacing: 0.2em;
-        line-height: 1;
-        text-shadow: 0 2px 10px rgba(40, 30, 15, 0.5);
+        font-size: 19px;
+        font-weight: 700;
+        color: var(--text);
+        letter-spacing: 0.15em;
+        line-height: 1.2;
       }
       .sidebar .site-logo-sub {
-        margin-top: 8px;
+        margin-top: 6px;
         font-size: 11px;
         font-weight: 500;
-        color: #f5ebd3;
-        letter-spacing: 0.1em;
-        text-shadow: 0 2px 6px rgba(40, 30, 15, 0.6);
-        text-align: right;
+        color: var(--text-light);
+        letter-spacing: 0.08em;
       }
 
       .sidebar nav {
@@ -217,6 +189,58 @@ const isActive = (path: string) => currentPath === path || currentPath === path 
 
       .container { max-width: var(--max-width); margin: 0; padding: 0; }
       .bottom-nav { display: none !important; }
+
+      /* ========== 桌面主区顶部 Banner ========== */
+      .site-banner {
+        position: relative;
+        display: block;
+        width: 100%;
+        aspect-ratio: 21 / 9;
+        border-radius: 10px;
+        overflow: hidden;
+        margin-bottom: 40px;
+        box-shadow: 1px 1px 0 var(--paper);
+        text-decoration: none;
+      }
+      .site-banner-img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+      .site-banner-text {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: flex-end;
+        padding: 0 40px;
+        background: linear-gradient(
+          to right,
+          transparent 0%,
+          transparent 30%,
+          rgba(60, 50, 35, 0.45) 65%,
+          rgba(60, 50, 35, 0.78) 100%
+        );
+      }
+      .site-banner-title {
+        font-size: 38px;
+        font-weight: 800;
+        color: #fefaf2;
+        letter-spacing: 0.25em;
+        line-height: 1;
+        text-shadow: 0 2px 14px rgba(40, 30, 15, 0.55);
+      }
+      .site-banner-sub {
+        margin-top: 12px;
+        font-size: 14px;
+        font-weight: 500;
+        color: #f5ebd3;
+        letter-spacing: 0.12em;
+        text-shadow: 0 2px 8px rgba(40, 30, 15, 0.65);
+        text-align: right;
+      }
     }
 
     /* ========== Mobile：底部导航 ========== */
@@ -224,6 +248,7 @@ const isActive = (path: string) => currentPath === path || currentPath === path 
       body { padding-bottom: var(--nav-height); }
       .wrapper { display: block; }
       .sidebar { display: none; }
+      .site-banner { display: none; }
 
       .container { max-width: 100%; padding: 0 18px; }
 
@@ -800,13 +825,10 @@ const isActive = (path: string) => currentPath === path || currentPath === path 
 <body>
   <div class="wrapper">
     <aside class="sidebar">
-      <!-- ========== 站点 Logo：水彩图 + 叠字标题 ========== -->
+      <!-- ========== 站点 Logo：纯文字 ========== -->
       <a href="/" class="site-logo">
-        <img src="/banner.jpg" alt="凡耘手记 — 一介凡人，闲耘方寸技田" class="site-logo-img" />
-        <div class="site-logo-text">
-          <div class="site-logo-title">凡耘手记</div>
-          <div class="site-logo-sub">一介凡人，闲耘方寸技田</div>
-        </div>
+        <div class="site-logo-title">凡耘手记</div>
+        <div class="site-logo-sub">一介凡人，闲耘方寸技田</div>
       </a>
 
       <nav>
@@ -841,6 +863,15 @@ const isActive = (path: string) => currentPath === path || currentPath === path 
     </aside>
 
     <main>
+      <!-- ========== 桌面主区顶部 Banner：全站统一 ========== -->
+      <a href="/" class="site-banner">
+        <img src="/banner.jpg" alt="凡耘手记 — 一介凡人，闲耘方寸技田" class="site-banner-img" />
+        <div class="site-banner-text">
+          <div class="site-banner-title">凡耘手记</div>
+          <div class="site-banner-sub">一介凡人，闲耘方寸技田</div>
+        </div>
+      </a>
+
       <div class="container">
         <header>
           <!-- ========== 移动端 Logo：水彩图 + 叠字标题 ========== -->
