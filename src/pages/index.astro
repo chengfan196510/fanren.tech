@@ -7,17 +7,6 @@ import Layout from '../layouts/Layout.astro';
   description="一介凡人,闲耘方寸技田。一个即将退休的语文老师 + 智慧办主任,记录教学、数码、AI 和退休生活。"
   image="/avatar.jpg"
 >
-  <!-- ============ 顶部 Banner(只图,不叠文字,避免与侧边栏重复) ============ -->
-  <div class="hero-banner">
-    <img
-      src="/banner.jpg"
-      alt="凡耘手记 — 一介凡人，闲耘方寸技田"
-      class="hero-banner-img"
-      width="3128"
-      height="1340"
-    />
-  </div>
-
   <div class="about-section">
     <p>
       半生伏案从教，常年与数字化校园事务相伴，虽不通编程行文，却偏爱以低代码搭建实用工具，在实操里摸索数字门道。步入人生后半程，卸下繁重事务之余，便建起这片小小园地。
@@ -131,31 +120,6 @@ import Layout from '../layouts/Layout.astro';
 </Layout>
 
 <style>
-  /* ============ 顶部 Banner ============ */
-  .hero-banner {
-    position: relative;
-    width: 100%;
-    aspect-ratio: 21 / 9;
-    border-radius: 12px;
-    overflow: hidden;
-    margin: 8px 0 36px;
-    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.08);
-  }
-
-  .hero-banner-img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-  }
-
-  @media (max-width: 720px) {
-    .hero-banner {
-      aspect-ratio: 16 / 9;
-      border-radius: 8px;
-    }
-  }
-
   /* ============ 物理分割 ============ */
   .section-divider {
     display: flex;
