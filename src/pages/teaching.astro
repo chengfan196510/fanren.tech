@@ -1,5 +1,32 @@
 ---
 import Layout from '../layouts/Layout.astro';
+
+// 用 import.meta.glob 拿到所有 teaching/ 下的文章
+// 用 ?raw 拿到原始文件内容，自己解析 frontmatter
+const articleSources = import.meta.glob('./teaching/*.astro', { query: '?raw', import: 'default', eager: true });
+
+function parseFrontmatter(raw) {
+  const fm = { title: '', date: '', tags: [], excerpt: '', cover: null, hidden: false };
+  const match = raw.match(/const\s+frontmatter\s*=\s*(\{[\s\S]*?\})\s*;/);
+  if (match) {
+    try {
+      return { ...fm, ...(new Function(`return (${match[1]})`)()) };
+    } catch (e) {
+      console.error('frontmatter parse error', e);
+    }
+  }
+  return fm;
+}
+
+const articles = [];
+for (const [path, raw] of Object.entries(articleSources)) {
+  const slug = path.replace('./teaching/', '').replace('.astro', '');
+  const fm = parseFrontmatter(raw);
+  if (fm.hidden) continue;
+  articles.push({ slug, ...fm });
+}
+
+articles.sort((a, b) => (b.date || '').localeCompare(a.date || ''));
 ---
 
 <Layout
@@ -19,31 +46,43 @@ import Layout from '../layouts/Layout.astro';
     </p>
   </div>
 
-  <p class="section-title">准备写的</p>
+  <p class="section-title">📚 已发布文章</p>
 
-  <div class="card">
-    <div class="card-title">批改作文的好工具</div>
-    <div class="card-desc">AI 辅助批改，省时省力</div>
-  </div>
-
-  <div class="card">
-    <div class="card-title">制作微课的简便方法</div>
-    <div class="card-desc">不用专业设备，手机就能搞定</div>
-  </div>
-
-  <div class="card">
-    <div class="card-title">课堂互动神器</div>
-    <div class="card-desc">让学生爱上语文课的小工具</div>
-  </div>
-
-  <div class="card">
-    <div class="card-title">古文学习辅助工具</div>
-    <div class="card-desc">让晦涩的古文变得好懂</div>
-  </div>
+  {articles.length === 0 ? (
+    <div class="work-in-progress">
+      <span class="emoji">🚧</span>
+      <h2>还没有文章</h2>
+      <p>第一篇正在路上，敬请期待</p>
+    </div>
+  ) : (
+    articles.map((post) => (
+      <a href={`/teaching/${post.slug}`} class="post-card-link">
+        <article class="post-card">
+          {post.cover ? (
+            <div class="post-card-cover">
+              <img src={post.cover} alt={post.title} />
+            </div>
+          ) : (
+            <div class="post-card-cover post-card-cover--placeholder">
+              <span class="emoji">🛠️</span>
+            </div>
+          )}
+          <div class="post-card-body">
+            <h2 class="post-card-title">{post.title}</h2>
+            <div class="post-card-meta">
+              {post.date} · {(post.tags || []).join(' / ')}
+            </div>
+            <p class="post-card-excerpt">{post.excerpt}</p>
+            <span class="post-card-read">阅读全文 →</span>
+          </div>
+        </article>
+      </a>
+    ))
+  )}
 
   <div class="work-in-progress">
-    <span class="emoji">🚧</span>
-    <h2>第一篇正在写</h2>
-    <p>很快上线，敬请期待</p>
+    <span class="emoji">💡</span>
+    <h2>想看什么？</h2>
+    <p>留言告诉我，老师工作中哪些地方最想要趁手工具</p>
   </div>
 </Layout>
