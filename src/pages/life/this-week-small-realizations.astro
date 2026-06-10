@@ -1,5 +1,6 @@
 ---
 import Layout from '../../layouts/Layout.astro';
+import ShareButtons from '../../components/ShareButtons.astro';
 
 const frontmatter = {
   title: "这周想明白的几件小事",
@@ -77,5 +78,6 @@ const frontmatter = {
     </div>
 
     <a href="/life" class="post-back post-back-bottom">← 返回岁晚闲书</a>
+      <ShareButtons type="article" />
   </article>
 </Layout>
