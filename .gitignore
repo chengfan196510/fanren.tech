@@ -4,4 +4,3 @@ node_modules/
 .env.local
 *.log
 .cache/
-# perm-test-2026-06-11
