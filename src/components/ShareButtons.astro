@@ -261,7 +261,23 @@
 
     fab.addEventListener('click', async (e) => {
       e.preventDefault();
-      // 全端统一走复制(国产浏览器 navigator.share 静默失败,不如直接复制)
+
+      // 1) 优先 navigator.share(支持系统分享面板 → 微信带题图小卡片)
+      if (navigator.share) {
+        try {
+          await navigator.share({
+            title: pageTitle,
+            text: pageDesc,
+            url: pageUrl
+          });
+          return; // 用户已完成分享,不弹 toast
+        } catch (err) {
+          // 用户取消(AbortError)不弹,真失败才降级
+          if (err && err.name === 'AbortError') return;
+        }
+      }
+
+      // 2) 降级到复制(国内浏览器 / 桌面浏览器)
       await copyAndToast();
     });
   })();
