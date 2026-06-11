@@ -4,8 +4,8 @@
  * 极简设计：点一下就走，不让用户二次选择
  *
  * 逻辑：
- * - 移动端 / 支持 Web Share API → 直接调系统分享面板
- * - 桌面端 / 微信内置浏览器 → 复制链接 + toast 提示
+ * - 优先复制链接 + toast 提示（最稳，全端可用）
+ * - 复制失败时弹一个全屏蒙层,让用户长按复制（兜底）
  */
 ---
 
@@ -15,11 +15,20 @@
   <span class="share-fab-text">分享</span>
 </button>
 
-<!-- ============ 极简 toast 提示（桌面端用）============ -->
+<!-- ============ 极简 toast 提示（默认用这个）============ -->
 <div class="share-toast" id="shareToast" aria-hidden="true">
   <span class="share-toast-icon">📱</span>
   <span class="share-toast-text" id="shareToastText">用手机扫码分享</span>
   <span class="share-toast-url" id="shareToastUrl"></span>
+</div>
+
+<!-- ============ 兜底蒙层（极少数情况下用）============ -->
+<div class="share-fallback" id="shareFallback" aria-hidden="true">
+  <div class="share-fallback-box">
+    <div class="share-fallback-tip">长按下面这段文字 → 复制</div>
+    <div class="share-fallback-url" id="shareFallbackUrl"></div>
+    <button class="share-fallback-close" id="shareFallbackClose">关闭</button>
+  </div>
 </div>
 
 <!-- ============ 样式 ============ -->
@@ -62,7 +71,7 @@
     }
   }
 
-  /* toast 提示（桌面端点按钮时出现）*/
+  /* toast 提示（默认用这个）*/
   .share-toast {
     position: fixed;
     left: 50%;
@@ -100,6 +109,62 @@
     max-height: 60px;
     overflow: hidden;
   }
+
+  /* 兜底蒙层 */
+  .share-fallback {
+    position: fixed;
+    inset: 0;
+    z-index: 10000;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s;
+  }
+  .share-fallback.is-show {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .share-fallback-box {
+    background: #fff;
+    border-radius: 12px;
+    padding: 24px 20px;
+    max-width: 320px;
+    width: calc(100% - 40px);
+    text-align: center;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+  }
+  .share-fallback-tip {
+    font-size: 14px;
+    color: #333;
+    margin-bottom: 12px;
+    font-weight: 500;
+  }
+  .share-fallback-url {
+    font-size: 13px;
+    color: #555;
+    background: #f5f5f5;
+    padding: 12px;
+    border-radius: 6px;
+    word-break: break-all;
+    line-height: 1.6;
+    user-select: all;
+    -webkit-user-select: all;
+    margin-bottom: 16px;
+  }
+  .share-fallback-close {
+    background: var(--accent, #5a7a4f);
+    color: #fff;
+    border: none;
+    padding: 8px 24px;
+    border-radius: 18px;
+    font-size: 13px;
+    cursor: pointer;
+    font-family: inherit;
+  }
+  .share-fallback-close:hover { opacity: 0.9; }
 </style>
 
 <!-- ============ 脚本 ============ -->
@@ -109,6 +174,9 @@
     const toast = document.getElementById('shareToast');
     const toastText = document.getElementById('shareToastText');
     const toastUrl = document.getElementById('shareToastUrl');
+    const fallback = document.getElementById('shareFallback');
+    const fallbackUrl = document.getElementById('shareFallbackUrl');
+    const fallbackClose = document.getElementById('shareFallbackClose');
     if (!fab) return;
 
     const pageUrl = window.location.href;
@@ -128,43 +196,72 @@
       }, 4000);
     }
 
-    async function copyAndToast() {
-      try {
-        await navigator.clipboard.writeText(pageUrl);
-        showToast('✅ 链接已复制，去微信粘贴吧', pageUrl);
-      } catch (e) {
-        const ta = document.createElement('textarea');
-        ta.value = pageUrl;
-        document.body.appendChild(ta);
-        ta.select();
-        try {
-          document.execCommand('copy');
-          showToast('✅ 链接已复制，去微信粘贴吧', pageUrl);
-        } catch (e2) {
-          showToast('复制失败，请手动选择地址栏', pageUrl);
-        }
-        document.body.removeChild(ta);
-      }
+    function showFallback() {
+      fallbackUrl.textContent = pageUrl;
+      fallback.classList.add('is-show');
+      fallback.setAttribute('aria-hidden', 'false');
+    }
+    function hideFallback() {
+      fallback.classList.remove('is-show');
+      fallback.setAttribute('aria-hidden', 'true');
     }
 
-    fab.addEventListener('click', async () => {
-      // 移动端 / 支持 Web Share API 的浏览器 → 直接调系统分享
-      if (navigator.share) {
-        try {
-          await navigator.share({
-            title: pageTitle,
-            text: pageDesc,
-            url: pageUrl,
-          });
-        } catch (e) {
-          if (e.name === 'AbortError') return; // 用户取消
-          // 其他错误降级为复制
-          await copyAndToast();
+    // 关闭蒙层
+    if (fallbackClose) {
+      fallbackClose.addEventListener('click', hideFallback);
+    }
+    if (fallback) {
+      fallback.addEventListener('click', (e) => {
+        if (e.target === fallback) hideFallback();
+      });
+    }
+
+    // 1) 优先用现代 Clipboard API
+    async function tryClipboard() {
+      try {
+        if (navigator.clipboard && window.isSecureContext) {
+          await navigator.clipboard.writeText(pageUrl);
+          return true;
         }
+      } catch (e) { /* fall through */ }
+      return false;
+    }
+
+    // 2) 退到 textarea + execCommand('copy')
+    function tryExecCommand() {
+      try {
+        const ta = document.createElement('textarea');
+        ta.value = pageUrl;
+        ta.style.position = 'fixed';
+        ta.style.opacity = '0';
+        ta.style.pointerEvents = 'none';
+        document.body.appendChild(ta);
+        ta.focus();
+        ta.select();
+        const ok = document.execCommand('copy');
+        document.body.removeChild(ta);
+        return ok;
+      } catch (e) { return false; }
+    }
+
+    async function copyAndToast() {
+      // 1) 试 Clipboard API
+      if (await tryClipboard()) {
+        showToast('✅ 链接已复制,去微信粘贴吧', pageUrl);
         return;
       }
+      // 2) 试 execCommand
+      if (tryExecCommand()) {
+        showToast('✅ 链接已复制,去微信粘贴吧', pageUrl);
+        return;
+      }
+      // 3) 都不行 → 弹蒙层让用户长按复制
+      showFallback();
+    }
 
-      // 桌面端 / 微信内置浏览器 → 复制 + 提示
+    fab.addEventListener('click', async (e) => {
+      e.preventDefault();
+      // 全端统一走复制(国产浏览器 navigator.share 静默失败,不如直接复制)
       await copyAndToast();
     });
   })();
