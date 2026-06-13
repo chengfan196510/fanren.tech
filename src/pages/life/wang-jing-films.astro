@@ -1,13 +1,16 @@
 ---
-title: "王晶电影，我们的青春注脚"
-description: "周末难得闲暇，听了罗永浩十字路口对王晶的播客。近四个小时的访谈听完了，心里一直翻涌着说不出的滋味。"
-pubDate: 2026-06-13
-category: "life"
-cover: "/wang-jing-films-cover.jpg"
-tags: ["王晶", "电影", "青春", "怀旧"]
+import Layout from '../../layouts/Layout.astro';
+
+const frontmatter = {
+  title: "王晶电影，我们的青春注脚",
+  date: "2026-06-13",
+  tags: ["王晶", "电影", "青春", "怀旧"],
+  excerpt: "周末难得闲暇，听了罗永浩十字路口对王晶的播客。近四个小时的访谈听完了，心里一直翻涌着说不出的滋味。",
+  cover: "/wang-jing-films-cover.jpg"
+};
 ---
 
-<Layout title={frontmatter.title} description={frontmatter.description} pubDate={frontmatter.pubDate} category={frontmatter.category} cover={frontmatter.cover}>
+<Layout title={frontmatter.title} description={frontmatter.description} cover={frontmatter.cover}>
 
   <article class="post-full">
     <a href="/life" class="post-back">← 返回岁晚闲书</a>
