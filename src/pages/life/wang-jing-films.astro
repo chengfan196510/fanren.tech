@@ -1,0 +1,42 @@
+---
+import Layout from '../../layouts/Layout.astro';
+
+const frontmatter = {
+  title: '王晶电影，我们的青春注脚',
+  pubDate: '2026-06-13',
+  category: 'life',
+  cover: '/wang-jing-films-cover.jpg',
+  description: '周末难得闲暇，听了罗永浩十字路口对王晶的播客。近四个小时的访谈听完了，心里一直翻涌着说不出的滋味。',
+};
+---
+
+<Layout
+  title={frontmatter.title}
+  pubDate={frontmatter.pubDate}
+  category={frontmatter.category}
+  cover={frontmatter.cover}
+  description={frontmatter.description}
+>
+
+  <article class="post-full">
+    <a href="/life" class="post-back">← 返回岁晚闲书</a>
+
+    <h1 class="post-full-title">王晶电影，我们的青春注脚</h1>
+
+    <div class="post-full-meta">2026-06-13 · 岁晚闲书</div>
+
+    <img src="/wang-jing-films-cover.jpg" alt="王晶电影，我们的青春注脚" class="post-full-cover">
+
+    <div class="post-full-content">
+      <p>周末难得闲暇，听了罗永浩十字路口对王晶的播客。近四个小时的访谈听完了，心里一直翻涌着说不出的滋味。我们这代人是看王晶电影长大的，那些电影不只是娱乐，它们像一个个坐标，标记着我们走过的岁月。</p>
+
+      <p>王晶在访谈里说，他拍电影就是一门生意，卖座是专业电影人的本分。这话听着直白，但细想想，他其实比谁都懂观众。我们当年挤在录像厅里，租着盗版VCD，看《赌神》里周润发一出场就自带光芒，看《整蛊专家》里周星驰把无厘头演到极致，看《古惑仔》里陈小春一句\u201c铜锣湾只有一个浩南\u201d就热血沸腾。那些笑声、那些感动，都是真实的。</p>
+
+      <p>访谈里提到，无厘头风格是他和周星驰从下午四点的日本动漫里学来的——用真人演卡通里那些夸张到不可能的动作。想起当年和同学模仿电影里的桥段，在教室后排学周星驰的经典台词，那种快乐很简单，也很纯粹。</p>
+
+      <p>王晶说，这世界上没有烂片，只有不同尺度的评判。我以前也跟着别人调侃过他拍烂片，现在想想，那些被骂的电影，其实也有我们自己...</p>
+    </div>
+
+    <a href="/life" class="post-back post-back-bottom">← 返回岁晚闲书</a>
+  </article>
+</Layout>
