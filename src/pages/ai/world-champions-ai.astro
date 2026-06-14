@@ -1,4 +1,7 @@
 ---
+import Layout from '../../layouts/Layout.astro';
+import ShareButtons from '../../components/ShareButtons.astro';
+
 const frontmatter = {
   title: "世界杯，AI已经无处不在了",
   date: "2026-06-15",
@@ -9,9 +12,6 @@ const frontmatter = {
   excerpt: "如果你跟我一样不是铁杆球迷，看世界杯可能就是凑个热闹——但今年的世界杯，有个东西你肯定躲不开，那就是AI。AI已经不只是赞助商的广告牌了，它渗透进了比赛的每一个环节。",
 };
 ---
-
-import Layout from '../../layouts/Layout.astro';
-import ShareButtons from '../../components/ShareButtons.astro';
 
 <Layout frontmatter={frontmatter}>
   <p>如果你跟我一样不是铁杆球迷，看世界杯可能就是凑个热闹——盯着屏幕看九十分钟，偶尔跟着喊两声，至于越位不越位、战术对不对，真说不太明白。但今年的世界杯，有个东西你肯定躲不开，那就是AI。</p>
