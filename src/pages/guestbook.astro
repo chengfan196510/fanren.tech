@@ -1,50 +1,26 @@
 ---
-/**
- * 留言板页面
- * 
- * 提供留言功能，展示已通过的留言列表
- * 留言需审核后才显示
- * 
- * 数据流程：
- * 1. 访客填写表单提交留言
- * 2. 前端通过 Cloudflare Worker（api.fanren.tech）转发到后端
- * 3. Worker 将留言存入 KV 存储，状态为 pending（待审核）
- * 4. 管理员审核通过后，状态变为 approved，留言才会显示在前台
- */
 import Layout from '../layouts/Layout.astro';
 ---
 
-<!-- 使用 Layout 包裹页面 -->
 <Layout title="💬 留言板">
-  <!-- 页面标题 -->
   <h1><span class="emoji">💬</span> 留言板</h1>
   <p class="page-desc">写下你的想法，我会认真回复</p>
 
-  <!-- ==========================================
-       留言表单
-       ========================================== -->
   <div id="guestbook-form" class="about-section">
     <h2>📝 留言</h2>
     <form id="message-form">
-      <!-- 昵称字段（选填） -->
       <div class="form-group">
         <label for="name">昵称（选填）</label>
         <input type="text" id="name" name="name" placeholder="叫什么好呢" maxlength="50">
       </div>
-      
-      <!-- 邮箱字段（选填，不公开显示） -->
       <div class="form-group">
         <label for="email">邮箱（选填，不公开）</label>
         <input type="email" id="email" name="email" placeholder="方便我回复你">
       </div>
-      
-      <!-- 留言内容（必填） -->
       <div class="form-group">
         <label for="content">留言内容 *</label>
         <textarea id="content" name="content" placeholder="想说点什么..." required minlength="5" maxlength="1000"></textarea>
       </div>
-      
-      <!-- 板块选择 -->
       <div class="form-group">
         <label for="category">留言板块</label>
         <select id="category" name="category">
@@ -55,40 +31,27 @@ import Layout from '../layouts/Layout.astro';
           <option value="life">🌿 岁晚闲书</option>
         </select>
       </div>
-      
-      <!-- 提交按钮 -->
       <button type="submit" class="submit-btn">提交留言</button>
     </form>
-    <!-- 提示信息 -->
     <p class="form-note">* 留言提交后会进入待审核状态，审核通过后才会显示 🌿</p>
   </div>
 
-  <!-- 近期留言标题 -->
   <p class="section-title">近期留言</p>
   
-  <!-- ==========================================
-       留言列表容器
-       ========================================== -->
   <div id="comments-container">
-    <!-- 加载中状态 -->
     <div id="loading" class="card" style="text-align: center; padding: 24px;">
       <span style="font-size: 24px;">⏳</span>
       <p style="color: var(--text-light); margin-top: 8px;">加载中...</p>
     </div>
-    <!-- 留言列表（由 JS 动态填充）-->
     <div id="comments-list"></div>
   </div>
 
-  <!-- 无留言时的占位 -->
   <div id="no-comments" class="card" style="text-align: center; padding: 32px; display: none;">
     <span style="font-size: 40px;">🌱</span>
     <h3 style="margin-top: 12px;">还没有留言</h3>
     <p style="color: var(--text-light); margin-top: 8px;">来做第一个留言的人吧！</p>
   </div>
 
-  <!-- ==========================================
-       管理员入口
-       ========================================== -->
   <div class="admin-entry">
     <a href="https://admin.fanren.tech/" target="_blank" rel="noopener noreferrer">
       <span class="admin-icon">🔒</span>
@@ -98,19 +61,12 @@ import Layout from '../layouts/Layout.astro';
   </div>
 </Layout>
 
-<!-- ==========================================
-     前端脚本：处理留言加载和提交
-     ========================================== -->
 <script>
-  // API 基础地址：通过 Cloudflare Worker 中转
+  // 通过 Cloudflare Worker 中转（api.fanren.tech）调用 GitHub API
   // Worker 在服务端持有 GitHub PAT，前端零 token，零暴露
   const API_BASE = 'https://api.fanren.tech';
 
-  /**
-   * 格式化日期为中文友好格式
-   * @param {string} dateStr - ISO 格式的日期字符串
-   * @returns {string} 格式化后的日期
-   */
+  // 格式化日期
   function formatDate(dateStr) {
     const date = new Date(dateStr);
     const now = new Date();
@@ -128,11 +84,7 @@ import Layout from '../layouts/Layout.astro';
     });
   }
 
-  /**
-   * 隐藏邮箱中间部分，保护隐私
-   * @param {string} email - 邮箱地址
-   * @returns {string} 隐藏后的邮箱
-   */
+  // 隐藏邮箱
   function maskEmail(email) {
     if (!email) return '';
     const [name, domain] = email.split('@');
@@ -140,11 +92,7 @@ import Layout from '../layouts/Layout.astro';
     return name[0] + '***@' + domain;
   }
 
-  /**
-   * 隐藏电话号码中间部分，保护隐私
-   * @param {string} phone - 电话号码
-   * @returns {string} 隐藏后的电话号码
-   */
+  // 隐藏电话
   function maskPhone(phone) {
     if (!phone) return '';
     const digits = phone.replace(/\D/g, '');
@@ -152,15 +100,11 @@ import Layout from '../layouts/Layout.astro';
     return digits.slice(0, 3) + '****' + digits.slice(-4);
   }
 
-  /**
-   * 解析留言内容中的邮箱和电话，并进行隐藏处理
-   * @param {string} content - 留言原始内容
-   * @returns {string} 处理后的内容
-   */
+  // 解析留言内容中的邮箱和电话
   function parseContent(content) {
-    // 邮箱正则表达式
+    // 邮箱正则
     const emailRegex = /[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/g;
-    // 电话正则表达式（中国）
+    // 电话正则（中国）
     const phoneRegex = /1[3-9]\d{9}|0\d{2,3}-?\d{7,8}/g;
     
     let masked = content;
@@ -170,16 +114,13 @@ import Layout from '../layouts/Layout.astro';
     return masked;
   }
 
-  /**
-   * 从 API 加载留言列表
-   */
+  // 加载留言
   async function loadComments() {
     const container = document.getElementById('comments-list');
     const loading = document.getElementById('loading');
     const noComments = document.getElementById('no-comments');
 
     try {
-      // 发送 GET 请求获取已审核的留言
       const response = await fetch(
         `${API_BASE}/api/guestbook`,
         {
@@ -194,16 +135,13 @@ import Layout from '../layouts/Layout.astro';
       const data = await response.json();
       const issues = data.comments || [];
 
-      // 隐藏加载状态
       loading.style.display = 'none';
 
-      // 如果没有留言，显示无留言提示
       if (issues.length === 0) {
         noComments.style.display = 'block';
         return;
       }
 
-      // 渲染留言列表
       container.innerHTML = issues.map(msg => {
         // 新版 KV 存储直接给字段，不用解析 body
         const name = msg.name || '匿名访客';
@@ -216,7 +154,6 @@ import Layout from '../layouts/Layout.astro';
         content = parseContent(content);
         const maskedEmail = maskEmail(email);
 
-        // 渲染留言卡片
         return `
           <div class="card comment-card">
             <div class="comment-header">
@@ -232,7 +169,6 @@ import Layout from '../layouts/Layout.astro';
       }).join('');
 
     } catch (error) {
-      // 加载失败，显示错误提示
       loading.style.display = 'none';
       container.innerHTML = `
         <div class="card" style="text-align: center; padding: 24px;">
@@ -243,9 +179,7 @@ import Layout from '../layouts/Layout.astro';
     }
   }
 
-  /**
-   * 提交留言表单
-   */
+  // 提交留言
   document.getElementById('message-form').addEventListener('submit', async (e) => {
     e.preventDefault();
     
@@ -253,52 +187,46 @@ import Layout from '../layouts/Layout.astro';
     const submitBtn = form.querySelector('.submit-btn');
     const originalText = submitBtn.textContent;
     
-    // 获取表单数据
     const name = document.getElementById('name').value.trim() || '匿名访客';
     const email = document.getElementById('email').value.trim();
     const content = document.getElementById('content').value.trim();
     const category = document.getElementById('category').value;
 
-    // 简单验证
     if (content.length < 5) {
       alert('留言内容至少5个字');
       return;
     }
 
-    // 禁用按钮，显示提交中状态
     submitBtn.textContent = '提交中...';
     submitBtn.disabled = true;
 
     try {
-      // 发送 POST 请求提交留言
-      const response = await fetch(
-        `${API_BASE}/api/guestbook`,
-        {
-          method: 'POST',
-          headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            name,
-            email,
-            content,
-            category
-          })
-        }
-      );
-
-      if (!response.ok) {
-        const err = await response.json().catch(() => ({}));
-        alert(err.error || '提交失败，请稍后再试');
-        return;
+    const response = await fetch(
+      `${API_BASE}/api/guestbook`,
+      {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          name,
+          email,
+          content,
+          category
+        })
       }
+    );
 
-      // 清空表单
+    if (!response.ok) {
+      const err = await response.json().catch(() => ({}));
+      alert(err.error || '提交失败，请稍后再试');
+      return;
+    }
+
       form.reset();
       submitBtn.textContent = '🌱 留言已提交，等待审核';
       
-      // 2.5 秒后恢复按钮状态
       setTimeout(() => {
         submitBtn.textContent = originalText;
         submitBtn.disabled = false;
@@ -312,15 +240,11 @@ import Layout from '../layouts/Layout.astro';
     }
   });
 
-  // 页面加载时获取留言列表
+  // 页面加载时获取留言
   loadComments();
 </script>
 
-<!-- ==========================================
-     表单和留言样式
-     ========================================== -->
 <style is:global>
-  /* 表单组样式 */
   .form-group {
     margin-bottom: 16px;
   }
@@ -332,7 +256,6 @@ import Layout from '../layouts/Layout.astro';
     margin-bottom: 6px;
   }
 
-  /* 输入框、文本域、下拉框通用样式 */
   .form-group input,
   .form-group textarea,
   .form-group select {
@@ -346,7 +269,6 @@ import Layout from '../layouts/Layout.astro';
     transition: border-color 0.2s;
   }
 
-  /* 聚焦状态样式 */
   .form-group input:focus,
   .form-group textarea:focus,
   .form-group select:focus {
@@ -354,13 +276,11 @@ import Layout from '../layouts/Layout.astro';
     border-color: var(--accent);
   }
 
-  /* 文本域可调整大小 */
   .form-group textarea {
     min-height: 100px;
     resize: vertical;
   }
 
-  /* 提交按钮样式 */
   .submit-btn {
     background: var(--accent);
     color: white;
@@ -384,7 +304,6 @@ import Layout from '../layouts/Layout.astro';
     transform: none;
   }
 
-  /* 表单提示文字 */
   .form-note {
     font-size: 12px;
     color: var(--text-light);
@@ -392,7 +311,6 @@ import Layout from '../layouts/Layout.astro';
     text-align: center;
   }
 
-  /* 留言卡片样式 */
   .comment-card {
     margin-bottom: 10px;
     padding: 12px 14px;
@@ -439,7 +357,6 @@ import Layout from '../layouts/Layout.astro';
     margin-bottom: 0;
   }
 
-  /* 联系方式（邮箱等） */
   .comment-contact {
     font-size: 11px;
     color: var(--text-light);
@@ -448,7 +365,6 @@ import Layout from '../layouts/Layout.astro';
     border-top: 1px solid var(--paper);
   }
 
-  /* 管理员入口 */
   .admin-entry {
     margin-top: 32px;
     text-align: center;

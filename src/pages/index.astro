@@ -1,22 +1,12 @@
 ---
-/**
- * 博客首页
- * 
- * 展示博客简介和四大栏目入口
- * 作为网站的入口页面，提供导航到各个内容分类
- */
 import Layout from '../layouts/Layout.astro';
 ---
 
-<!-- 使用 Layout 布局模板包裹页面内容 -->
 <Layout
   title="凡耘手记 · 程凡的退休闲耘之地"
-  description="一介凡人，闲耘方寸技田。一个即将退休的语文老师 + 智慧办主任，记录教学、数码、AI 和退休生活。"
+  description="一介凡人,闲耘方寸技田。一个即将退休的语文老师 + 智慧办主任,记录教学、数码、AI 和退休生活。"
   image="/avatar.jpg"
 >
-  <!-- ==========================================
-       关于区域：博客简介
-       ========================================== -->
   <div class="about-section">
     <p>
       半生伏案从教，常年与数字化校园事务相伴，虽不通编程行文，却偏爱以低代码搭建实用工具，在实操里摸索数字门道。步入人生后半程，卸下繁重事务之余，便建起这片小小园地。
@@ -29,12 +19,8 @@ import Layout from '../layouts/Layout.astro';
     </p>
   </div>
 
-  <!-- 四个栏目标题 -->
   <p class="section-title">四个栏目</p>
 
-  <!-- ==========================================
-       栏目卡片 1：杏坛拾器（教学工具）
-       ========================================== -->
   <a href="/teaching" class="post-card-link">
     <article class="post-card">
       <div class="post-card-cover">
@@ -49,7 +35,6 @@ import Layout from '../layouts/Layout.astro';
     </article>
   </a>
 
-  <!-- 栏目卡片 2：数码闲赏 -->
   <a href="/tech" class="post-card-link">
     <article class="post-card">
       <div class="post-card-cover">
@@ -64,7 +49,6 @@ import Layout from '../layouts/Layout.astro';
     </article>
   </a>
 
-  <!-- 栏目卡片 3：新知漫解（AI） -->
   <a href="/ai" class="post-card-link">
     <article class="post-card">
       <div class="post-card-cover">
@@ -79,7 +63,6 @@ import Layout from '../layouts/Layout.astro';
     </article>
   </a>
 
-  <!-- 栏目卡片 4：岁晚闲书（生活） -->
   <a href="/life" class="post-card-link">
     <article class="post-card">
       <div class="post-card-cover">
@@ -94,10 +77,7 @@ import Layout from '../layouts/Layout.astro';
     </article>
   </a>
 
-  <!-- ==========================================
-       分隔区块：另一片自留地
-       引向站外的其他内容
-       ========================================== -->
+  <!-- ============ 物理分割 ============ -->
   <div class="section-divider">
     <div class="section-divider-line"></div>
     <div class="section-divider-content">
@@ -108,10 +88,7 @@ import Layout from '../layouts/Layout.astro';
     <div class="section-divider-line"></div>
   </div>
 
-  <!-- ==========================================
-       外部站点卡片：校园信息化周报
-       水平布局 + 外部站点标识
-       ========================================== -->
+  <!-- ============ 周报卡片:水平布局 + 淡蓝标识 ============ -->
   <a
     href="https://weekly.unncahs.net"
     target="_blank"
@@ -121,7 +98,6 @@ import Layout from '../layouts/Layout.astro';
     <article class="external-card">
       <div class="external-card-cover">
         <img src="/card-weekly.jpg" alt="校园信息化周报" loading="lazy" />
-        <!-- 外部站点标识徽章 -->
         <div class="external-card-badge">↗ 外部站点</div>
       </div>
       <div class="external-card-body">
@@ -144,11 +120,7 @@ import Layout from '../layouts/Layout.astro';
 </Layout>
 
 <style>
-  /* ==========================================
-     首页特有样式
-     ========================================== */
-
-  /* 分隔区块样式 */
+  /* ============ 物理分割 ============ */
   .section-divider {
     display: flex;
     align-items: center;
@@ -156,7 +128,6 @@ import Layout from '../layouts/Layout.astro';
     margin: 56px 0 32px;
   }
 
-  /* 分隔线（左右两侧的横线）*/
   .section-divider-line {
     flex: 1;
     height: 1px;
@@ -169,7 +140,6 @@ import Layout from '../layouts/Layout.astro';
     );
   }
 
-  /* 分隔区块中间的内容 */
   .section-divider-content {
     text-align: center;
     flex-shrink: 0;
@@ -195,9 +165,7 @@ import Layout from '../layouts/Layout.astro';
     letter-spacing: 0.04em;
   }
 
-  /* ==========================================
-     外部站点卡片样式（水平布局）
-     ========================================== */
+  /* ============ 外部站点卡片(水平布局) ============ */
   .external-card-link {
     display: block;
     text-decoration: none;
@@ -205,11 +173,9 @@ import Layout from '../layouts/Layout.astro';
   }
 
   .external-card {
-    /* CSS Grid 实现左右分栏布局 */
     display: grid;
     grid-template-columns: 1fr 1.2fr;
     gap: 0;
-    /* 淡蓝渐变背景，营造专业感 */
     background: linear-gradient(
       135deg,
       #f5f7fa 0%,
@@ -218,18 +184,17 @@ import Layout from '../layouts/Layout.astro';
     border: 1px solid #c4d1e0;
     border-radius: 12px;
     overflow: hidden;
-    transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+    transition: transform 0.25s ease, box-shadow 0.25s ease,
+      border-color 0.25s ease;
     box-shadow: 0 2px 6px rgba(60, 90, 130, 0.06);
   }
 
-  /* 卡片 hover 效果：轻微上浮 + 阴影加深 */
   .external-card-link:hover .external-card {
     transform: translateY(-3px);
     box-shadow: 0 8px 20px rgba(60, 90, 130, 0.12);
     border-color: #8aa5c4;
   }
 
-  /* 卡片封面图区域 */
   .external-card-cover {
     position: relative;
     min-height: 260px;
@@ -243,7 +208,6 @@ import Layout from '../layouts/Layout.astro';
     display: block;
   }
 
-  /* 外部站点标识徽章 */
   .external-card-badge {
     position: absolute;
     top: 14px;
@@ -258,7 +222,6 @@ import Layout from '../layouts/Layout.astro';
     letter-spacing: 0.04em;
   }
 
-  /* 卡片内容区域 */
   .external-card-body {
     padding: 32px 36px;
     display: flex;
@@ -266,7 +229,6 @@ import Layout from '../layouts/Layout.astro';
     justify-content: center;
   }
 
-  /* 类别标签（eyebrow） */
   .external-card-eyebrow {
     font-size: 12px;
     color: #4a6a8a;
@@ -290,7 +252,6 @@ import Layout from '../layouts/Layout.astro';
     margin: 0 0 16px;
   }
 
-  /* 来源信息（带左侧边线） */
   .external-card-attr {
     font-size: 13px;
     color: #6a7a92;
@@ -303,7 +264,6 @@ import Layout from '../layouts/Layout.astro';
     width: fit-content;
   }
 
-  /* CTA 按钮样式 */
   .external-card-cta {
     display: flex;
     align-items: center;
@@ -318,7 +278,6 @@ import Layout from '../layouts/Layout.astro';
     transition: transform 0.25s ease;
   }
 
-  /* CTA 箭头 hover 动画 */
   .external-card-link:hover .external-card-arrow {
     transform: translateX(4px);
   }
@@ -329,11 +288,8 @@ import Layout from '../layouts/Layout.astro';
     font-weight: 400;
   }
 
-  /* ==========================================
-     移动端适配
-     ========================================== */
+  /* ============ 移动端:水平变垂直 ============ */
   @media (max-width: 720px) {
-    /* 卡片改为垂直布局（图片在上，内容在下）*/
     .external-card {
       grid-template-columns: 1fr;
     }

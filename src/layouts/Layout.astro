@@ -1,74 +1,35 @@
 ---
-/**
- * 全站页面布局模板 (Layout)
- * 
- * 这是凡耘手记博客的核心布局组件，所有页面都基于此模板构建
- * 包含功能：
- * - 响应式侧边栏导航（桌面端）和底部导航栏（移动端）
- * - 统一的页面头部（SEO meta 标签、Open Graph、Twitter Card）
- * - 站点 Logo 和 Banner
- * - 访问统计埋点
- * - 全站统一的视觉风格（纸感米白 + 莫兰迪暗色配色）
- */
 import ShareButtons from '../components/ShareButtons.astro';
-
-// =============================================
-// Frontmatter 脚本区：接收父组件传入的属性
-// =============================================
-
-/**
- * 从父组件获取页面属性
- * 这些属性用于 SEO 元数据设置和页面渲染
- */
 const {
-  title,                              // 页面标题
-  description = '程凡的退休闲书博客 - 杏坛拾器、数码体验、新知科普、退休日记',  // 页面描述（默认描述）
-  image = '/avatar.jpg',             // 分享时显示的图片（默认头像）
-  type = 'website',                  // Open Graph 类型（默认网站）
-  publishedTime,                      // 文章发布时间（可选）
-  author = '程凡',                    // 作者（默认程凡）
+  title,
+  description = '程凡的退休闲书博客 - 杏坛拾器、数码体验、新知科普、退休日记',
+  image = '/avatar.jpg',
+  type = 'website',
+  publishedTime,
+  author = '程凡',
 } = Astro.props;
 
-/**
- * 处理封面图为绝对 URL
- * 微信、Twitter、Facebook 等平台要求分享图片必须是完整的绝对地址
- * 如果传入的是相对路径（如 /avatar.jpg），则拼接上站点域名
- */
+// 把封面图处理成绝对 URL（微信、Twitter、Facebook 都要求绝对地址）
 const siteOrigin = Astro.site?.origin ?? 'https://fanren.tech';
 const absoluteImage = image.startsWith('http') ? image : siteOrigin + image;
 const pageUrl = siteOrigin + Astro.url.pathname;
 
-/**
- * 获取当前页面路径，用于高亮当前导航项
- */
 const currentPath = Astro.url.pathname;
-
-/**
- * 判断某个路径是否为当前激活的页面
- * 同时处理带斜杠和不带斜杠两种情况
- * @param {string} path - 要检查的路径
- * @returns {boolean} - 是否为当前页面
- */
 const isActive = (path: string) => currentPath === path || currentPath === path + '/';
 ---
 
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-  <!-- 基础字符编码 -->
   <meta charset="UTF-8">
-  <!-- 响应式视口设置，支持移动端缩放 -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5">
   <title>{title}</title>
 
-  <!-- ===== SEO / 搜索引擎优化 ===== -->
-  <!-- description: 搜索结果摘要，影响搜索引擎显示 -->
+  <!-- ===== SEO / 文章摘要（搜索结果用） ===== -->
   <meta name="description" content={description}>
-  <!-- author: 文章作者 -->
   <meta name="author" content={author}>
 
-  <!-- ===== Open Graph（社交媒体预览）====== -->
-  <!-- 这套标签用于微信、Facebook、知乎、微博等平台的链接预览 -->
+  <!-- ===== Open Graph（微信、Facebook、知乎、微博 读这套） ===== -->
   <meta property="og:type" content={type}>
   <meta property="og:title" content={title}>
   <meta property="og:description" content={description}>
@@ -78,71 +39,49 @@ const isActive = (path: string) => currentPath === path || currentPath === path 
   <meta property="og:url" content={pageUrl}>
   <meta property="og:site_name" content="凡耘手记">
   <meta property="og:locale" content="zh_CN">
-  <!-- 如果有发布时间，添加 Open Graph 发布时间标签 -->
   {publishedTime && <meta property="article:published_time" content={publishedTime}>}
   {publishedTime && <meta property="article:author" content={author}>}
 
-  <!-- ===== Twitter Card（X / Twitter 平台预览）====== -->
+  <!-- ===== Twitter Card（X / 部分博客平台读这套） ===== -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content={title}>
   <meta name="twitter:description" content={description}>
   <meta name="twitter:image" content={absoluteImage}>
 
-  <!-- 首屏关键图预加载 -->
-  <!-- 使用 preload 让浏览器在解析 HTML 时就开始下载 Banner 图，加快首屏渲染 -->
+  <!-- 首屏关键图 preload:让浏览器在 HTML 解析时就启动下载 -->
   <link rel="preload" as="image" href="/banner.jpg" fetchpriority="high" />
 
   <style>
-    /* ==========================================
-       CSS 变量：定义全站设计系统（纸感米白主题）
-       ========================================== */
     :root {
-      /* 主背景：纸感米白 */
-      --bg: #f5f3ee;
-      /* 卡片背景：稍亮的米白 */
-      --card-bg: #fbfaf6;
-      /* 边线/分割线：浅米灰 */
-      --paper: #e8e4dc;
-      /* 正文颜色：近黑 */
-      --text: #1a1a1a;
-      /* 次要文字：暖灰 */
-      --text-light: #6b6660;
-      /* 三级文字：淡灰 */
-      --text-fade: #9a948a;
-      /* 强调色：暗红（用于标题、hover 效果）*/
-      --accent: #c0392b;
-      /* 强调色浅底：浅红 */
-      --accent-soft: #f3d9d3;
-      /* 标签颜色：橄榄绿 */
-      --olive: #7a8450;
-      /* 橄榄绿浅底 */
+      /* 三万风：纸感米白 + 莫兰迪暗色 */
+      --bg: #f5f3ee;            /* 主背景：纸感米白 */
+      --card-bg: #fbfaf6;       /* 卡片：稍亮的米白 */
+      --paper: #e8e4dc;         /* 边线/分割：浅米灰 */
+      --text: #1a1a1a;          /* 正文：近黑 */
+      --text-light: #6b6660;    /* 次要：暖灰 */
+      --text-fade: #9a948a;     /* 三级：淡灰 */
+      --accent: #c0392b;        /* 强调：暗红（标题、hover） */
+      --accent-soft: #f3d9d3;   /* 强调底色：浅红 */
+      --olive: #7a8450;         /* 标签：橄榄绿 */
       --olive-soft: #e6e8d5;
-      /* 链接颜色：墨蓝 */
-      --ink: #2874a6;
-      /* 圆角变量 */
-      --radius: 8px;
+      --ink: #2874a6;           /* 链接：墨蓝 */
+      --radius: 8px;            /* 圆角：比之前小，更朴素 */
       --radius-sm: 4px;
-      /* 正文最大宽度 */
       --max-width: 680px;
-      /* 导航栏高度（移动端底部导航） */
       --nav-height: 64px;
     }
 
-    /* 全局重置：移除浏览器默认边距 */
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
-    /* HTML 根元素设置 */
     html { font-size: 16px; -webkit-text-size-adjust: 100%; }
 
-    /* 页面主体样式 */
     body {
-      /* 使用霞鹜文楷字体，优雅的中文字体 */
       font-family: 'LXGW WenKai', -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Microsoft YaHei', sans-serif;
       background: var(--bg);
       color: var(--text);
       line-height: 1.85;
       min-height: 100vh;
-      /* 纸纹背景效果：用两个 radial-gradient 叠加出细微噪点 */
+      /* 一点点纸纹噪点（纯 CSS，SVG 编码） */
       background-image:
         radial-gradient(rgba(0,0,0,0.012) 1px, transparent 1px),
         radial-gradient(rgba(0,0,0,0.008) 1px, transparent 1px);
@@ -150,16 +89,11 @@ const isActive = (path: string) => currentPath === path || currentPath === path 
       background-position: 0 0, 7px 7px;
     }
 
-    /* 链接样式 */
     a { color: var(--ink); text-decoration: none; }
     a:hover { color: var(--accent); }
 
-    /* ==========================================
-       桌面端布局（屏幕宽度 >= 768px）
-       使用侧边栏导航
-       ========================================== */
+    /* ========== Desktop：侧边栏 ========== */
     @media (min-width: 768px) {
-      /* 主容器：flex 布局，左右分栏 */
       .wrapper {
         display: flex;
         max-width: 1080px;
@@ -167,34 +101,32 @@ const isActive = (path: string) => currentPath === path || currentPath === path 
         min-height: 100vh;
       }
 
-      /* 侧边栏样式 */
       .sidebar {
         width: 220px;
-        flex-shrink: 0;  /* 不允许侧边栏收缩 */
+        flex-shrink: 0;
         padding: 32px 24px;
-        position: sticky;  /* 固定定位，滚动时保持可见 */
+        position: sticky;
         top: 0;
         height: 100vh;
         display: flex;
-        flex-direction: column;  /* 垂直排列内容 */
+        flex-direction: column;
       }
 
-      /* 移动端 Logo 在桌面端隐藏 */
       .site-logo--mobile { display: none !important; }
 
-      /* 桌面侧栏 Logo：纯文字风格 */
+      /* 桌面侧栏：纯文字 logo（不放大图） */
       .sidebar .site-logo {
         display: block;
         text-decoration: none;
         margin-bottom: 20px;
         padding-bottom: 18px;
-        border-bottom: 1px dashed var(--paper);  /* 虚线下划线 */
+        border-bottom: 1px dashed var(--paper);
       }
       .sidebar .site-logo-title {
         font-size: 19px;
         font-weight: 700;
         color: var(--text);
-        letter-spacing: 0.15em;  /* 字间距 */
+        letter-spacing: 0.15em;
         line-height: 1.2;
       }
       .sidebar .site-logo-sub {
@@ -205,7 +137,6 @@ const isActive = (path: string) => currentPath === path || currentPath === path 
         letter-spacing: 0.08em;
       }
 
-      /* 侧边栏导航菜单 */
       .sidebar nav {
         display: flex;
         flex-direction: column;
@@ -213,7 +144,6 @@ const isActive = (path: string) => currentPath === path || currentPath === path 
         margin-top: 16px;
       }
 
-      /* 导航链接样式 */
       .sidebar nav a {
         padding: 9px 12px;
         border-radius: var(--radius-sm);
@@ -223,19 +153,17 @@ const isActive = (path: string) => currentPath === path || currentPath === path 
         display: flex;
         align-items: center;
         gap: 10px;
-        transition: all 0.15s;  /* 过渡动画 */
-        border-left: 2px solid transparent;  /* 左侧高亮条 */
+        transition: all 0.15s;
+        border-left: 2px solid transparent;
       }
 
-      /* 导航链接 hover 效果 */
       .sidebar nav a:hover {
         background: transparent;
         color: var(--accent);
         border-left-color: var(--accent);
-        padding-left: 14px;  /* hover 时文字右移 */
+        padding-left: 14px;
       }
 
-      /* 当前激活的导航项 */
       .sidebar nav a.active {
         color: var(--accent);
         border-left-color: var(--accent);
@@ -243,37 +171,31 @@ const isActive = (path: string) => currentPath === path || currentPath === path 
         font-weight: 500;
       }
 
-      /* 导航图标 */
       .sidebar nav a .icon { font-size: 16px; opacity: 0.85; }
 
-      /* 侧边栏底部信息 */
       .sidebar .footer {
-        margin-top: auto;  /* 推到最底部 */
+        margin-top: auto;
         font-size: 11px;
         color: var(--text-fade);
         padding-top: 24px;
         border-top: 1px dashed var(--paper);
       }
 
-      /* 主内容区 */
       main {
-        flex: 1;  /* 占据剩余空间 */
+        flex: 1;
         padding: 56px 48px;
-        border-left: 1px solid var(--paper);  /* 与侧边栏分隔线 */
+        border-left: 1px solid var(--paper);
       }
 
-      /* 内容容器 */
       .container { max-width: var(--max-width); margin: 0; padding: 0; }
-      
-      /* 移动端底部导航在桌面端隐藏 */
       .bottom-nav { display: none !important; }
 
-      /* ========== 桌面主区顶部 Banner（大横幅图）========== */
+      /* ========== 桌面主区顶部 Banner ========== */
       .site-banner {
         position: relative;
         display: block;
         width: 100%;
-        aspect-ratio: 21 / 9;  /* 宽高比 21:9 */
+        aspect-ratio: 21 / 9;
         border-radius: 10px;
         overflow: hidden;
         margin-bottom: 40px;
@@ -286,16 +208,14 @@ const isActive = (path: string) => currentPath === path || currentPath === path 
         height: 100%;
         object-fit: cover;
       }
-      /* Banner 上的文字叠加层 */
       .site-banner-text {
         position: absolute;
-        inset: 0;  /* 覆盖整个父元素 */
+        inset: 0;
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: flex-end;
         padding: 0 40px;
-        /* 渐变遮罩：左到右从透明渐变到深色 */
         background: linear-gradient(
           to right,
           transparent 0%,
@@ -323,26 +243,20 @@ const isActive = (path: string) => currentPath === path || currentPath === path 
       }
     }
 
-    /* ==========================================
-       移动端布局（屏幕宽度 < 768px）
-       使用底部导航栏
-       ========================================== */
+    /* ========== Mobile：底部导航 ========== */
     @media (max-width: 767px) {
-      /* 为底部导航腾出空间 */
       body { padding-bottom: var(--nav-height); }
       .wrapper { display: block; }
-      .sidebar { display: none; }  /* 隐藏侧边栏 */
-      .site-banner { display: none; }  /* 隐藏 Banner */
+      .sidebar { display: none; }
+      .site-banner { display: none; }
 
       .container { max-width: 100%; padding: 0 18px; }
 
-      /* 移动端头部 */
       header {
         padding: 0 0 16px;
         text-align: center;
         position: relative;
       }
-      /* 移动端 Logo：水彩图 + 叠字标题 */
       header .site-logo {
         display: block;
         position: relative;
@@ -365,67 +279,43 @@ const isActive = (path: string) => currentPath === path || currentPath === path 
         inset: 0;
         display: flex;
         flex-direction: column;
-        justify-content: center;
-        align-items: center;
+        justify-content: flex-end;
+        align-items: flex-end;
+        padding: 10px 14px;
+        background: linear-gradient(
+          to bottom,
+          transparent 0%,
+          transparent 50%,
+          rgba(250, 247, 240, 0.75) 80%,
+          rgba(250, 247, 240, 0.92) 100%
+        );
       }
       header .site-logo-title {
         font-size: 18px;
-        font-weight: 700;
-        color: #fefaf2;
-        letter-spacing: 0.15em;
-        text-shadow: 0 2px 8px rgba(40, 30, 15, 0.55);
+        font-weight: 800;
+        color: #2a2418;
+        letter-spacing: 0.14em;
+        line-height: 1;
       }
       header .site-logo-sub {
-        font-size: 10px;
-        color: #f5ebd3;
-        letter-spacing: 0.1em;
-        text-shadow: 0 1px 4px rgba(40, 30, 15, 0.65);
         margin-top: 4px;
+        font-size: 10.5px;
+        font-weight: 500;
+        color: #5a4f3e;
+        letter-spacing: 0.08em;
       }
-    }
 
-    /* ==========================================
-       通用组件样式
-       ========================================== */
+      .avatar { display: none; }
+      .site-title { display: none; }
+      .site-desc { display: none; }
 
-    /* 页面大标题 */
-    h1 {
-      font-size: 24px;
-      font-weight: 700;
-      color: var(--text);
-      margin-bottom: 6px;
-      letter-spacing: 0.08em;
-    }
-    @media (min-width: 768px) { h1 { font-size: 28px; } }
-
-    /* 页面描述文字 */
-    .page-desc {
-      font-size: 13px;
-      color: var(--text-light);
-      margin-bottom: 24px;
-    }
-    @media (min-width: 768px) { .page-desc { font-size: 14px; } }
-
-    /* 段落标题 */
-    .section-title {
-      font-size: 15px;
-      font-weight: 600;
-      color: var(--text);
-      margin: 32px 0 14px;
-      letter-spacing: 0.06em;
-    }
-    @media (min-width: 768px) { .section-title { font-size: 16px; margin: 40px 0 18px; } }
-
-    /* Emoji 图标样式（与大标题搭配） */
-    .emoji { margin-right: 6px; }
-
-    /* "正在建设中" 占位样式 */
-    .work-in-progress { text-align: center; color: var(--text-light); }
-    .work-in-progress .emoji { margin-bottom: 14px; display: block; }
-    .work-in-progress h2 { font-size: 16px; color: var(--text); margin-bottom: 6px; }
-    .work-in-progress p { font-size: 13px; }
-
-    /* 文章样式：用于渲染 Markdown/HTML 生成的正文内容 */
+      main { padding: 0 0 24px; }
+      h1 { font-size: 18px; }
+      h1 .emoji { font-size: 22px; }
+      .card { padding: 16px 18px; margin-bottom: 12px; }
+      .card-title { font-size: 15px; }
+  
+    /* 文章样式：散文（岁晚闲书） */
     .post {
       background: var(--card-bg);
       border: 1px solid var(--paper);
@@ -434,9 +324,10 @@ const isActive = (path: string) => currentPath === path || currentPath === path 
       padding: 22px 26px;
       margin-bottom: 24px;
     }
-    @media (max-width: 767px) { .post { padding: 18px 18px; } }
+    @media (max-width: 767px) {
+      .post { padding: 18px 18px; }
+    }
 
-    /* 文章标题 */
     .post-title {
       font-size: 19px;
       font-weight: 700;
@@ -448,7 +339,6 @@ const isActive = (path: string) => currentPath === path || currentPath === path 
     }
     @media (min-width: 768px) { .post-title { font-size: 21px; } }
 
-    /* 文章元信息（日期、标签等） */
     .post-meta {
       font-size: 12px;
       color: var(--text-fade);
@@ -457,7 +347,6 @@ const isActive = (path: string) => currentPath === path || currentPath === path 
       border-bottom: 1px dashed var(--paper);
     }
 
-    /* 文章封面图 */
     .post-cover {
       width: 100%;
       height: auto;
@@ -467,24 +356,25 @@ const isActive = (path: string) => currentPath === path || currentPath === path 
       display: block;
     }
 
-    /* 文章正文段落 */
     .post p {
       font-size: 14px;
       line-height: 1.9;
       color: var(--text);
       margin-bottom: 14px;
-      text-indent: 2em;  /* 首行缩进两个字符 */
+      text-indent: 2em;
     }
-    @media (min-width: 768px) { .post p { font-size: 15px; } }
+    @media (min-width: 768px) {
+      .post p { font-size: 15px; }
+    }
 
-    /* 正文中的强调文字 */
     .post p strong { color: var(--accent); font-weight: 500; }
 
-    /* 单篇文章页（详情页） */
-    .post-full { padding: 0; }
-    @media (max-width: 767px) { .post-full { padding-bottom: 80px; } }
 
-    /* 返回链接 */
+    /* 文章列表卡片（栏目页用） —— 改放全局块，避免 .map 动态渲染时 scoped CID 失效 */
+
+    /* 单篇文章页 */
+    .post-full { padding: 0; }
+    @media (max-width: 767px) { .post-full { padding-bottom: 120px; } }
     .post-back {
       display: inline-block;
       font-size: 13px;
@@ -496,7 +386,6 @@ const isActive = (path: string) => currentPath === path || currentPath === path 
     .post-back:hover { color: var(--accent); }
     .post-back-bottom { margin-top: 28px; padding-top: 18px; border-top: 1px dashed var(--paper); }
 
-    /* 详情页大标题 */
     .post-full-title {
       font-size: 22px;
       font-weight: 700;
@@ -505,7 +394,6 @@ const isActive = (path: string) => currentPath === path || currentPath === path 
     }
     @media (min-width: 768px) { .post-full-title { font-size: 26px; } }
 
-    /* 详情页元信息 */
     .post-full-meta {
       font-size: 12.5px;
       color: var(--text-fade);
@@ -514,7 +402,9 @@ const isActive = (path: string) => currentPath === path || currentPath === path 
       border-bottom: 1px dashed var(--paper);
     }
 
-    /* 详情页正文内容 */
+    @media (min-width: 768px) {
+    }
+
     .post-full-content p {
       font-size: 14.5px;
       line-height: 1.95;
@@ -522,10 +412,254 @@ const isActive = (path: string) => currentPath === path || currentPath === path 
       margin-bottom: 16px;
       text-indent: 2em;
     }
-    @media (min-width: 768px) { .post-full-content p { font-size: 15.5px; } }
+    @media (min-width: 768px) {
+      .post-full-content p { font-size: 15.5px; }
+    }
     .post-full-content p strong { color: var(--accent); font-weight: 500; }
 
-    /* 关于区块 */
+    .about-section { padding: 18px 20px; }
+      .section-title { font-size: 13px; margin: 24px 0 12px; }
+      .work-in-progress { padding: 36px 20px; }
+      .work-in-progress .emoji { font-size: 40px; }
+    }
+
+    @media (min-width: 480px) and (max-width: 767px) {
+      .container { padding: 0 22px; }
+      header { padding: 44px 0 28px; }
+      .avatar { width: 68px; height: 68px; font-size: 30px; }
+      .site-title { font-size: 24px; }
+      h1 { font-size: 20px; }
+      h1 .emoji { font-size: 26px; }
+      .card { padding: 18px 20px; margin-bottom: 14px; }
+      .card-title { font-size: 16px; }
+    }
+
+    /* ========== 通用元素 ========== */
+    .avatar {
+      width: 64px;
+      height: 64px;
+      object-fit: cover;
+      background: #fff;
+      border: 1px solid var(--paper);
+      border-radius: 50%;
+      display: block;
+      margin: 0 auto 14px;
+    }
+
+    .site-title { font-weight: 700; margin-bottom: 4px; }
+    .site-desc { color: var(--text-light); font-size: 12px; }
+
+    header { text-align: center; }
+
+    h1 {
+      font-weight: 700;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--text);
+    }
+    h1 .emoji { flex-shrink: 0; }
+
+    .page-desc {
+      font-size: 14px;
+      color: var(--text-light);
+      margin-bottom: 24px;
+    }
+    @media (min-width: 768px) { .page-desc { margin-bottom: 32px; } }
+
+    /* 卡片：纸感，边线而非阴影 */
+    .card {
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      border: 1px solid var(--paper);
+      box-shadow: 1px 1px 0 var(--paper);
+      transition: all 0.2s;
+    }
+    .card:hover {
+      border-color: var(--accent);
+      box-shadow: 2px 2px 0 var(--accent);
+      transform: translate(-1px, -1px);
+    }
+
+    .card-title { font-weight: 500; margin-bottom: 6px; color: var(--text); }
+    .card-desc { font-size: 13px; color: var(--text-light); line-height: 1.65; }
+
+    /* 标签：橄榄绿小章 */
+    .card-tag {
+      display: inline-block;
+      background: var(--olive-soft);
+      color: var(--olive);
+      padding: 2px 10px;
+      border-radius: var(--radius-sm);
+      font-size: 11px;
+      margin-top: 10px;
+      border: 1px solid transparent;
+    }
+
+    .section-title {
+      color: var(--text-light);
+      font-weight: 500;
+      padding-left: 4px;
+      font-size: 13px;
+    }
+    .section-title::before { content: '· '; color: var(--accent); }
+
+    /* 物理分割：纸面折痕感 */
+    .section-divider {
+      display: flex;
+      align-items: center;
+      margin: 36px 0 24px;
+      color: var(--text-light);
+      font-size: 12px;
+    }
+    .section-divider::before,
+    .section-divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--paper);
+    }
+    .section-divider::before { margin-right: 12px; }
+    .section-divider::after { margin-left: 12px; }
+    .section-divider span { letter-spacing: 0.1em; }
+
+    /* 带图卡片：上方配图,下方文案 */
+    .card-with-cover {
+      display: block;
+      text-decoration: none;
+      color: inherit;
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      border: 1px solid var(--paper);
+      box-shadow: 1px 1px 0 var(--paper);
+      transition: all 0.2s;
+      overflow: hidden;
+    }
+    .card-with-cover:hover {
+      border-color: var(--accent);
+      box-shadow: 2px 2px 0 var(--accent);
+      transform: translate(-1px, -1px);
+    }
+    .card-with-cover-img {
+      display: block;
+      width: 100%;
+      height: 160px;
+      object-fit: cover;
+      border-bottom: 1px solid var(--paper);
+      background: var(--paper);
+    }
+    .card-with-cover-body {
+      padding: 14px 18px 16px;
+    }
+    .card-with-cover .card-tag { margin-top: 12px; }
+
+    .work-in-progress { text-align: center; color: var(--text-light); }
+    .work-in-progress .emoji { margin-bottom: 14px; display: block; }
+    .work-in-progress h2 { font-size: 16px; color: var(--text); margin-bottom: 6px; }
+    .work-in-progress p { font-size: 13px; }
+
+
+    /* 文章样式：散文（岁晚闲书） */
+    .post {
+      background: var(--card-bg);
+      border: 1px solid var(--paper);
+      border-radius: var(--radius);
+      box-shadow: 1px 1px 0 var(--paper);
+      padding: 22px 26px;
+      margin-bottom: 24px;
+    }
+    @media (max-width: 767px) {
+      .post { padding: 18px 18px; }
+    }
+
+    .post-title {
+      font-size: 19px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    @media (min-width: 768px) { .post-title { font-size: 21px; } }
+
+    .post-meta {
+      font-size: 12px;
+      color: var(--text-fade);
+      margin-bottom: 18px;
+      padding-bottom: 14px;
+      border-bottom: 1px dashed var(--paper);
+    }
+
+    .post-cover {
+      width: 100%;
+      height: auto;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--paper);
+      margin-bottom: 18px;
+      display: block;
+    }
+
+    .post p {
+      font-size: 14px;
+      line-height: 1.9;
+      color: var(--text);
+      margin-bottom: 14px;
+      text-indent: 2em;
+    }
+    @media (min-width: 768px) {
+      .post p { font-size: 15px; }
+    }
+
+    .post p strong { color: var(--accent); font-weight: 500; }
+
+
+    /* 单篇文章页 */
+    .post-full { padding: 0; }
+    @media (max-width: 767px) { .post-full { padding-bottom: 80px; } }
+    .post-back {
+      display: inline-block;
+      font-size: 13px;
+      color: var(--text-light);
+      text-decoration: none;
+      margin-bottom: 18px;
+      padding: 4px 0;
+    }
+    .post-back:hover { color: var(--accent); }
+    .post-back-bottom { margin-top: 28px; padding-top: 18px; border-top: 1px dashed var(--paper); }
+
+    .post-full-title {
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 8px;
+    }
+    @media (min-width: 768px) { .post-full-title { font-size: 26px; } }
+
+    .post-full-meta {
+      font-size: 12.5px;
+      color: var(--text-fade);
+      margin-bottom: 22px;
+      padding-bottom: 16px;
+      border-bottom: 1px dashed var(--paper);
+    }
+
+    @media (min-width: 768px) {
+    }
+
+    .post-full-content p {
+      font-size: 14.5px;
+      line-height: 1.95;
+      color: var(--text);
+      margin-bottom: 16px;
+      text-indent: 2em;
+    }
+    @media (min-width: 768px) {
+      .post-full-content p { font-size: 15.5px; }
+    }
+    .post-full-content p strong { color: var(--accent); font-weight: 500; }
+
     .about-section {
       background: var(--card-bg);
       border-radius: var(--radius);
@@ -538,23 +672,20 @@ const isActive = (path: string) => currentPath === path || currentPath === path 
     .about-section p { font-size: 13px; color: var(--text-light); line-height: 1.8; }
     @media (min-width: 768px) { .about-section p { font-size: 14px; } }
 
-    /* ==========================================
-       移动端底部导航栏
-       ========================================== */
+    /* 底部导航：白板风，简洁 */
     .bottom-nav {
-      position: fixed;  /* 固定在底部 */
+      position: fixed;
       bottom: 0;
       left: 0;
       right: 0;
       background: var(--card-bg);
       border-top: 1px solid var(--paper);
       display: flex;
-      justify-content: space-around;  /* 均匀分布 */
+      justify-content: space-around;
       padding: 6px 0;
-      z-index: 100;  /* 层级最高 */
+      z-index: 100;
     }
 
-    /* 底部导航项 */
     .nav-item {
       display: flex;
       flex-direction: column;
@@ -570,22 +701,21 @@ const isActive = (path: string) => currentPath === path || currentPath === path 
     }
     .nav-item .icon { font-size: 18px; }
     .nav-item.active { color: var(--accent); }
-    .nav-item:active { transform: scale(0.95); }  /* 点击时的按压效果 */
+    .nav-item:active { transform: scale(0.95); }
 
-    /* 超小屏幕适配 */
     @media (max-width: 360px) {
       .nav-item { padding: 4px 4px; min-width: 44px; font-size: 9px; }
       .nav-item .icon { font-size: 16px; }
     }
   </style>
 
-  <!-- 全局样式（跨页面生效） -->
-  <!-- 这些样式必须在 is:global 块中，否则只对当前组件生效 -->
   <style is:global>
-    /* 详情页阅读内容最大宽度 */
+    /* ===== 跨页生效的样式（必须在 global 块，Layout.astro 的 scoped 对子页面元素不生效）===== */
+
+    /* 详情页阅读栏宽度 */
     .post-full-content { max-width: 640px; }
 
-    /* 详情页/列表页图片统一宽度约束 */
+    /* 详情页 / 列表页图片统一宽度：跟正文同宽 640px,不再撑破排版 */
     .post-full-cover,
     .post-inline-figure {
       display: block;
@@ -602,7 +732,6 @@ const isActive = (path: string) => currentPath === path || currentPath === path 
     .post-inline-figure { margin: 28px auto; }
     .post-full-cover { margin: 0 auto 24px; }
 
-    /* 图片说明文字 */
     .post-inline-figure-caption {
       display: block;
       text-align: center;
@@ -613,7 +742,7 @@ const isActive = (path: string) => currentPath === path || currentPath === path 
       font-style: italic;
     }
 
-    /* 详情页正文段落样式（不在 .post 内也能保持样式）*/
+    /* 详情页正文段落（不在 .post 内也保样式）*/
     .post-full-content p {
       font-size: 14.5px;
       line-height: 1.95;
@@ -621,10 +750,12 @@ const isActive = (path: string) => currentPath === path || currentPath === path 
       margin-bottom: 16px;
       text-indent: 2em;
     }
-    @media (min-width: 768px) { .post-full-content p { font-size: 15.5px; } }
+    @media (min-width: 768px) {
+      .post-full-content p { font-size: 15.5px; }
+    }
     .post-full-content p strong { color: var(--accent); font-weight: 500; }
 
-    /* ===== 文章列表卡片样式 ===== */
+    /* ===== 文章列表卡片（全局块，避开 .map 动态渲染的 scoped CID 失效问题）===== */
     .post-card-link {
       display: block;
       text-decoration: none;
@@ -638,8 +769,9 @@ const isActive = (path: string) => currentPath === path || currentPath === path 
       overflow: hidden;
       transition: border-color .2s ease;
     }
-    /* 卡片链接 hover 效果 */
-    .post-card-link:hover .post-card { border-color: var(--accent); }
+    .post-card-link:hover .post-card {
+      border-color: var(--accent);
+    }
     .post-card-body { padding: 12px 14px 14px; }
     .post-card-title {
       font-size: 16px;
@@ -664,7 +796,7 @@ const isActive = (path: string) => currentPath === path || currentPath === path 
       font-weight: 500;
     }
 
-    /* 卡片封面图容器 */
+    /* ===== 卡片封面图 wrapper（必须 global，否则 scoped 失效）===== */
     .post-card > .post-card-cover {
       width: 100%;
       height: 160px;
@@ -680,7 +812,6 @@ const isActive = (path: string) => currentPath === path || currentPath === path 
       object-fit: cover;
       object-position: center;
     }
-    /* 无封面图时的占位样式 */
     .post-card > .post-card-cover--placeholder {
       display: flex;
       align-items: center;
@@ -694,19 +825,14 @@ const isActive = (path: string) => currentPath === path || currentPath === path 
   </style>
 </head>
 <body>
-  <!-- 主容器：桌面端侧边栏 + 主体，移动端全屏 -->
   <div class="wrapper">
-    <!-- ==========================================
-         侧边栏（桌面端）
-         ========================================== -->
     <aside class="sidebar">
-      <!-- 站点 Logo：纯文字 -->
+      <!-- ========== 站点 Logo：纯文字 ========== -->
       <a href="/" class="site-logo">
         <div class="site-logo-title">凡耘手记</div>
         <div class="site-logo-sub">一介凡人，闲耘方寸技田</div>
       </a>
 
-      <!-- 导航菜单 -->
       <nav>
         <a href="/" class:list={["nav-item", { active: isActive('/') || isActive('/index') }]}>
           <span class="icon">🏠</span>
@@ -733,18 +859,13 @@ const isActive = (path: string) => currentPath === path || currentPath === path 
           <span>留言板</span>
         </a>
       </nav>
-      
-      <!-- 底部信息 -->
       <div class="footer">
         📅 建于 2026 · 宁波
       </div>
     </aside>
 
-    <!-- ==========================================
-         主内容区
-         ========================================== -->
     <main>
-      <!-- 桌面端 Banner 大图 -->
+      <!-- ========== 桌面主区顶部 Banner：全站统一 ========== -->
       <a href="/" class="site-banner">
         <img src="/banner.jpg" alt="凡耘手记 — 一介凡人，闲耘方寸技田" class="site-banner-img" fetchpriority="high" decoding="async" />
         <div class="site-banner-text">
@@ -754,8 +875,8 @@ const isActive = (path: string) => currentPath === path || currentPath === path 
       </a>
 
       <div class="container">
-        <!-- 移动端 Logo（带背景图） -->
         <header>
+          <!-- ========== 移动端 Logo：水彩图 + 叠字标题 ========== -->
           <a href="/" class="site-logo site-logo--mobile">
             <img src="/banner.jpg" alt="凡耘手记 — 一介凡人，闲耘方寸技田" class="site-logo-img" />
             <div class="site-logo-text">
@@ -765,18 +886,13 @@ const isActive = (path: string) => currentPath === path || currentPath === path 
           </a>
         </header>
 
-        <!-- 页面内容插槽：子组件的内容会插入到这里 -->
         <slot />
 
-        <!-- 分享按钮组件 -->
         <ShareButtons title={title} description={description} type={type} />
       </div>
     </main>
   </div>
 
-  <!-- ==========================================
-       移动端底部导航栏
-       ========================================== -->
   <nav class="bottom-nav">
     <a href="/" class:list={["nav-item", { active: isActive('/') || isActive('/index') }]}>
       <span class="icon">🏠</span>
@@ -803,25 +919,20 @@ const isActive = (path: string) => currentPath === path || currentPath === path 
       <span>留言</span>
     </a>
   </nav>
-
-  <!-- ===== 访问统计埋点 ===== -->
-  <!-- 使用 sendBeacon 异步发送统计数据，不影响页面性能 -->
-  <!-- 即使发送失败也不影响用户浏览 -->
-  <script is:inline>
-  (function() {
-    // 浏览器环境检查
-    if (typeof navigator === 'undefined' || !navigator.sendBeacon) return;
-    var host = location.hostname;
-    // 后台管理页面不统计
-    if (host === 'admin.fanren.tech') return;
-    // 构造统计数据
-    var data = JSON.stringify({
-      path: location.pathname + location.search,
-      referer: document.referrer || ''
-    });
-    // 通过 admin.fanren.tech 的 API 发送统计
-    navigator.sendBeacon('https://admin.fanren.tech/api/track', new Blob([data], {type: 'application/json'}));
-  })();
-  </script>
 </body>
+
+<!-- ===== 访问统计埋点（站点性能无影响，失败静默） ===== -->
+<script is:inline>
+(function() {
+  if (typeof navigator === 'undefined' || !navigator.sendBeacon) return;
+  var host = location.hostname;
+  if (host === 'admin.fanren.tech') return; // 后台不统计
+  var data = JSON.stringify({
+    path: location.pathname + location.search,
+    referer: document.referrer || ''
+  });
+  // admin.fanren.tech 跑统计接口，POST 失败也不影响页面
+  navigator.sendBeacon('https://admin.fanren.tech/api/track', new Blob([data], {type: 'application/json'}));
+})();
+</script>
 </html>

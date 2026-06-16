@@ -1,38 +1,15 @@
 ---
-/**
- * 教学分类页 - 杏坛拾器
- * 
- * 展示所有教学工具相关文章
- * 使用 import.meta.glob 动态获取所有文章并解析 frontmatter
- */
 import Layout from '../layouts/Layout.astro';
 
-// =============================================
-// 读取并解析文章数据
-// =============================================
-
-/**
- * 使用 import.meta.glob 获取所有 teaching/ 目录下的文章源文件
- * { query: '?raw', import: 'default' } 表示获取文件的原始内容
- * { eager: true } 表示在构建时就加载所有文件
- */
+// 用 import.meta.glob 拿到所有 teaching/ 下的文章
+// 用 ?raw 拿到原始文件内容，自己解析 frontmatter
 const articleSources = import.meta.glob('./teaching/*.astro', { query: '?raw', import: 'default', eager: true });
 
-/**
- * 解析 frontmatter
- * 
- * @param {string} raw - 文件原始内容
- * @returns {Object} 解析后的 frontmatter 对象
- */
 function parseFrontmatter(raw) {
-  // 默认值
   const fm = { title: '', date: '', tags: [], excerpt: '', cover: null, hidden: false };
-  
-  // 从文件中提取 const frontmatter = {...} 这部分内容
   const match = raw.match(/const\s+frontmatter\s*=\s*(\{[\s\S]*?\})\s*;/);
   if (match) {
     try {
-      // 使用 Function 动态执行 JS 对象字面量
       return { ...fm, ...(new Function(`return (${match[1]})`)()) };
     } catch (e) {
       console.error('frontmatter parse error', e);
@@ -41,42 +18,25 @@ function parseFrontmatter(raw) {
   return fm;
 }
 
-/**
- * 遍历所有文章，提取元数据
- */
 const articles = [];
 for (const [path, raw] of Object.entries(articleSources)) {
-  // 从文件路径提取文章 slug
   const slug = path.replace('./teaching/', '').replace('.astro', '');
   const fm = parseFrontmatter(raw);
-  
-  // 跳过隐藏的文章
   if (fm.hidden) continue;
-  
   articles.push({ slug, ...fm });
 }
 
-/**
- * 按日期倒序排列（最新的在前面）
- */
 articles.sort((a, b) => (b.date || '').localeCompare(a.date || ''));
 ---
 
-<!-- ==========================================
-     页面内容
-     ========================================== -->
 <Layout
   title="🛠️ 杏坛拾器 · 凡耘手记"
   description="精选教学工具,分享落地实操心得。一个语文老师的教学工具与课堂折腾记录。"
   image="/card-teaching.jpg"
 >
-  <!-- 页面标题 -->
   <h1><span class="emoji">🛠️</span> 杏坛拾器</h1>
   <p class="page-desc">精选教学工具，分享落地实操心得</p>
 
-  <!-- ==========================================
-       关于本栏目说明
-       ========================================== -->
   <div class="about-section">
     <h2>📚 初衷</h2>
     <p>
@@ -86,31 +46,23 @@ articles.sort((a, b) => (b.date || '').localeCompare(a.date || ''));
     </p>
   </div>
 
-  <!-- 栏目文章列表标题 -->
   <p class="section-title">📚 已发布文章</p>
 
-  <!-- ==========================================
-       文章列表
-       ========================================== -->
   {articles.length === 0 ? (
-    <!-- 无文章时的占位提示 -->
     <div class="work-in-progress">
       <span class="emoji">🚧</span>
       <h2>还没有文章</h2>
       <p>第一篇正在路上，敬请期待</p>
     </div>
   ) : (
-    <!-- 有文章时，渲染文章卡片列表 -->
     articles.map((post) => (
       <a href={`/teaching/${post.slug}`} class="post-card-link">
         <article class="post-card">
-          {/* 根据是否有封面图显示不同内容 */}
           {post.cover ? (
             <div class="post-card-cover">
               <img src={post.cover} alt={post.title} />
             </div>
           ) : (
-            /* 无封面图时显示占位图标 */
             <div class="post-card-cover post-card-cover--placeholder">
               <span class="emoji">🛠️</span>
             </div>
@@ -128,9 +80,6 @@ articles.sort((a, b) => (b.date || '').localeCompare(a.date || ''));
     ))
   )}
 
-  <!-- ==========================================
-       互动提示
-       ========================================== -->
   <div class="work-in-progress">
     <span class="emoji">💡</span>
     <h2>想看什么？</h2>

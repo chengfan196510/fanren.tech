@@ -1,29 +1,14 @@
 ---
-/**
- * 404 错误页面
- * 
- * 当用户访问的页面不存在时显示
- * 提供友好的错误提示和导航建议
- */
 import Layout from '../layouts/Layout.astro';
 ---
 
-<!-- 使用 Layout 包裹内容 -->
 <Layout title="页面走丢了 😢">
-  
-  <!-- ==========================================
-       错误提示区域
-       ========================================== -->
   <section class="hero">
-    <!-- 大图标 -->
     <div class="hero-icon">🔍</div>
-    <!-- 标题 -->
     <h1>404 - 页面走丢了</h1>
-    <!-- 提示文字 -->
     <p>这个页面好像跑去玩耍了，换一个吧</p>
   </section>
   
-  <!-- 返回首页按钮 -->
   <div style="text-align: center; margin-top: 32px;">
     <a href="/" style="
       display: inline-block;
@@ -39,9 +24,6 @@ import Layout from '../layouts/Layout.astro';
     ">← 返回首页</a>
   </div>
   
-  <!-- ==========================================
-       快速导航建议
-       ========================================== -->
   <div class="tips" style="margin-top: 48px;">
     <h3>🍀 不如看看这些</h3>
     <ul>
