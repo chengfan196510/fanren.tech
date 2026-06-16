@@ -1,38 +1,69 @@
+# GitHub Actions CI/CD 部署配置文件
+#
+# 本文件定义了自动化部署流程：
+# 当代码推送到 main 分支时，自动构建并部署到 GitHub Pages
+#
+# 工作流程概述：
+# 1. 检出代码 (Checkout)
+# 2. 安装依赖、构建项目 (npm install + npm run build)
+# 3. 上传构建产物 (dist 目录)
+# 4. 部署到 GitHub Pages
+
+# 工作流程名称
 name: Deploy to GitHub Pages
 
+# 触发条件：
+#   - push: 当代码推送到 main 分支时自动触发
+#   - workflow_dispatch: 允许手动在 GitHub Actions 页面点击运行
 on:
   push:
     branches:
       - main
   workflow_dispatch:
 
+# 权限设置（GitHub Pages 部署需要这些权限）
 permissions:
-  contents: read
-  pages: write
-  id-token: write
+  contents: read          # 读取仓库内容
+  pages: write            # 写入 GitHub Pages
+  id-token: write         # 用于 OIDC 认证，验证部署身份
 
+# 定义作业（jobs）
 jobs:
+  # 构建作业：在 Ubuntu 最新版系统上运行
   build:
     runs-on: ubuntu-latest
+    
     steps:
+      # 步骤 1: 检出代码
+      # 使用 actions/checkout@v4 插件，将仓库代码拉到 Runner 上
       - name: Checkout
         uses: actions/checkout@v4
+      
+      # 步骤 2: 安装依赖并构建项目
+      # 在项目根目录执行 npm 命令
       - name: Install, build, and upload
         run: |
-          npm install
-          npm run build
+          npm install          # 安装 package.json 中定义的依赖
+          npm run build        # 运行构建脚本，生成 dist 目录
+      
+      # 步骤 3: 上传构建产物
+      # 使用 actions/upload-pages-artifact@v3 将 dist 目录上传为 Pages artifact
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: dist
+          path: dist           # 指定要上传的目录（就是 npm run build 生成的内容）
 
+  # 部署作业：依赖于 build 作业完成
   deploy:
     environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+      name: github-pages        # 部署目标环境名称
+      url: ${{ steps.deployment.outputs.page_url }}  # 部署成功后获取页面 URL
     runs-on: ubuntu-latest
-    needs: build
+    needs: build                # 必须等待 build 作业完成
+    
     steps:
+      # 步骤 4: 部署到 GitHub Pages
+      # 使用 actions/deploy-pages@v4 将 artifact 正式部署
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4

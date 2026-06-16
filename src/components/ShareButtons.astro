@@ -1,28 +1,43 @@
 ---
 /**
- * 分享按钮组件（全局）
- * 极简设计：点一下就走，不让用户二次选择 
- *
- * 逻辑：
- * - 优先复制链接 + toast 提示（最稳，全端可用）
- * - 复制失败时弹一个全屏蒙层,让用户长按复制（兜底）
+ * 分享按钮组件
+ * 
+ * 极简设计：点击一下直接执行分享动作，无需用户二次选择
+ * 
+ * 工作原理：
+ * 1. 优先尝试使用系统原生分享面板（移动端支持较好）
+ * 2. 系统分享不可用时，自动降级为"复制链接"方案
+ * 3. 复制链接也失败时（极少数情况），弹出蒙层让用户手动长按复制
+ * 
+ * 分享平台优先级：
+ * - 移动端：调用 navigator.share() 打开系统分享面板（微信等会显示带题图的小卡片）
+ * - 桌面端/移动端降级：复制链接 + Toast 提示"去微信粘贴吧"
  */
 ---
 
-<!-- ============ 浮动分享按钮（仅文章详情页显示）============ -->
+<!-- ==========================================
+     浮动分享按钮（右下角固定）
+     仅在文章详情页显示
+     ========================================== -->
 <button class="share-fab" id="shareFab" aria-label="分享" title="分享这篇文章">
   <span class="share-fab-icon">↗</span>
   <span class="share-fab-text">分享</span>
 </button>
 
-<!-- ============ 极简 toast 提示（默认用这个）============ -->
+<!-- ==========================================
+     Toast 提示（默认使用这个）
+     复制链接成功后显示
+     ========================================== -->
 <div class="share-toast" id="shareToast" aria-hidden="true">
   <span class="share-toast-icon">📱</span>
   <span class="share-toast-text" id="shareToastText">用手机扫码分享</span>
   <span class="share-toast-url" id="shareToastUrl"></span>
 </div>
 
-<!-- ============ 兜底蒙层（极少数情况下用）============ -->
+<!-- ==========================================
+     兜底蒙层（极少数情况下使用）
+     当复制功能完全不可用时，让用户长按复制
+     ========================================== -->
 <div class="share-fallback" id="shareFallback" aria-hidden="true">
   <div class="share-fallback-box">
     <div class="share-fallback-tip">长按下面这段文字 → 复制</div>
@@ -31,14 +46,16 @@
   </div>
 </div>
 
-<!-- ============ 样式 ============ -->
+<!-- ==========================================
+     组件样式
+     ========================================== -->
 <style is:global>
-  /* 浮动按钮 */
+  /* 浮动分享按钮 */
   .share-fab {
     position: fixed;
     top: 86px;
     right: 24px;
-    z-index: 90;
+    z-index: 90;  /* 在大多数内容之上 */
     background: var(--card-bg);
     color: var(--text);
     border: 1px solid var(--paper);
@@ -53,6 +70,7 @@
     gap: 4px;
     transition: all 0.2s;
   }
+  /* 按钮 hover 效果 */
   .share-fab:hover {
     border-color: var(--accent);
     color: var(--accent);
@@ -61,6 +79,8 @@
   }
   .share-fab-icon { font-size: 16px; font-weight: 700; }
   .share-fab-text { font-weight: 500; }
+  
+  /* 移动端：调整位置到底部导航上方 */
   @media (max-width: 767px) {
     .share-fab {
       top: auto;
@@ -71,13 +91,13 @@
     }
   }
 
-  /* toast 提示（默认用这个）*/
+  /* Toast 提示样式 */
   .share-toast {
     position: fixed;
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%) scale(0.9);
-    z-index: 9999;
+    z-index: 9999;  /* 最顶层 */
     background: rgba(40, 36, 32, 0.95);
     color: #fff;
     padding: 18px 24px;
@@ -91,9 +111,10 @@
     width: calc(100% - 40px);
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
     opacity: 0;
-    pointer-events: none;
+    pointer-events: none;  /* 禁止点击穿透 */
     transition: opacity 0.2s, transform 0.2s;
   }
+  /* 显示状态 */
   .share-toast.is-show {
     opacity: 1;
     transform: translate(-50%, -50%) scale(1);
@@ -103,7 +124,7 @@
   .share-toast-url {
     font-size: 11.5px;
     color: rgba(255, 255, 255, 0.75);
-    word-break: break-all;
+    word-break: break-all;  /* 链接过长时换行 */
     text-align: center;
     line-height: 1.5;
     max-height: 60px;
@@ -113,7 +134,7 @@
   /* 兜底蒙层 */
   .share-fallback {
     position: fixed;
-    inset: 0;
+    inset: 0;  /* 全屏覆盖 */
     z-index: 10000;
     background: rgba(0, 0, 0, 0.6);
     display: flex;
@@ -150,7 +171,7 @@
     border-radius: 6px;
     word-break: break-all;
     line-height: 1.6;
-    user-select: all;
+    user-select: all;  /* 允许选中 */
     -webkit-user-select: all;
     margin-bottom: 16px;
   }
@@ -167,9 +188,16 @@
   .share-fallback-close:hover { opacity: 0.9; }
 </style>
 
-<!-- ============ 脚本 ============ -->
+<!-- ==========================================
+     组件脚本
+     ========================================== -->
 <script is:inline>
+  /**
+   * 分享按钮逻辑
+   * 立即执行，不等待 DOMContentLoaded（因为组件在 body 中）
+   */
   (function() {
+    // 获取 DOM 元素
     const fab = document.getElementById('shareFab');
     const toast = document.getElementById('shareToast');
     const toastText = document.getElementById('shareToastText');
@@ -179,16 +207,23 @@
     const fallbackClose = document.getElementById('shareFallbackClose');
     if (!fab) return;
 
+    // 获取当前页面信息（用于分享）
     const pageUrl = window.location.href;
     const pageTitle = document.title;
     const pageDesc = (document.querySelector('meta[name="description"]') || {}).content || '';
 
+    /**
+     * 显示 Toast 提示
+     * @param {string} text - 提示文字
+     * @param {string} withUrl - 可选，要显示的链接
+     */
     function showToast(text, withUrl) {
       toastText.textContent = text;
       toastUrl.textContent = withUrl || '';
       toastUrl.style.display = withUrl ? 'block' : 'none';
       toast.classList.add('is-show');
       toast.setAttribute('aria-hidden', 'false');
+      // 4 秒后自动隐藏
       clearTimeout(toast._t);
       toast._t = setTimeout(() => {
         toast.classList.remove('is-show');
@@ -196,44 +231,60 @@
       }, 4000);
     }
 
+    /**
+     * 显示兜底蒙层
+     */
     function showFallback() {
       fallbackUrl.textContent = pageUrl;
       fallback.classList.add('is-show');
       fallback.setAttribute('aria-hidden', 'false');
     }
+
+    /**
+     * 隐藏兜底蒙层
+     */
     function hideFallback() {
       fallback.classList.remove('is-show');
       fallback.setAttribute('aria-hidden', 'true');
     }
 
-    // 关闭蒙层
+    // 绑定关闭蒙层事件
     if (fallbackClose) {
       fallbackClose.addEventListener('click', hideFallback);
     }
     if (fallback) {
+      // 点击蒙层背景也可关闭
       fallback.addEventListener('click', (e) => {
         if (e.target === fallback) hideFallback();
       });
     }
 
-    // 1) 优先用现代 Clipboard API
+    /**
+     * 方法 1：尝试使用现代 Clipboard API 复制文本
+     * @returns {Promise<boolean>} 是否成功
+     */
     async function tryClipboard() {
       try {
+        // 需要安全上下文（HTTPS）才能使用 Clipboard API
         if (navigator.clipboard && window.isSecureContext) {
           await navigator.clipboard.writeText(pageUrl);
           return true;
         }
-      } catch (e) { /* fall through */ }
+      } catch (e) { /* 失败，继续尝试其他方案 */ }
       return false;
     }
 
-    // 2) 退到 textarea + execCommand('copy')
+    /**
+     * 方法 2：降级方案，使用旧版 execCommand 复制
+     * @returns {boolean} 是否成功
+     */
     function tryExecCommand() {
       try {
+        // 创建临时 textarea 元素
         const ta = document.createElement('textarea');
         ta.value = pageUrl;
         ta.style.position = 'fixed';
-        ta.style.opacity = '0';
+        ta.style.opacity = '0';  // 隐藏但仍可交互
         ta.style.pointerEvents = 'none';
         document.body.appendChild(ta);
         ta.focus();
@@ -244,25 +295,34 @@
       } catch (e) { return false; }
     }
 
+    /**
+     * 复制链接并显示提示
+     * 依次尝试多种复制方法
+     */
     async function copyAndToast() {
-      // 1) 试 Clipboard API
+      // 尝试方法 1：Clipboard API
       if (await tryClipboard()) {
         showToast('✅ 链接已复制,去微信粘贴吧', pageUrl);
         return;
       }
-      // 2) 试 execCommand
+      // 尝试方法 2：execCommand
       if (tryExecCommand()) {
         showToast('✅ 链接已复制,去微信粘贴吧', pageUrl);
         return;
       }
-      // 3) 都不行 → 弹蒙层让用户长按复制
+      // 都不行 → 弹蒙层让用户手动复制
       showFallback();
     }
 
+    /**
+     * 主点击处理函数
+     */
     fab.addEventListener('click', async (e) => {
       e.preventDefault();
 
-      // 1) 优先 navigator.share(支持系统分享面板 → 微信带题图小卡片)
+      // 方法 1：优先尝试系统原生分享面板
+      // 支持的系统：iOS Safari、微信内置浏览器、Android Chrome 等
+      // 会显示带题图的小卡片，比纯复制链接体验更好
       if (navigator.share) {
         try {
           await navigator.share({
@@ -270,14 +330,15 @@
             text: pageDesc,
             url: pageUrl
           });
-          return; // 用户已完成分享,不弹 toast
+          return; // 用户已完成分享，不弹提示
         } catch (err) {
-          // 用户取消(AbortError)不弹,真失败才降级
+          // 用户取消分享（AbortError）不提示，真正失败才降级
           if (err && err.name === 'AbortError') return;
         }
       }
 
-      // 2) 降级到复制(国内浏览器 / 桌面浏览器)
+      // 方法 2：降级到复制链接方案
+      // 适用于：桌面浏览器、国内浏览器（微信等）
       await copyAndToast();
     });
   })();

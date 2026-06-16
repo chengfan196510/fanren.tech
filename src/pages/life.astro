@@ -1,34 +1,58 @@
 ---
+/**
+ * 生活分类页 - 岁晚闲书
+ * 
+ * 展示所有生活随笔文章
+ * 支持两种 frontmatter 格式：JS 对象和 YAML 格式
+ */
 import Layout from '../layouts/Layout.astro';
 
-// 用 ?raw 拿到所有 life/*.astro 的原始内容，自己解析 frontmatter
-// 支持两种 frontmatter 形式：
-//   1. JS 形式：const frontmatter = { title, date, tags, excerpt, cover, hidden };
-//   2. YAML 形式：--- \n title: "..." \n --- （Astro 5 仍可识别 .astro 的 YAML frontmatter）
+// =============================================
+// 读取并解析文章数据
+// =============================================
+
+/**
+ * 使用 ?raw 获取所有 life/*.astro 的原始内容
+ * 支持两种 frontmatter 形式：
+ *   1. JS 形式：const frontmatter = { title, date, tags, excerpt, cover, hidden };
+ *   2. YAML 形式：--- \n title: "..." \n --- （Astro 5 仍可识别 .astro 的 YAML frontmatter）
+ */
 const articleSources = import.meta.glob('./life/*.astro', { query: '?raw', import: 'default', eager: true });
 
+/**
+ * 解析 frontmatter，支持 JS 和 YAML 两种格式
+ * 
+ * @param {string} raw - 文件原始内容
+ * @returns {Object} 解析后的 frontmatter 对象
+ */
 function parseFrontmatter(raw) {
+  // 默认值
   const fm = { title: '', date: '', tags: [], excerpt: '', cover: '', hidden: false };
-  // 形式 1：JS const frontmatter = { ... }
+  
+  // 尝试解析 JS 格式：const frontmatter = { ... }
   const jsMatch = raw.match(/const\s+frontmatter\s*=\s*(\{[\s\S]*?\})\s*;/);
   if (jsMatch) {
     try {
+      // 使用 Function 动态执行 JS 对象字面量
       return { ...fm, ...(new Function(`return (${jsMatch[1]})`)()) };
     } catch (e) {
       console.error('frontmatter parse error (js)', e);
     }
   }
-  // 形式 2：YAML frontmatter (--- ... ---)
+  
+  // 尝试解析 YAML 格式：--- ... ---
   const yamlMatch = raw.match(/^---\s*\n([\s\S]*?)\n---/);
   if (yamlMatch) {
     const lines = yamlMatch[1].split('\n');
     for (const line of lines) {
+      // 匹配 key: value 格式
       const m = line.match(/^(\w+):\s*(.*)$/);
       if (!m) continue;
       const key = m[1].trim();
       let val = m[2].trim();
       // 去掉首尾引号
       val = val.replace(/^["']|["']$/g, '');
+      // 处理特殊字段
       if (key === 'tags' && val.startsWith('[')) {
         try { fm.tags = JSON.parse(val); } catch { fm.tags = []; }
       } else if (key === 'hidden') {
@@ -39,42 +63,64 @@ function parseFrontmatter(raw) {
     }
     return fm;
   }
+  
   return fm;
 }
 
+/**
+ * 遍历所有文章，提取元数据
+ */
 const posts = [];
 for (const [path, raw] of Object.entries(articleSources)) {
+  // 从文件路径提取文章 slug
   const slug = path.replace('./life/', '').replace(/\.astro$/, '');
   const fm = parseFrontmatter(raw);
+  
+  // 跳过隐藏的文章
   if (fm.hidden) continue;
+  
   posts.push({ slug, ...fm });
 }
 
+/**
+ * 按日期倒序排列（最新的在前面）
+ */
 posts.sort((a, b) => (b.date || '').localeCompare(a.date || ''));
 ---
 
+<!-- ==========================================
+     页面内容
+     ========================================== -->
 <Layout
   title="🌿 岁晚闲书 · 凡耘手记"
   description="随笔日常点滴,书写悠然退休时光。一个即将退休的语文老师,关于家、关于生活、关于自己的小文。"
   image="/card-life.jpg"
 >
+  <!-- 页面标题 -->
   <h1><span class="emoji">🌿</span> 岁晚闲书</h1>
   <p class="page-desc">随笔日常点滴，书写悠然退休时光</p>
 
+  <!-- ==========================================
+       文章列表
+       ========================================== -->
   {posts.length === 0 ? (
+    <!-- 无文章时的占位提示 -->
     <div class="work-in-progress">
       <span class="emoji">🚧</span>
       <h2>更多文章正在路上</h2>
       <p>松果的语录、退休后的日常，慢慢写</p>
     </div>
   ) : (
+    <!-- 有文章时，渲染文章卡片列表 -->
     posts.map((post) => (
       <a href={`/life/${post.slug}`} class="post-card-link">
         <article class="post-card">
           <div class="post-card-cover">
             {post.cover ? (
+              /* 有封面图时显示图片 */
               <img src={post.cover} alt={post.title} />
             ) : (
+              /* 无封面图时显示占位图标 */
               <div class="post-card-cover-fallback">
                 <span>🌿</span>
               </div>
@@ -93,6 +139,9 @@ posts.sort((a, b) => (b.date || '').localeCompare(a.date || ''));
     ))
   )}
 
+  <!-- ==========================================
+       互动提示（有文章时才显示）
+       ========================================== -->
   {posts.length > 0 && (
     <div class="work-in-progress">
       <span class="emoji">💡</span>
