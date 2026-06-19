@@ -245,7 +245,7 @@ const isActive = (path: string) => currentPath === path || currentPath === path 
 
     /* ========== Mobile：底部导航 ========== */
     @media (max-width: 767px) {
-      body { padding-bottom: var(--nav-height); }
+      body { padding-bottom: calc(var(--nav-height) + 50px); }
       .wrapper { display: block; }
       .sidebar { display: none; }
       .site-banner { display: none; }
@@ -617,7 +617,7 @@ const isActive = (path: string) => currentPath === path || currentPath === path 
 
     /* 单篇文章页 */
     .post-full { padding: 0; }
-    @media (max-width: 767px) { .post-full { padding-bottom: 80px; } }
+    @media (max-width: 767px) { .post-full { padding-bottom: 140px; } }
     .post-back {
       display: inline-block;
       font-size: 13px;
