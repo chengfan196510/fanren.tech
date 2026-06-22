@@ -387,6 +387,52 @@ const isActive = (path: string) => currentPath === path || currentPath === path 
     .post-back:hover { color: var(--accent); }
     .post-back-bottom { margin-top: 28px; padding-top: 18px; border-top: 1px dashed var(--paper); }
 
+    /* 作者卡片（二维码） */
+    .author-card {
+      margin-top: 36px;
+      padding-top: 24px;
+      border-top: 1px dashed var(--paper);
+    }
+    .author-card-inner {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      padding: 20px 24px;
+      background: var(--card-bg);
+      border: 1px solid var(--paper);
+      border-radius: var(--radius);
+      box-shadow: 1px 1px 0 var(--paper);
+    }
+    .author-qr {
+      width: 80px;
+      height: 80px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--paper);
+      flex-shrink: 0;
+    }
+    .author-card-text {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .author-card-name {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text);
+      margin: 0;
+      text-indent: 0;
+    }
+    .author-card-desc {
+      font-size: 12.5px;
+      color: var(--text-light);
+      margin: 0;
+      text-indent: 0;
+    }
+    @media (max-width: 767px) {
+      .author-card-inner { padding: 16px 18px; gap: 16px; }
+      .author-qr { width: 72px; height: 72px; }
+    }
+
     .post-full-title {
       font-size: 22px;
       font-weight: 700;
@@ -629,6 +675,52 @@ const isActive = (path: string) => currentPath === path || currentPath === path 
     }
     .post-back:hover { color: var(--accent); }
     .post-back-bottom { margin-top: 28px; padding-top: 18px; border-top: 1px dashed var(--paper); }
+
+    /* 作者卡片（二维码） */
+    .author-card {
+      margin-top: 36px;
+      padding-top: 24px;
+      border-top: 1px dashed var(--paper);
+    }
+    .author-card-inner {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      padding: 20px 24px;
+      background: var(--card-bg);
+      border: 1px solid var(--paper);
+      border-radius: var(--radius);
+      box-shadow: 1px 1px 0 var(--paper);
+    }
+    .author-qr {
+      width: 80px;
+      height: 80px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--paper);
+      flex-shrink: 0;
+    }
+    .author-card-text {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .author-card-name {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text);
+      margin: 0;
+      text-indent: 0;
+    }
+    .author-card-desc {
+      font-size: 12.5px;
+      color: var(--text-light);
+      margin: 0;
+      text-indent: 0;
+    }
+    @media (max-width: 767px) {
+      .author-card-inner { padding: 16px 18px; gap: 16px; }
+      .author-qr { width: 72px; height: 72px; }
+    }
 
     .post-full-title {
       font-size: 22px;
@@ -888,6 +980,18 @@ const isActive = (path: string) => currentPath === path || currentPath === path 
         </header>
 
         <slot />
+
+        {type === 'article' && (
+          <div class="author-card">
+            <div class="author-card-inner">
+              <img src="/wechat-qr.jpg" alt="微信二维码" class="author-qr" />
+              <div class="author-card-text">
+                <p class="author-card-name">程凡</p>
+                <p class="author-card-desc">闲耘方寸技田 · 扫码添加微信</p>
+              </div>
+            </div>
+          </div>
+        )}
 
         <div class="bottom-spacer" aria-hidden="true"></div>
 
