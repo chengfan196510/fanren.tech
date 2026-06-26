@@ -404,13 +404,11 @@ const isActive = (path: string) => currentPath === path || currentPath === path 
       box-shadow: 1px 1px 0 var(--paper);
     }
     .author-qr {
-      width: 140px;
+      max-width: 280px;
+      width: 100%;
       height: auto;
-      aspect-ratio: 2732 / 1534;
       border-radius: var(--radius-sm);
       border: 1px solid var(--paper);
-      flex-shrink: 0;
-      object-fit: cover;
     }
     .author-card-text {
       display: flex;
@@ -432,7 +430,7 @@ const isActive = (path: string) => currentPath === path || currentPath === path 
     }
     @media (max-width: 767px) {
       .author-card-inner { padding: 16px 18px; gap: 16px; }
-      .author-qr { width: 110px; height: auto; aspect-ratio: 2732 / 1534; }
+      .author-qr { max-width: 220px; }
     }
 
     .post-full-title {
@@ -695,13 +693,11 @@ const isActive = (path: string) => currentPath === path || currentPath === path 
       box-shadow: 1px 1px 0 var(--paper);
     }
     .author-qr {
-      width: 140px;
+      max-width: 280px;
+      width: 100%;
       height: auto;
-      aspect-ratio: 2732 / 1534;
       border-radius: var(--radius-sm);
       border: 1px solid var(--paper);
-      flex-shrink: 0;
-      object-fit: cover;
     }
     .author-card-text {
       display: flex;
@@ -723,7 +719,7 @@ const isActive = (path: string) => currentPath === path || currentPath === path 
     }
     @media (max-width: 767px) {
       .author-card-inner { padding: 16px 18px; gap: 16px; }
-      .author-qr { width: 110px; height: auto; aspect-ratio: 2732 / 1534; }
+      .author-qr { max-width: 220px; }
     }
 
     .post-full-title {
@@ -984,12 +980,8 @@ const isActive = (path: string) => currentPath === path || currentPath === path 
 
         {type === 'article' && (
           <div class="author-card">
-            <div class="author-card-inner">
+            <div class="author-card-inner" style="justify-content: center;">
               <img src="/wechat-qr.jpg" alt="微信二维码" class="author-qr" />
-              <div class="author-card-text">
-                <p class="author-card-name">程凡</p>
-                <p class="author-card-desc">闲耘方寸技田 · 扫码添加微信</p>
-              </div>
             </div>
           </div>
         )}
