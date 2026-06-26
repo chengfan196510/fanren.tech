@@ -404,11 +404,13 @@ const isActive = (path: string) => currentPath === path || currentPath === path 
       box-shadow: 1px 1px 0 var(--paper);
     }
     .author-qr {
-      width: 80px;
-      height: 80px;
+      width: 140px;
+      height: auto;
+      aspect-ratio: 2732 / 1534;
       border-radius: var(--radius-sm);
       border: 1px solid var(--paper);
       flex-shrink: 0;
+      object-fit: cover;
     }
     .author-card-text {
       display: flex;
@@ -430,7 +432,7 @@ const isActive = (path: string) => currentPath === path || currentPath === path 
     }
     @media (max-width: 767px) {
       .author-card-inner { padding: 16px 18px; gap: 16px; }
-      .author-qr { width: 72px; height: 72px; }
+      .author-qr { width: 110px; height: auto; aspect-ratio: 2732 / 1534; }
     }
 
     .post-full-title {
@@ -693,11 +695,13 @@ const isActive = (path: string) => currentPath === path || currentPath === path 
       box-shadow: 1px 1px 0 var(--paper);
     }
     .author-qr {
-      width: 80px;
-      height: 80px;
+      width: 140px;
+      height: auto;
+      aspect-ratio: 2732 / 1534;
       border-radius: var(--radius-sm);
       border: 1px solid var(--paper);
       flex-shrink: 0;
+      object-fit: cover;
     }
     .author-card-text {
       display: flex;
@@ -719,7 +723,7 @@ const isActive = (path: string) => currentPath === path || currentPath === path 
     }
     @media (max-width: 767px) {
       .author-card-inner { padding: 16px 18px; gap: 16px; }
-      .author-qr { width: 72px; height: 72px; }
+      .author-qr { width: 110px; height: auto; aspect-ratio: 2732 / 1534; }
     }
 
     .post-full-title {
