@@ -82,6 +82,65 @@ for (const post of calendarAllPosts) {
   }
   calendarPostsByDate[post.date].push(post);
 }
+
+// ===== 月历 SSR：初始月份渲染 =====
+const now = new Date();
+const initialYear = now.getFullYear();
+const initialMonth = now.getMonth();
+const todayStr = `${initialYear}-${String(initialMonth + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
+
+interface CalendarDayCell {
+  day: number;
+  dateStr: string;
+  isOtherMonth: boolean;
+  isToday: boolean;
+  hasPosts: boolean;
+  postCount: number;
+}
+
+function generateMonthDays(year: number, month: number): CalendarDayCell[] {
+  const cells: CalendarDayCell[] = [];
+  const firstDay = new Date(year, month, 1);
+  const lastDay = new Date(year, month + 1, 0);
+  const startWeekday = firstDay.getDay();
+  const daysInMonth = lastDay.getDate();
+  const today = new Date();
+  const todayDS = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
+
+  function fmt(y: number, m: number, d: number) {
+    return `${y}-${String(m + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
+  }
+
+  // 上月末尾
+  const prevLast = new Date(year, month, 0).getDate();
+  for (let i = startWeekday - 1; i >= 0; i--) {
+    const d = prevLast - i;
+    const ds = fmt(year, month - 1, d);
+    const posts = calendarPostsByDate[ds] || [];
+    cells.push({ day: d, dateStr: ds, isOtherMonth: true, isToday: ds === todayDS, hasPosts: posts.length > 0, postCount: posts.length });
+  }
+
+  // 当月
+  for (let d = 1; d <= daysInMonth; d++) {
+    const ds = fmt(year, month, d);
+    const posts = calendarPostsByDate[ds] || [];
+    cells.push({ day: d, dateStr: ds, isOtherMonth: false, isToday: ds === todayDS, hasPosts: posts.length > 0, postCount: posts.length });
+  }
+
+  // 下月补齐到 6 行 (42 格)
+  const total = cells.length;
+  const remain = total <= 35 ? 35 - total : (total % 7 === 0 ? 0 : 7 - (total % 7));
+  for (let d = 1; d <= remain; d++) {
+    const ds = fmt(year, month + 1, d);
+    const posts = calendarPostsByDate[ds] || [];
+    cells.push({ day: d, dateStr: ds, isOtherMonth: true, isToday: ds === todayDS, hasPosts: posts.length > 0, postCount: posts.length });
+  }
+
+  return cells;
+}
+
+const initialCalendarDays = generateMonthDays(initialYear, initialMonth);
+const calendarMonthLabel = `${initialYear}年${initialMonth + 1}月`;
 // ===== 月历组件 end =====
 ---
 
@@ -166,13 +225,28 @@ for (const post of calendarAllPosts) {
   <div class="calendar-container" id="calendarContainer">
     <div class="calendar-header">
       <button class="calendar-nav-btn" id="prevMonth" aria-label="上一月">‹</button>
-      <div class="calendar-title" id="calendarTitle">加载中...</div>
+      <div class="calendar-title" id="calendarTitle">{calendarMonthLabel}</div>
       <button class="calendar-nav-btn" id="nextMonth" aria-label="下一月">›</button>
     </div>
     <div class="calendar-weekdays">
       <span>日</span><span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span>
     </div>
-    <div class="calendar-grid" id="calendarGrid"></div>
+    <div class="calendar-grid" id="calendarGrid">
+      {initialCalendarDays.map((cell) => (
+        <div
+          class:list={[
+            'calendar-day',
+            { 'other-month': cell.isOtherMonth },
+            { 'today': cell.isToday },
+            { 'has-posts': cell.hasPosts },
+          ]}
+          data-date={cell.dateStr}
+          title={cell.hasPosts ? `${cell.postCount} 篇文章` : ''}
+        >
+          {cell.day}
+        </div>
+      ))}
+    </div>
   </div>
   <!-- 当日文章列表弹窗 -->
   <div class="calendar-popup" id="calendarPopup" style="display: none;">
@@ -219,7 +293,29 @@ for (const post of calendarAllPosts) {
       return parts[0] + '年' + parseInt(parts[1]) + '月' + parseInt(parts[2]) + '日';
     }
 
+    var initialRendered = true; // SSR 已渲染初始月份
+
+    function bindDayEvents() {
+      var cells = grid.querySelectorAll('.calendar-day.has-posts');
+      for (var i = 0; i < cells.length; i++) {
+        (function(cell) {
+          var ds = cell.getAttribute('data-date');
+          if (!ds) return;
+          cell.addEventListener('click', function() {
+            showPopup(ds);
+          });
+        })(cells[i]);
+      }
+    }
+
     function renderCalendar() {
+      // 如果是初始且为当月，不需要重绘（节省性能）
+      if (initialRendered && currentYear === initialYear && currentMonth === initialMonth) {
+        bindDayEvents();
+        initialRendered = false;
+        return;
+      }
+      initialRendered = false;
       titleEl.textContent = currentYear + '年' + (currentMonth + 1) + '月';
       grid.innerHTML = '';
 
@@ -320,7 +416,13 @@ for (const post of calendarAllPosts) {
 
     popupClose.addEventListener('click', hidePopup);
 
-    renderCalendar();
+    // 初始：如果 SSR 已渲染当月，直接绑定事件；否则重绘
+    if (initialRendered && currentYear === initialYear && currentMonth === initialMonth) {
+      bindDayEvents();
+      initialRendered = false;
+    } else {
+      renderCalendar();
+    }
   })();
   </script>
 
