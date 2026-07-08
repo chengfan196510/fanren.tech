@@ -257,15 +257,14 @@ const calendarMonthLabel = `${initialYear}年${initialMonth + 1}月`;
     <div class="calendar-popup-list" id="popupList"></div>
   </div>
   <!-- 月历数据注入 -->
-  <script type="application/json" id="calendarPostsData">
-    {JSON.stringify(calendarPostsByDate)}
+  <script is:inline>
+    window.__calendarPostsByDate__ = {JSON.stringify(calendarPostsByDate)};
   </script>
   <!-- 月历交互脚本 -->
   <script is:inline>
   (function() {
-    var dataEl = document.getElementById('calendarPostsData');
-    if (!dataEl) return;
-    var postsByDate = JSON.parse(dataEl.textContent);
+    var postsByDate = window.__calendarPostsByDate__ || {};
+    if (!postsByDate || !Object.keys(postsByDate).length) return;
 
     var grid = document.getElementById('calendarGrid');
     var titleEl = document.getElementById('calendarTitle');
