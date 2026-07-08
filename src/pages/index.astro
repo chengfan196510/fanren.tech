@@ -351,6 +351,9 @@ const calendarMonthLabel = `${initialYear}年${initialMonth + 1}月`;
     function addDayCell(day, dateStr, isOtherMonth) {
       var cell = document.createElement('div');
       cell.className = 'calendar-day';
+      // 继承 Astro scoped CSS 属性，确保动态创建的元素样式生效
+      var astroAttrs = grid.getAttributeNames().filter(function(n) { return n.startsWith('data-astro-cid'); });
+      for (var ai = 0; ai < astroAttrs.length; ai++) { cell.setAttribute(astroAttrs[ai], ''); }
       if (isOtherMonth) cell.classList.add('other-month');
       if (dateStr === todayStr) cell.classList.add('today');
 
@@ -367,6 +370,11 @@ const calendarMonthLabel = `${initialYear}年${initialMonth + 1}月`;
       grid.appendChild(cell);
     }
 
+    function applyAstroAttr(el) {
+      var astroAttrs = grid.getAttributeNames().filter(function(n) { return n.startsWith('data-astro-cid'); });
+      for (var ai = 0; ai < astroAttrs.length; ai++) { el.setAttribute(astroAttrs[ai], ''); }
+    }
+
     function showPopup(dateStr) {
       var posts = postsByDate[dateStr];
       if (!posts || !posts.length) return;
@@ -377,14 +385,17 @@ const calendarMonthLabel = `${initialYear}年${initialMonth + 1}月`;
       for (var i = 0; i < posts.length; i++) {
         var post = posts[i];
         var item = document.createElement('a');
+        applyAstroAttr(item);
         item.href = post.url;
         item.className = 'calendar-popup-item';
 
         var title = document.createElement('div');
+        applyAstroAttr(title);
         title.className = 'calendar-popup-item-title';
         title.textContent = post.title;
 
         var meta = document.createElement('div');
+        applyAstroAttr(meta);
         meta.className = 'calendar-popup-item-meta';
         meta.innerHTML = '<span class="cat-icon">' + post.categoryIcon + '</span>' + post.categoryName;
 
