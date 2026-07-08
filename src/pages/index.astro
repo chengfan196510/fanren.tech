@@ -292,6 +292,8 @@ const calendarMonthLabel = `${initialYear}年${initialMonth + 1}月`;
       return parts[0] + '年' + parseInt(parts[1]) + '月' + parseInt(parts[2]) + '日';
     }
 
+    var initialYear = currentYear;
+    var initialMonth = currentMonth;
     var initialRendered = true; // SSR 已渲染初始月份
 
     function bindDayEvents() {
