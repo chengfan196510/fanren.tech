@@ -1,5 +1,88 @@
 ---
 import Layout from '../layouts/Layout.astro';
+
+// ===== 月历组件：获取四个栏目所有文章 =====
+const calendarArticleSources = import.meta.glob(
+  ['./teaching/*.astro', './tech/*.astro', './ai/*.astro', './life/*.astro'],
+  { query: '?raw', import: 'default', eager: true }
+);
+
+function parseFrontmatter(raw: string) {
+  const fm: Record<string, any> = { title: '', date: '', tags: [], excerpt: '', cover: '', hidden: false };
+  const jsMatch = raw.match(/const\s+frontmatter\s*=\s*(\{[\s\S]*?\})\s*;/);
+  if (jsMatch) {
+    try {
+      return { ...fm, ...(new Function(`return (${jsMatch[1]})`)()) };
+    } catch (e) {
+      console.error('frontmatter parse error (js)', e);
+    }
+  }
+  const yamlMatch = raw.match(/^---\s*\n([\s\S]*?)\n---/);
+  if (yamlMatch) {
+    const lines = yamlMatch[1].split('\n');
+    for (const line of lines) {
+      const m = line.match(/^(\w+):\s*(.*)$/);
+      if (!m) continue;
+      const key = m[1].trim();
+      let val = m[2].trim();
+      val = val.replace(/^["']|["']$/g, '');
+      if (key === 'tags' && val.startsWith('[')) {
+        try { fm.tags = JSON.parse(val); } catch { fm.tags = []; }
+      } else if (key === 'hidden') {
+        fm.hidden = val === 'true';
+      } else {
+        fm[key] = val;
+      }
+    }
+    return fm;
+  }
+  return fm;
+}
+
+const calendarCategoryMap: Record<string, { name: string; icon: string }> = {
+  teaching: { name: '杏坛拾器', icon: '🛠️' },
+  tech: { name: '数码闲赏', icon: '📱' },
+  ai: { name: '新知漫解', icon: '🤖' },
+  life: { name: '岁晚闲书', icon: '🌿' },
+};
+
+interface CalendarPost {
+  title: string;
+  date: string;
+  category: string;
+  categoryName: string;
+  categoryIcon: string;
+  url: string;
+  excerpt: string;
+}
+
+const calendarAllPosts: CalendarPost[] = [];
+for (const [path, raw] of Object.entries(calendarArticleSources)) {
+  const match = path.match(/\.\/(teaching|tech|ai|life)\/(.+)\.astro$/);
+  if (!match) continue;
+  const category = match[1];
+  const slug = match[2];
+  const fm = parseFrontmatter(raw as string);
+  if (fm.hidden || !fm.date) continue;
+  calendarAllPosts.push({
+    title: fm.title || slug,
+    date: fm.date,
+    category,
+    categoryName: calendarCategoryMap[category].name,
+    categoryIcon: calendarCategoryMap[category].icon,
+    url: `/${category}/${slug}`,
+    excerpt: fm.excerpt || '',
+  });
+}
+
+const calendarPostsByDate: Record<string, CalendarPost[]> = {};
+for (const post of calendarAllPosts) {
+  if (!calendarPostsByDate[post.date]) {
+    calendarPostsByDate[post.date] = [];
+  }
+  calendarPostsByDate[post.date].push(post);
+}
+// ===== 月历组件 end =====
 ---
 
 <Layout
@@ -76,6 +159,170 @@ import Layout from '../layouts/Layout.astro';
       </div>
     </article>
   </a>
+
+  
+  <!-- ============ 文踪月历 ============ -->
+  <p class="section-title">文踪月历</p>
+  <div class="calendar-container" id="calendarContainer">
+    <div class="calendar-header">
+      <button class="calendar-nav-btn" id="prevMonth" aria-label="上一月">‹</button>
+      <div class="calendar-title" id="calendarTitle">加载中...</div>
+      <button class="calendar-nav-btn" id="nextMonth" aria-label="下一月">›</button>
+    </div>
+    <div class="calendar-weekdays">
+      <span>日</span><span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span>
+    </div>
+    <div class="calendar-grid" id="calendarGrid"></div>
+  </div>
+  <!-- 当日文章列表弹窗 -->
+  <div class="calendar-popup" id="calendarPopup" style="display: none;">
+    <div class="calendar-popup-header">
+      <span id="popupDate"></span>
+      <button class="calendar-popup-close" id="popupClose" aria-label="关闭">×</button>
+    </div>
+    <div class="calendar-popup-list" id="popupList"></div>
+  </div>
+  <!-- 月历数据注入 -->
+  <script type="application/json" id="calendarPostsData">
+    {JSON.stringify(calendarPostsByDate)}
+  </script>
+  <!-- 月历交互脚本 -->
+  <script is:inline>
+  (function() {
+    var dataEl = document.getElementById('calendarPostsData');
+    if (!dataEl) return;
+    var postsByDate = JSON.parse(dataEl.textContent);
+
+    var grid = document.getElementById('calendarGrid');
+    var titleEl = document.getElementById('calendarTitle');
+    var prevBtn = document.getElementById('prevMonth');
+    var nextBtn = document.getElementById('nextMonth');
+    var popup = document.getElementById('calendarPopup');
+    var popupDate = document.getElementById('popupDate');
+    var popupList = document.getElementById('popupList');
+    var popupClose = document.getElementById('popupClose');
+
+    var now = new Date();
+    var currentYear = now.getFullYear();
+    var currentMonth = now.getMonth();
+    var todayStr = formatDate(now);
+
+    function formatDate(d) {
+      var y = d.getFullYear();
+      var m = String(d.getMonth() + 1).padStart(2, '0');
+      var day = String(d.getDate()).padStart(2, '0');
+      return y + '-' + m + '-' + day;
+    }
+
+    function formatDateCN(dateStr) {
+      var parts = dateStr.split('-');
+      return parts[0] + '年' + parseInt(parts[1]) + '月' + parseInt(parts[2]) + '日';
+    }
+
+    function renderCalendar() {
+      titleEl.textContent = currentYear + '年' + (currentMonth + 1) + '月';
+      grid.innerHTML = '';
+
+      var firstDay = new Date(currentYear, currentMonth, 1);
+      var lastDay = new Date(currentYear, currentMonth + 1, 0);
+      var startWeekday = firstDay.getDay();
+      var daysInMonth = lastDay.getDate();
+
+      // 上月末尾
+      var prevMonthLast = new Date(currentYear, currentMonth, 0).getDate();
+      for (var i = startWeekday - 1; i >= 0; i--) {
+        var d = prevMonthLast - i;
+        var ds = formatDate(new Date(currentYear, currentMonth - 1, d));
+        addDayCell(d, ds, true);
+      }
+
+      // 当月
+      for (var d = 1; d <= daysInMonth; d++) {
+        var ds = formatDate(new Date(currentYear, currentMonth, d));
+        addDayCell(d, ds, false);
+      }
+
+      // 下月补齐（保证6行布局稳定）
+      var total = startWeekday + daysInMonth;
+      var remain = total <= 35 ? 35 - total : (total % 7 === 0 ? 0 : 7 - (total % 7));
+      for (var d = 1; d <= remain; d++) {
+        var ds = formatDate(new Date(currentYear, currentMonth + 1, d));
+        addDayCell(d, ds, true);
+      }
+    }
+
+    function addDayCell(day, dateStr, isOtherMonth) {
+      var cell = document.createElement('div');
+      cell.className = 'calendar-day';
+      if (isOtherMonth) cell.classList.add('other-month');
+      if (dateStr === todayStr) cell.classList.add('today');
+
+      var hasPosts = postsByDate[dateStr] && postsByDate[dateStr].length > 0;
+      if (hasPosts) {
+        cell.classList.add('has-posts');
+        cell.title = postsByDate[dateStr].length + ' 篇文章';
+        cell.addEventListener('click', function() {
+          showPopup(dateStr);
+        });
+      }
+
+      cell.textContent = day;
+      grid.appendChild(cell);
+    }
+
+    function showPopup(dateStr) {
+      var posts = postsByDate[dateStr];
+      if (!posts || !posts.length) return;
+
+      popupDate.textContent = formatDateCN(dateStr);
+      popupList.innerHTML = '';
+
+      for (var i = 0; i < posts.length; i++) {
+        var post = posts[i];
+        var item = document.createElement('a');
+        item.href = post.url;
+        item.className = 'calendar-popup-item';
+
+        var title = document.createElement('div');
+        title.className = 'calendar-popup-item-title';
+        title.textContent = post.title;
+
+        var meta = document.createElement('div');
+        meta.className = 'calendar-popup-item-meta';
+        meta.innerHTML = '<span class="cat-icon">' + post.categoryIcon + '</span>' + post.categoryName;
+
+        item.appendChild(title);
+        item.appendChild(meta);
+        popupList.appendChild(item);
+      }
+
+      popup.style.display = 'block';
+      popup.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    function hidePopup() {
+      popup.style.display = 'none';
+    }
+
+    prevBtn.addEventListener('click', function() {
+      currentMonth--;
+      if (currentMonth < 0) { currentMonth = 11; currentYear--; }
+      renderCalendar();
+      hidePopup();
+    });
+
+    nextBtn.addEventListener('click', function() {
+      currentMonth++;
+      if (currentMonth > 11) { currentMonth = 0; currentYear++; }
+      renderCalendar();
+      hidePopup();
+    });
+
+    popupClose.addEventListener('click', hidePopup);
+
+    renderCalendar();
+  })();
+  </script>
 
   <!-- ============ 物理分割 ============ -->
   <div class="section-divider">
@@ -286,6 +533,215 @@ import Layout from '../layouts/Layout.astro';
     font-size: 12px;
     color: #8a9ab2;
     font-weight: 400;
+  }
+
+
+  /* ============ 文踪月历 ============ */
+  .calendar-container {
+    background: var(--card-bg);
+    border: 1px solid var(--paper);
+    border-radius: var(--radius);
+    box-shadow: 1px 1px 0 var(--paper);
+    padding: 18px 20px;
+    margin-bottom: 8px;
+  }
+  .calendar-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 14px;
+  }
+  .calendar-nav-btn {
+    width: 32px;
+    height: 32px;
+    border: 1px solid var(--paper);
+    background: var(--card-bg);
+    border-radius: var(--radius-sm);
+    font-size: 18px;
+    color: var(--text-light);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.15s;
+    padding: 0;
+    line-height: 1;
+    font-family: inherit;
+  }
+  .calendar-nav-btn:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+  .calendar-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text);
+    letter-spacing: 0.05em;
+  }
+  .calendar-weekdays {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 2px;
+    margin-bottom: 8px;
+  }
+  .calendar-weekdays span {
+    text-align: center;
+    font-size: 12px;
+    color: var(--text-fade);
+    padding: 6px 0;
+    font-weight: 500;
+  }
+  .calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 2px;
+  }
+  .calendar-day {
+    aspect-ratio: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    color: var(--text);
+    border-radius: var(--radius-sm);
+    cursor: default;
+    position: relative;
+    transition: all 0.15s;
+    user-select: none;
+  }
+  .calendar-day:hover {
+    background: var(--paper);
+  }
+  .calendar-day.other-month {
+    color: var(--text-fade);
+    opacity: 0.4;
+  }
+  .calendar-day.has-posts {
+    cursor: pointer;
+    font-weight: 600;
+  }
+  .calendar-day.has-posts::after {
+    content: '';
+    position: absolute;
+    bottom: 5px;
+    width: 5px;
+    height: 5px;
+    background: var(--accent);
+    border-radius: 50%;
+  }
+  .calendar-day.has-posts:hover {
+    background: var(--accent-soft);
+    color: var(--accent);
+  }
+  .calendar-day.today {
+    border: 1px solid var(--accent);
+    color: var(--accent);
+    font-weight: 600;
+  }
+  .calendar-day.today.has-posts::after {
+    bottom: 4px;
+  }
+  /* 当日文章列表弹窗 */
+  .calendar-popup {
+    margin-top: 14px;
+    background: var(--card-bg);
+    border: 1px solid var(--paper);
+    border-radius: var(--radius);
+    box-shadow: 1px 1px 0 var(--paper);
+    overflow: hidden;
+    margin-bottom: 8px;
+  }
+  .calendar-popup-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px;
+    border-bottom: 1px dashed var(--paper);
+    background: var(--accent-soft);
+  }
+  .calendar-popup-header span {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--accent);
+  }
+  .calendar-popup-close {
+    background: none;
+    border: none;
+    font-size: 20px;
+    color: var(--text-light);
+    cursor: pointer;
+    padding: 0;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    transition: all 0.15s;
+    font-family: inherit;
+    line-height: 1;
+  }
+  .calendar-popup-close:hover {
+    background: rgba(192, 57, 43, 0.1);
+    color: var(--accent);
+  }
+  .calendar-popup-list {
+    padding: 8px 0;
+  }
+  .calendar-popup-item {
+    display: block;
+    padding: 10px 16px;
+    text-decoration: none;
+    color: inherit;
+    transition: background 0.15s;
+    border-bottom: 1px solid var(--paper);
+  }
+  .calendar-popup-item:last-child {
+    border-bottom: none;
+  }
+  .calendar-popup-item:hover {
+    background: var(--bg);
+  }
+  .calendar-popup-item-title {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+  .calendar-popup-item:hover .calendar-popup-item-title {
+    color: var(--accent);
+  }
+  .calendar-popup-item-meta {
+    font-size: 12px;
+    color: var(--text-light);
+  }
+  .calendar-popup-item-meta .cat-icon {
+    margin-right: 4px;
+  }
+  @media (max-width: 720px) {
+    .calendar-container {
+      padding: 14px 12px;
+    }
+    .calendar-day {
+      font-size: 12px;
+    }
+    .calendar-day.has-posts::after {
+      width: 4px;
+      height: 4px;
+      bottom: 4px;
+    }
+    .calendar-day.today.has-posts::after {
+      bottom: 3px;
+    }
+    .calendar-title {
+      font-size: 14px;
+    }
+    .calendar-nav-btn {
+      width: 28px;
+      height: 28px;
+      font-size: 16px;
+    }
   }
 
   /* ============ 移动端:水平变垂直 ============ */
