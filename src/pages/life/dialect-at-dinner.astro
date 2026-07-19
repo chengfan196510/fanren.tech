@@ -22,7 +22,7 @@ const frontmatter = {
     <h1 class="post-full-title">{frontmatter.title}</h1>
     <div class="post-full-meta">{frontmatter.date} · {frontmatter.tags.join(' / ')}</div>
 
-    <img src={frontmatter.cover} alt={frontmatter.title} class="post-full-cover" />
+    <img src={frontmatter.cover} alt={frontmatter.title} class="post-full-cover" loading="lazy" decoding="async" />
 
     <div class="post-full-content">
       <p>今天午饭时笑飞说到她妹妹的名字在方言里奇怪的读音，于是大家各自说起了老家的方言。南北方言差异很大，浙江这边甚至同一个县市，话都不一样。</p>

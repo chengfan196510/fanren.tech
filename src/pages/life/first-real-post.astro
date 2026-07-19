@@ -22,7 +22,7 @@ const frontmatter = {
     <h1 class="post-full-title">{frontmatter.title}</h1>
     <div class="post-full-meta">{frontmatter.date} · {frontmatter.tags.join(' / ')}</div>
 
-    <img src={frontmatter.cover} alt={frontmatter.title} class="post-full-cover" />
+    <img src={frontmatter.cover} alt={frontmatter.title} class="post-full-cover" loading="lazy" decoding="async" />
 
     <div class="post-full-content">
       <p>今天是 2026 年 6 月 3 日，周三，宁波下着点小雨。</p>

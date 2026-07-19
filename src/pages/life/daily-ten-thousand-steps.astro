@@ -22,7 +22,7 @@ const frontmatter = {
     <h1 class="post-full-title">{frontmatter.title}</h1>
     <div class="post-full-meta">{frontmatter.date} · {frontmatter.tags.join(' / ')}</div>
 
-    <img src={frontmatter.cover} alt={frontmatter.title} class="post-full-cover" />
+    <img src={frontmatter.cover} alt={frontmatter.title} class="post-full-cover" loading="lazy" decoding="async" />
 
     <div class="post-full-content">
       <p>宁诺附中的“日行万步”活动，今年是第六年。</p>

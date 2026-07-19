@@ -73,7 +73,7 @@ posts.sort((a, b) => (b.date || '').localeCompare(a.date || ''));
         <article class="post-card">
           <div class="post-card-cover">
             {post.cover ? (
-              <img src={post.cover} alt={post.title} />
+              <img src={post.cover} alt={post.title} loading="lazy" decoding="async" />
             ) : (
               <div class="post-card-cover-fallback">
                 <span>🌿</span>

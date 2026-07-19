@@ -61,7 +61,7 @@ articles.sort((a, b) => (b.date || '').localeCompare(a.date || ''));
         <article class="post-card">
           {post.cover ? (
             <div class="post-card-cover">
-              <img src={post.cover} alt={post.title} />
+              <img src={post.cover} alt={post.title} loading="lazy" decoding="async" />
             </div>
           ) : (
             <div class="post-card-cover post-card-cover--placeholder">
